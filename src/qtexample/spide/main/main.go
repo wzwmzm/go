@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/henrylee2cn/pholcus/exec"
 
-	_ "lib"
+	_ "qtexample/spide"
 )
 
 func main() {
