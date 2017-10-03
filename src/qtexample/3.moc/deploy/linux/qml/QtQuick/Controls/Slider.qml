@@ -264,7 +264,7 @@ Control {
 
         onPositionChanged: {
             if (pressed)
-                updateHandlePosition(mouse, preventStealing)
+                updateHandlePosition(mouse, !Settings.hasTouchScreen || preventStealing)
 
             var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
             handleHovered = fakeHandle.contains(Qt.point(point.x, point.y))
@@ -310,6 +310,8 @@ Control {
     WheelArea {
         id: wheelarea
         anchors.fill: parent
+        verticalValue: slider.value
+        horizontalValue: slider.value
         horizontalMinimumValue: slider.minimumValue
         horizontalMaximumValue: slider.maximumValue
         verticalMinimumValue: slider.minimumValue

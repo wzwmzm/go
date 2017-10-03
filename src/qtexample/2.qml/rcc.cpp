@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Resource object code
 **
-** Created by: The Resource Compiler for Qt version 5.8.0
+** Created by: The Resource Compiler for Qt version 5.9.1
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -204,10 +204,10 @@ static const unsigned char qt_resource_struct[] = {
 0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,
   // :/qml/main.qmlc
   0x0,0x0,0x0,0xc,0x0,0x1,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x0,
-0x0,0x0,0x1,0x5e,0x23,0xca,0x74,0x5a,
+0x0,0x0,0x1,0x5e,0xd1,0x33,0x54,0xbb,
   // :/qml/main.qml
   0x0,0x0,0x0,0x24,0x0,0x0,0x0,0x0,0x0,0x1,0x0,0x0,0x6,0xd3,
-0x0,0x0,0x1,0x5e,0x23,0xc9,0x5,0xbe,
+0x0,0x0,0x1,0x5e,0xd1,0x33,0x54,0xbb,
 
 };
 
@@ -239,7 +239,7 @@ int QT_RCC_MANGLE_NAMESPACE(qInitResources_qtexample_2_qml)();
 int QT_RCC_MANGLE_NAMESPACE(qInitResources_qtexample_2_qml)()
 {
     QT_RCC_PREPEND_NAMESPACE(qRegisterResourceData)
-        (0x02, qt_resource_struct, qt_resource_name, qt_resource_data);
+        (0x2, qt_resource_struct, qt_resource_name, qt_resource_data);
     return 1;
 }
 
@@ -247,7 +247,7 @@ int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_qtexample_2_qml)();
 int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_qtexample_2_qml)()
 {
     QT_RCC_PREPEND_NAMESPACE(qUnregisterResourceData)
-       (0x02, qt_resource_struct, qt_resource_name, qt_resource_data);
+       (0x2, qt_resource_struct, qt_resource_name, qt_resource_data);
     return 1;
 }
 
