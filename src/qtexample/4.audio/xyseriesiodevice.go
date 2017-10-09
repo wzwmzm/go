@@ -5,13 +5,14 @@ import (
 	"github.com/therecipe/qt/core"
 )
 
+//图表显示输出设备
 type XYSeriesIODevice struct {
 	core.QIODevice
 
 	//TODO: custom constructors
 	//_ func(series *charts.QXYSeries) `constructor:"init"`
 
-	m_series *charts.QXYSeries
+	m_series *charts.QXYSeries	//需要显示的数据，audioInput的输入数据即在此
 }
 
 func (d *XYSeriesIODevice) init(series *charts.QXYSeries) {
