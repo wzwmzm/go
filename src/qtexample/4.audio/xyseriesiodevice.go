@@ -25,9 +25,9 @@ func (d *XYSeriesIODevice) init(series *charts.QXYSeries) {
 func (d *XYSeriesIODevice) readData(data *string, maxSize int64) int64 {
 	return -1
 }
-
+//执行此函数前d.m_series里存放硬件输入的值,执行后坐标变换为X(0,2000) Y(-1,+1)
 func (d *XYSeriesIODevice) writeData(data string, maxSize int64) int64 {
-	var rang = 2000
+	var rang = 2000				//X轴长2000
 	var oldPoints = d.m_series.PointsVector()
 	var points []*core.QPointF
 	var resolution int64 = 4
@@ -49,6 +49,6 @@ func (d *XYSeriesIODevice) writeData(data string, maxSize int64) int64 {
 		points = append(points, core.NewQPointF3(float64(k+size), y))
 	}
 
-	d.m_series.Replace5(points)
+	d.m_series.Replace5(points)	//老的点用新的点替换(坐标变换)
 	return maxSize
 }

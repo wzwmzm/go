@@ -31,7 +31,7 @@ func (w *Widget) init() {
 	w.m_chart.AddSeries(w.m_series)         //将数据加入图表数据结构   QLineSeries->QChart
 	//设置X坐标
 	var axisX = charts.NewQValueAxis(nil)
-	axisX.SetRange(0, 2000)
+	axisX.SetRange(0, 2000)				//X轴长2000
 	axisX.SetLabelFormat("%g")
 	axisX.SetTitleText("Samples")
 	//设置Y坐标
