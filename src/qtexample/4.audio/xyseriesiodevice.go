@@ -46,7 +46,7 @@ func (d *XYSeriesIODevice) writeData(data string, maxSize int64) int64 {
 		if y > 1 {
 			y -= 2
 		}
-		points = append(points, core.NewQPointF3(float64(k+size), y))
+		points = append(points, core.NewQPointF3(float64(k+size), y))	//新的点添加在老的点后面
 	}
 
 	d.m_series.Replace5(points)	//老的点用新的点替换(坐标变换)
