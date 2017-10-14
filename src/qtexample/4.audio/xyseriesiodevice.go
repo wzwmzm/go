@@ -12,7 +12,7 @@ type XYSeriesIODevice struct {
 	//TODO: custom constructors
 	//_ func(series *charts.QXYSeries) `constructor:"init"`
 
-	m_series *charts.QXYSeries	//需要显示的数据，audioInput的输入数据即在此
+	m_series *charts.QXYSeries //需要显示的数据，audioInput的输入数据即在此
 }
 
 func (d *XYSeriesIODevice) init(series *charts.QXYSeries) {
@@ -25,9 +25,10 @@ func (d *XYSeriesIODevice) init(series *charts.QXYSeries) {
 func (d *XYSeriesIODevice) readData(data *string, maxSize int64) int64 {
 	return -1
 }
-//执行此函数前d.m_series里存放硬件输入的值,执行后坐标变换为X(0,2000) Y(-1,+1)
+
+//将data的数据添加到d.m_series的后面. data的数据变换为X(0,2000) Y(-1,+1)
 func (d *XYSeriesIODevice) writeData(data string, maxSize int64) int64 {
-	var rang = 2000				//X轴长2000
+	var rang = 2000 //X轴长2000
 	var oldPoints = d.m_series.PointsVector()
 	var points []*core.QPointF
 	var resolution int64 = 4
@@ -42,13 +43,13 @@ func (d *XYSeriesIODevice) writeData(data string, maxSize int64) int64 {
 
 	var size = int64(len(points))
 	for k := int64(0); k < int64(maxSize/resolution); k++ {
-		var y = float64([]byte(data)[resolution*k]-128) / 128.0
+		var y = float64([]byte(data)[resolution*k]-128) / 128.0 //Y值变换(-1,1)
 		if y > 1 {
 			y -= 2
 		}
-		points = append(points, core.NewQPointF3(float64(k+size), y))	//新的点添加在老的点后面
+		points = append(points, core.NewQPointF3(float64(k+size), y)) //将data的数据添加到d.m_series的后面
 	}
 
-	d.m_series.Replace5(points)	//老的点用新的点替换(坐标变换)
+	d.m_series.Replace5(points) //老的点用新的点替换(坐标变换)
 	return maxSize
 }
