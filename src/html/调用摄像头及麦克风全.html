@@ -1,0 +1,60 @@
+<html lang="zh-CN">
+<!-- 必须放在服务器上才能正常作用  -->
+	<head>        
+		<title>GetUserMedia实例</title>
+	</head>
+	
+	<body>  
+	    <video autoplay controls></video>
+	</body>
+ 
+    <script type="text/javascript">
+   
+        window.URL = window.URL || window.webkitURL;  
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;  
+        
+        init();
+        function init() {
+            if(navigator.getUserMedia) {
+                navigator.getUserMedia({audio: true, video: { width: 1280, height: 720 }}, onSuccess, onError);
+            } else {
+                alert('getUserMedia failed.');
+            }
+        }
+
+        function onSuccess(stream) {
+            console.log("navigator.getUserMedia成功, 在onSuccess()中");
+            
+            var video = document.querySelector('video');
+            console.log("在onSuccess()中, querySelector成功");
+            video.src = window.URL.createObjectURL(stream);
+            console.log("在onSuccess()中,createObjectURL成功");
+            video.onloadedmetadata = function(e) {        //此时并不执行,要在发生onloadedmetadata事件时才执行
+                console.log("video.onloadedmetadata ...");// Do something with the video here.
+                console.log("Label: " + localMediaStream.label);            
+				console.log("AudioTracks" , localMediaStream.getAudioTracks());  
+				console.log("VideoTracks" , localMediaStream.getVideoTracks()); 
+//                video.play();
+            };
+            console.log("在onSuccess()中,onloadedmetadata赋值成功");
+            
+//            document.querySelector('video').src = window.URL.createObjectURL(stream);
+        }
+
+        function onError(err) {
+            console.log("Noo " + err);
+        }
+        
+        
+        
+        
+   
+//        navigator.getUserMedia(
+//            {audio: true, video: true}, 
+//            function(stream) {  
+//                document.querySelector('video').src = window.URL.createObjectURL(stream);  }, 
+//            function(e) {  
+//                console.log(e);}
+//        );
+    </script>
+</html> 
