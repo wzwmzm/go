@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta charset="UTF-8">
+        <meta name="description" content="HTML5 Audio Spectrum Visualizer">
+        <title>HTML5 Audio API showcase | Audio visualizer</title>
+        <style type="text/css">
+            html, body {
+                margin: 0;
+                font-family: arial, "Microsoft YaHei";
+                background-color: #272822;
+                color: #FEFEFE;
+            }
+            #fileWrapper{
+                transition:all 0.5s ease;
+            }
+            #fileWrapper:hover{
+                opacity: 1!important;
+            }
+            #visualizer_wrapper{
+                text-align: center;
+            }
+            footer{
+                position: fixed;
+                bottom: 2px;
+                color:#aaa;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="fileWrapper" class="file_wrapper">
+                <div id="info">
+                    HTML5 Audio API showcase | An Audio Viusalizer
+                </div>
+                <label for="uploadedFile">Drag&drop or select a file to play:</label>
+                <input type="file" id="uploadedFile"></input>
+            </div>
+            <div id="visualizer_wrapper">
+                <canvas id='canvas' width="800" height="350"></canvas>
+            </div>
+        </div>
+        <footer>
+            <small>Star me on <a href="https://github.com/Wayou/HTML5_Audio_Visualizer" target="_blank">GitHub</a></small>
+        </footer>
+        <script type="text/javascript">
+            /*
+             * An audio spectrum visualizer built with HTML5 Audio API
+             * Author:Wayou
+             * License: MIT
+             * Feb 15, 2014
+             */
+	/*主要功能部分:
+		1, audioContext.decodeAudioData(), 音频文件解码,在第162行
+                2, 本来audioBufferSouceNode直接连接到destination的, 现在 buffer连接到audioBufferSouceNode,audioBufferSouceNode连接到analyser,analyser连接destination。这样analyser就有机会处理数据了. 
+		3, analyser.getByteFrequencyData(array);  //第230行, 得到的array[]中即为功率谱数据
+		4. requestAnimationFrame(drawMeter); //第263行第265行. drawMeter()只是画了一帧图, 此函数为连续不断地画图产生动画效果
+
+
+
+
+	*/
+            window.onload = function() {
+                new Visualizer().ini(); //定义在第78行
+            };
+            var Visualizer = function() {  //定义类的成员变量
+                this.file = null, //the current file
+                this.fileName = null, //the current file name
+                this.audioContext = null,
+                this.source = null, //the audio source
+                this.info = document.getElementById('info').innerHTML, //this used to upgrade the UI information
+                this.infoUpdateId = null, //to sotore the setTimeout ID and clear the interval
+                this.animationId = null,
+                this.status = 0, //flag for sound is playing 1 or stopped 0
+                this.forceStop = false, //正在播放时强行停止更换另一首歌
+                this.allCapsReachBottom = false
+            };
+            Visualizer.prototype = {  //定义类的成员函数
+                ini: function() {     //在第53行被调用
+                    this._prepareAPI();
+                    this._addEventListner();
+                },
+                _prepareAPI: function() {
+                    //fix browser vender for AudioContext and requestAnimationFrame
+                    window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;//处理音频首先需要实例化一个音频上下文类型window.AudioContext。
+                    try {
+                        this.audioContext = new AudioContext();
+                    } catch (e) {
+                        this._updateInfo('!Your browser does not support AudioContext', false);
+                        console.log(e);
+                    };
+                    window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;  //后面用来写动画要用
+                    window.cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.msCancelAnimationFrame;
+                },
+                _addEventListner: function() {  //通过监听事件,获取选择的文件
+                    var that = this,  //当前this指代Visualizer对象，赋值给that以以便在其他地方使用
+                        audioInput = document.getElementById('uploadedFile'),
+                        dropContainer = document.getElementsByTagName("canvas")[0];
+                    //listen the file upload
+                    audioInput.onchange = function() {   //获取选择的文件,方法一,通过文件选择控件选取
+                        if (that.audioContext===null) {return;};  //如果在前面获取 audioContext 就失败了则直接退出
+
+                        //这里判断一下文件长度可以确定用户是否真的选择了文件，如果点了取消则文件长度为0
+                        if (audioInput.files.length !== 0) {
+                            //only process the first file
+                            that.file = audioInput.files[0]; //这里的 this 作用域是 function(){} 的函数作用域, 所以要用 Visualizer 的 that 作用域
+                            that.fileName = that.file.name;
+                            if (that.status === 1) {
+                                //the sound is still playing but we upload another file, so set the forceStop flag to true
+                                that.forceStop = true;
+                            };
+                            document.getElementById('fileWrapper').style.opacity = 1;
+                            that._updateInfo('Uploading', true);
+                            //once the file is ready,start the visualizer
+                            that._start();
+                        };
+                    };
+                    //获取选择的文件,方法二, 通过拖放取得文件
+                    dropContainer.addEventListener("dragenter", function() {
+                        document.getElementById('fileWrapper').style.opacity = 1;
+                        that._updateInfo('Drop it on the page', true);
+                    }, false);
+                    dropContainer.addEventListener("dragover", function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        //set the drop mode
+                        e.dataTransfer.dropEffect = 'copy';
+                    }, false);
+                    dropContainer.addEventListener("dragleave", function() {
+                        document.getElementById('fileWrapper').style.opacity = 0.2;
+                        that._updateInfo(that.info, false);
+                    }, false);
+                    dropContainer.addEventListener("drop", function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        if (that.audioContext===null) {return;};
+                        document.getElementById('fileWrapper').style.opacity = 1;
+                        that._updateInfo('Uploading', true);
+                        //get the dropped file
+                        that.file = e.dataTransfer.files[0];
+                        if (that.status === 1) {
+                            document.getElementById('fileWrapper').style.opacity = 1;
+                            that.forceStop = true;
+                        };
+                        that.fileName = that.file.name;
+                        //once the file is ready,start the visualizer
+                        that._start();
+                    }, false);
+                },
+                _start: function() {  //取得文件后开始处理音乐文件
+                    //read and decode the file into audio array buffer
+                    var that = this,  //当前this指代Visualizer对象，赋值给that以以便在其他地方使用
+                        file = this.file, //从Visualizer对象上获取前面得到的文件
+                        fr = new FileReader();  //实例化一个FileReader用于读取文件
+		//注意, 下面定义了一系列的onXXX()事件处理函数,但是并没有立即执行, 而是在第176行执行fr.readAsArrayBuffer(file)时才得到了执行
+                    fr.onload = function(e) {   //文件读取完后调用此函数
+                        var fileResult = e.target.result; //这是读取成功得到的结果ArrayBuffer数据
+                        var audioContext = that.audioContext; //从Visualizer得到最开始实例化的AudioContext用来做解码ArrayBuffer
+                        if (audioContext === null) {
+                            return;
+                        };
+                        that._updateInfo('Decoding the audio', true);
+                        audioContext.decodeAudioData(fileResult, function(buffer) { //解码成功则调用此函数，参数buffer为解码后得到的结果.   注意,音频文件在此解码/////
+                            that._updateInfo('Decode succussfully,start the visualizer', true);
+                            that._visualize(audioContext, buffer); //调用_visualize进行下一步处理，此方法在后面定义并实现. 此buffer即为解码完成得到audiobuffer文件
+                        }, function(e) {
+                            that._updateInfo('!Fail to decode the file', false);
+                            console.log(e);
+                        });
+                    };
+                    fr.onerror = function(e) {  //文件读取失败处理
+                        that._updateInfo('!Fail to read the file', false);
+                        console.log(e);
+                    };
+                    //assign the file to the reader
+                    this._updateInfo('Starting read the file', true);
+                    fr.readAsArrayBuffer(file); //将最初获取的文件传递给FileReader从而将其读取为ArrayBuffer格式
+                },
+                _visualize: function(audioContext, buffer) {  //音频文件的正式处理在这里. 在第164行被调用. 
+                    var audioBufferSouceNode = audioContext.createBufferSource(),
+                        analyser = audioContext.createAnalyser(),
+                        that = this;
+                    //本来audioBufferSouceNode直接连接到destination的, 现在 buffer连接到audioBufferSouceNode,audioBufferSouceNode连接到analyser,analyser连接destination。这样analyser就有机会处理数据了. 183行和185行的结果就是将第200行audioBufferSouceNode.connect(audioContext.destination)省略了.为了将音频在播放前截取，所以要把analyser插在audioBufferSouceNode与audioContext.destination之间。 
+                    audioBufferSouceNode.connect(analyser);
+                    //connect the analyser to the destination(the speaker), or we won't hear the sound
+                    analyser.connect(audioContext.destination);  //audioContext.destination相当于扬声器//audioContext.createAnalyser().connect(audioContext.destination);
+                    //then assign the buffer to the buffer source node
+                    audioBufferSouceNode.buffer = buffer;        //简单写相当于audioContext.createBufferSource().buffer = buffer;
+                    //play the source
+                    if (!audioBufferSouceNode.start) {
+                        audioBufferSouceNode.start = audioBufferSouceNode.noteOn //in old browsers use noteOn method
+                        audioBufferSouceNode.stop = audioBufferSouceNode.noteOff //in old browsers use noteOn method
+                    };
+                    //stop the previous sound if any
+                    if (this.animationId !== null) {
+                        cancelAnimationFrame(this.animationId);
+                    }
+                    if (this.source !== null) {
+                        this.source.stop(0);
+                    }
+		//audioBufferSouceNode.connect(audioContext.destination)
+                    audioBufferSouceNode.start(0);     //参数0为开始时间, 此处正式播放音频. 此处start()为函数, 上面第189行的start为变量
+                    this.status = 1;
+                    this.source = audioBufferSouceNode;
+                    audioBufferSouceNode.onended = function() {
+                        that._audioEnd(that);
+                    };
+                    this._updateInfo('Playing ' + this.fileName, false);
+                    this.info = 'Playing ' + this.fileName;
+                    document.getElementById('fileWrapper').style.opacity = 0.2;
+                    this._drawSpectrum(analyser);
+                },
+                _drawSpectrum: function(analyser) { //画功率谱图
+                    var that = this,
+                        canvas = document.getElementById('canvas'),
+                        cwidth = canvas.width,
+                        cheight = canvas.height - 2,
+                        meterWidth = 10, //width of the meters in the spectrum //柱宽
+                        gap = 2, //gap between meters //柱间距
+                        capHeight = 2,
+                        capStyle = '#fff',
+                        meterNum = 800 / (10 + 2), //count of the meters //柱的总数
+                        capYPositionArray = []; ////store the vertical position of hte caps for the preivous frame//画每根柱上面缓慢下降的帽头. 将上一画面各帽头的位置保存到这个数组
+                    ctx = canvas.getContext('2d'),
+                    gradient = ctx.createLinearGradient(0, 0, 0, 300); //定义一个渐变样式用于画图
+                    gradient.addColorStop(1, '#0f0');
+                    gradient.addColorStop(0.5, '#ff0');
+                    gradient.addColorStop(0, '#f00');
+                    var drawMeter = function() {
+                        var array = new Uint8Array(analyser.frequencyBinCount);//初始化一个数组. frequencyBinCount 的值固定为 AnalyserNode 接口中fftSize值的一半. 这里即设置数组的长度(个数)
+                        analyser.getByteFrequencyData(array);   //getByteFrequencyData() 即为取得功率谱数据存放到array中
+                        if (that.status === 0) {		
+                            //fix when some sounds end the value still not back to zero
+                            for (var i = array.length - 1; i >= 0; i--) {
+                                array[i] = 0;
+                            };
+                            allCapsReachBottom = true;
+                            for (var i = capYPositionArray.length - 1; i >= 0; i--) {
+                                allCapsReachBottom = allCapsReachBottom && (capYPositionArray[i] === 0);
+                            };
+                            if (allCapsReachBottom) {
+                                cancelAnimationFrame(that.animationId); //since the sound is top and animation finished, stop the requestAnimation to prevent potential memory leak,THIS IS VERY IMPORTANT!
+                                return;
+                            };
+                        };
+                        var step = Math.round(array.length / meterNum);  //sample limited data from the total array Math.round()四舍五入, 得到采样步长
+                        ctx.clearRect(0, 0, cwidth, cheight);            //正式开始画图.  清场地画出矩形框
+                        for (var i = 0; i < meterNum; i++) {             //画柱形图功率谱
+                            var value = array[i * step];
+                            if (capYPositionArray.length < Math.round(meterNum)) {
+                                capYPositionArray.push(value);           //保存帽头数据
+                            };
+                            ctx.fillStyle = capStyle;
+                            //draw the cap, with transition effect
+                            if (value < capYPositionArray[i]) {          //画帽头
+                                ctx.fillRect(i * 12, cheight - (--capYPositionArray[i]), meterWidth, capHeight);
+                            } else {
+                                ctx.fillRect(i * 12, cheight - value, meterWidth, capHeight);
+                                capYPositionArray[i] = value;
+                            };
+                            ctx.fillStyle = gradient; //set the filllStyle to gradient for a better look
+                            ctx.fillRect(i * 12 /*meterWidth+gap*/ , cheight - value + capHeight, meterWidth, cheight); //the meter//画柱体
+                        }
+                        that.animationId = requestAnimationFrame(drawMeter); //上面只是画了一帧图, 此函数为连续不断地画图产生动画效果
+                    }
+                    this.animationId = requestAnimationFrame(drawMeter);     //drawMeter()只是画了一帧图, 此函数为连续不断地画图产生动画效果
+                },
+                _audioEnd: function(instance) {
+                    if (this.forceStop) {
+                        this.forceStop = false;
+                        this.status = 1;
+                        return;
+                    };
+                    this.status = 0;
+                    var text = 'HTML5 Audio API showcase | An Audio Viusalizer';
+                    document.getElementById('fileWrapper').style.opacity = 1;
+                    document.getElementById('info').innerHTML = text;
+                    instance.info = text;
+                    document.getElementById('uploadedFile').value = '';
+                },
+                _updateInfo: function(text, processing) {
+                    var infoBar = document.getElementById('info'),
+                        dots = '...',
+                        i = 0,
+                        that = this;
+                    infoBar.innerHTML = text + dots.substring(0, i++);
+                    if (this.infoUpdateId !== null) {
+                        clearTimeout(this.infoUpdateId);
+                    };
+                    if (processing) {
+                        //animate dots at the end of the info text
+                        var animateDot = function() {
+                            if (i > 3) {
+                                i = 0
+                            };
+                            infoBar.innerHTML = text + dots.substring(0, i++);
+                            that.infoUpdateId = setTimeout(animateDot, 250);
+                        }
+                        this.infoUpdateId = setTimeout(animateDot, 250);
+                    };
+                }
+            }
+        </script>
+        <script>
+		//此段为谷歌网站分析服务, 可以删除不用, 使用前需要谷歌注册,并更改最后两句代码
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-46794744-3', 'duapp.com');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>
+

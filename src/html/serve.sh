@@ -12,4 +12,5 @@ then
   port=8000
 fi
 
-google-chrome http://localhost:$port/ && python -m SimpleHTTPServer $port;
+#google-chrome http://localhost:$port/ && python -m SimpleHTTPServer $port;
+python -m SimpleHTTPServer $port;
