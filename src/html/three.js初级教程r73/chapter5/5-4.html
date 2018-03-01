@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Three框架</title>
-		<script src="js/Three.js"></script>
+		<script src="js/three.js"></script>
 		<style type="text/css">
 			div#canvas-frame {
 				border: none;
@@ -54,7 +54,7 @@
 //                light.position.set(100, 100, 200);
 //                scene.add(light);
                 // 聚光灯
-                light = new THREE.DirectionalLight(0xFF0000);
+                light = new THREE.DirectionalLight(0x8F0000);
                 light.position.set(0, 0,1);
                 scene.add(light);
             }
@@ -62,7 +62,7 @@
             var cube;
             function initObject() {
                 var geometry = new THREE.CubeGeometry( 200, 100, 50,4,4);
-                var material = new THREE.MeshLambertMaterial( { color:0xFFFFFF} );
+                var material = new THREE.MeshLambertMaterial( { color:0x8FFFFF} );
                 var mesh = new THREE.Mesh( geometry,material);
                 mesh.position.set(0,0,0);
                 scene.add(mesh);

@@ -1,0 +1,7 @@
+
+https://github.com/Ovilia/ThreeExample.js 
+
+camera.lookAt(0,0,0); 
+THREE.LineSegments camera.lookAt(0,0,0); 
+
+var line = new THREE.Line( geometry, material, THREE.LineSegments );
