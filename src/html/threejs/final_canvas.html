@@ -10,31 +10,44 @@
             margin: 0;
             height: 100%;
         }
-        
+
         canvas {
             display: block;
         }
+
     </style>
 </head>
 
-<body onload="draw();"> </body>
+<body onload="draw();">
+
+    <canvas id="mainCanvas"></canvas>
+
+</body>
 <script src="js/three.js"></script>
 <script src="js/OrbitControls.js"></script>
 <script src="js/stats.min.js"></script>
 <script>
+    //width="1024px" height="500px"></canvas>
+
     var renderer;
+    var canvaswidth = 1024;
+    var canvasheight = 500;
 
     function initRender() {
         renderer = new THREE.WebGLRenderer({
-            antialias: true
+            antialias: true,
+            canvas: document.getElementById('mainCanvas')
         });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        document.getElementById('mainCanvas').setAttribute("width", canvaswidth);
+        document.getElementById('mainCanvas').setAttribute("height", canvasheight);
+        renderer.setSize(canvaswidth, canvasheight);
+        //document.body.appendChild(renderer.domElement);
     }
     var camera;
 
     function initCamera() {
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+        //        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+        camera = new THREE.PerspectiveCamera(45, canvaswidth / canvasheight, 1, 10000);
         camera.position.set(0, 0, 400);
     }
     var scene;
@@ -62,8 +75,8 @@
     //立方体
     function initModel1() {
         cube = new THREE.Mesh(new THREE.CubeGeometry(50, 50, 50), new THREE.MeshBasicMaterial({
-            color: 0xff0000
-            , wireframe: true
+            color: 0xff0000,
+            wireframe: true
         }));
         cube.position.set(150, 0, 0);
         scene.add(cube);
@@ -93,7 +106,7 @@
         //设置相机距离原点的最远距离
         controls.minDistance = 2;
         //设置相机距离原点的最远距离
-        controls.maxDistance = 600;
+        controls.maxDistance = 60000;
         //是否开启右键拖拽
         controls.enablePan = true;
     }
@@ -101,13 +114,13 @@
     function render() {
         renderer.render(scene, camera);
     }
-    //窗口变动触发的函数
-    function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        render();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    }
+    //    //窗口变动触发的函数, 在final_canvas.html中没有使用
+    //    function onWindowResize() {
+    //        camera.aspect = window.innerWidth / window.innerHeight;
+    //        camera.updateProjectionMatrix();
+    //        render();
+    //        renderer.setSize(window.innerWidth, window.innerHeight);
+    //    }
 
     function animate() {
         //更新控制器
@@ -128,8 +141,9 @@
         initControls();
         initStats();
         animate();
-        window.onresize = onWindowResize;
+        //        window.onresize = onWindowResize;//在final_canvas.html中canvas大小固定不变
     }
+
 </script>
 
 </html>
