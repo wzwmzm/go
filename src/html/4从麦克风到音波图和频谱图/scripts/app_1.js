@@ -77,13 +77,16 @@ ajaxRequest.responseType = 'arraybuffer';
 ajaxRequest.onload = function () {
   var audioData = ajaxRequest.response;
 
-  audioCtx.decodeAudioData(audioData, function (buffer) {
-    concertHallBuffer = buffer;
-    soundSource = audioCtx.createBufferSource();
-    soundSource.buffer = concertHallBuffer;
-  }, function (e) {
-    console.log("Error with decoding audio data" + e.err);
-  });
+  audioCtx.decodeAudioData(
+      audioData, 
+      function (buffer) {
+        concertHallBuffer = buffer;
+        soundSource = audioCtx.createBufferSource();
+        soundSource.buffer = concertHallBuffer;
+      }, 
+      function (e) {
+        console.log("Error with decoding audio data" + e.err);
+      });
 
   //soundSource.connect(audioCtx.destination);
   //soundSource.loop = true;
