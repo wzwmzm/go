@@ -1,5 +1,5 @@
 /*eslint-env browser*/
-/*global a:true*/
+/***global a:true***/
 /*eslint no-console: "off"*/
 // get a reference to the install button
 var button = document.getElementById('install-btn');

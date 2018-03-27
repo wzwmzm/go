@@ -3,7 +3,7 @@
 
 //本例出处及原始档说明: https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
 /*eslint-env browser*/
-/*global Float32Array Uint8Array:true*/
+/******global Float32Array Uint8Array:true*********/
 /*eslint no-console: "off"*/
 
 navigator.getUserMedia = (navigator.getUserMedia ||
@@ -13,7 +13,8 @@ navigator.getUserMedia = (navigator.getUserMedia ||
 
 
 
-// set up forked web audio context, for multiple browsers
+
+// set up forked web  context, for multiple browsers
 // window. is needed otherwise Safari explodes
 
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
@@ -52,7 +53,7 @@ var convolver = audioCtx.createConvolver(); //卷积, 两个波形叠加, 通常
 function makeDistortionCurve(amount) {
 	var k = typeof amount === 'number' ? amount : 50,
 		n_samples = 44100,
-		curve = new Float32Array(n_samples),
+		curve = new window.Float32Array(n_samples),
 		deg = Math.PI / 180,
 		i = 0,
 		x;
@@ -154,7 +155,7 @@ function visualize() {
 		analyser.fftSize = 2048;
 		var bufferLength = analyser.fftSize;
 		console.log(bufferLength);
-		var dataArray = new Uint8Array(bufferLength);
+		var dataArray = new window.Uint8Array(bufferLength);
 
 		canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -199,8 +200,7 @@ function visualize() {
 		analyser.fftSize = 256;
 		var bufferLengthAlt = analyser.frequencyBinCount;
 		console.log(bufferLengthAlt);
-		var dataArrayAlt = new Uint8Array(bufferLengthAlt);
-
+		var dataArrayAlt = new window.Uint8Array(bufferLengthAlt);
 		canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
 		var drawAlt = function () {
