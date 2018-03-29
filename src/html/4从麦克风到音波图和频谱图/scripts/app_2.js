@@ -30,7 +30,7 @@ oscillator.connect(analyser1);
 //////////作图!!! ////////////////////////////////
 let canvas1 = document.querySelector('#canvas1');
 let canvasCtx1 = canvas1.getContext('2d');
-//var drawVisual1;
+//var drawVisual1; 
 
 function visualize1() {
 	const width1 =  640;
@@ -56,7 +56,7 @@ function visualize1() {
 		canvasCtx1.lineWidth = 2;
 		canvasCtx1.strokeStyle = 'black';
 		
-		analyser1.getByteTimeDomainData(dataArray1);
+		analyser1.getByteTimeDomainData(dataArray1);//注意!!!第一帧数据全部为 128
 		
 		canvasCtx1.beginPath();
 		let sliceWidth1 = width1 * 1.0 / bufferLength1;
@@ -65,7 +65,7 @@ function visualize1() {
 		for (let i = 0; i < bufferLength1; i++){
 			let v = dataArray1[i] / 128.0;
 			let y = v * height1 /2;
-			
+			console.log(i,"=",dataArray1[i]);
 			if(i===0){
 				canvasCtx1.moveTo(x, y);
 			} else{
@@ -75,10 +75,14 @@ function visualize1() {
 		}
 		
 		canvasCtx1.lineTo(width1, height1 / 2);
-		canvasCtx1.stroke();		
+		canvasCtx1.stroke();
+//      requestAnimationFrame(draw1);//指定实现的是哪个动画
 	}
 	
 	draw1();
+    
+//    cancelAnimationFrame(draw1);
+//		requestAnimationFrame(draw1);//指定实现的是哪个动画
 
 }
 visualize1();

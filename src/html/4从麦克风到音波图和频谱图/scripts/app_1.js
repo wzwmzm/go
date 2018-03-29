@@ -13,13 +13,13 @@ navigator.getUserMedia = (navigator.getUserMedia ||
 
 
 
-
+//音源1:  话筒音源
 // set up forked web  context, for multiple browsers
 // window. is needed otherwise Safari explodes
 
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 var voiceSelect = document.getElementById("voice");
-var source;
+var source;  //话筒音源
 //var stream;
 
 // grab the mute button to use below
@@ -38,6 +38,7 @@ var gainNode = audioCtx.createGain(); //音量控制节点
 var biquadFilter = audioCtx.createBiquadFilter(); //滤波器,频率控制节点
 var convolver = audioCtx.createConvolver(); //卷积, 两个波形叠加, 通常用来实现混响效果,即混响
 
+//音源2:  方波
 //////////注意!!! 下面的这一小段产生一个440HZ的方波音源
 // create Oscillator node
 //var oscillator = audioCtx.createOscillator();
@@ -47,6 +48,7 @@ var convolver = audioCtx.createConvolver(); //卷积, 两个波形叠加, 通常
 //oscillator.start();
 
 
+// 失真?
 // distortion curve for the waveshaper, thanks to Kevin Ennis
 // http://stackoverflow.com/questions/22312841/waveshaper-node-in-webaudio-how-to-emulate-distortion
 
@@ -64,9 +66,11 @@ function makeDistortionCurve(amount) {
 	return curve;
 }
 
+
+//音源3:  声音文件
 // grab audio track via XHR for convolver node
 
-var soundSource, concertHallBuffer;
+var soundSource, concertHallBuffer;  //soundSource :声音源节点
 
 var ajaxRequest = new XMLHttpRequest();
 
@@ -76,14 +80,14 @@ ajaxRequest.responseType = 'arraybuffer';
 
 
 ajaxRequest.onload = function () {
-	var audioData = ajaxRequest.response;
+	var audioData = ajaxRequest.response;  //<--解码前的声音数据
 
 	audioCtx.decodeAudioData(
 		audioData,
-		function (buffer) {
+		function (buffer) {                //<--解码后的声音数据
 			concertHallBuffer = buffer;
 			soundSource = audioCtx.createBufferSource();
-			soundSource.buffer = concertHallBuffer;
+			soundSource.buffer = concertHallBuffer;     //<--以解码数据创建声音源
 		},
 		function (e) {
 			console.log("Error with decoding audio data" + e.err);
@@ -96,6 +100,8 @@ ajaxRequest.onload = function () {
 
 ajaxRequest.send();
 
+
+//画布
 // set up canvas context for visualizer
 
 var canvas = document.querySelector('.visualizer');
@@ -119,6 +125,7 @@ if (navigator.getUserMedia) {
 			audio: true
 		},
 
+//音源1: 话筒
 		// Success callback
 		function (stream) {
 			source = audioCtx.createMediaStreamSource(stream);
@@ -143,6 +150,7 @@ if (navigator.getUserMedia) {
 	console.log('getUserMedia not supported on your browser!');
 }
 
+//作图
 function visualize() {
 	var WIDTH = canvas.width;
 	var HEIGHT = canvas.height;
@@ -153,7 +161,7 @@ function visualize() {
 
 	if (visualSetting == "sinewave") { //画波形图
 		analyser.fftSize = 2048;
-		var bufferLength = analyser.fftSize;
+		var bufferLength = analyser.fftSize;//频谱为半值
 		console.log(bufferLength);
 		var dataArray = new window.Uint8Array(bufferLength);
 
@@ -246,8 +254,8 @@ function voiceChange() {
 
 	if (voiceSetting == "distortion") {
 		distortion.curve = makeDistortionCurve(400);
-	} else if (voiceSetting == "convolver") {
-		convolver.buffer = concertHallBuffer;
+	} else if (voiceSetting == "convolver") {  
+		convolver.buffer = concertHallBuffer;     //混入声音文件源
 	} else if (voiceSetting == "biquad") {
 		biquadFilter.type = "lowshelf";
 		biquadFilter.frequency.value = 1000;

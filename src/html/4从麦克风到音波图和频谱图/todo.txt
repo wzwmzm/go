@@ -1,6 +1,9 @@
 # app_2.js   正弦波发生器接示波器显示
-- 1，正弦波发生器{{"_file":"/home/wzw/project/go/src/html/4从麦克风到音波图和频谱图/scripts/app_2.js"}}
-- 2，示波器
-- 3， 正弦波接示波器
-- 4，作图
++ 1，正弦波发生器{{"_file":"/home/wzw/project/go/src/html/4从麦克风到音波图和频谱图/scripts/app_2.js"}}
++ 2，示波器
++ 3， 正弦波接示波器
++ 4，作图
+- 叠加频谱波形
+- 测试不同参数
+- 显示暂停
 
