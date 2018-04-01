@@ -204,7 +204,7 @@ function visualize() {
 
 		draw();
 
-	} else if (visualSetting == "frequencybars") { //画功率谱
+	} else if (visualSetting == "frequencybars") { //画功率谱,指频率-能量的关系图,而非频率-幅度的关系图
 		analyser.fftSize = 256;
 		var bufferLengthAlt = analyser.frequencyBinCount;
 		console.log(bufferLengthAlt);
