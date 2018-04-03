@@ -31,7 +31,7 @@ let animation1; //<-用来暂停动画显示
 let draw1; 
 
 function visualize1() {
-	const width1 =  1024;  //窗口的宽度，用来显示返回的数据图像
+	const width1 =  1024;  //窗口的宽度，用来显示返回的数据图像,画频谱图时有约束
 	const height1 = 200;
 	const fftsize1 = 2048;
 	//默认值2048;  好象是一次返回的数据数. 在这个指定的频域里使用FFT捕获数据
@@ -54,7 +54,7 @@ function visualize1() {
 	
 	draw1 = function(){
 		
-//		animation1 = window.requestAnimationFrame(draw1);//指定实现的是哪个动画;animation1 每次进入值都不相同
+		animation1 = window.requestAnimationFrame(draw1);//指定实现的是哪个动画;animation1 每次进入值都不相同
 //		console.log(`animation1=${animation1}`);
         
 		canvasCtx1.fillStyle = 'white';//'rgb(239, 239, 239)';
@@ -64,23 +64,22 @@ function visualize1() {
       canvasCtx1.strokeRect(0,0,width1,height1);
 //      canvasCtx1.strokeStyle = 'red';
 		canvasCtx1.lineWidth = 1;	
-        
+      
 		analyser1.getByteTimeDomainData(dataArray1);//注意!!!第一帧数据全部为 128. 取得的是当前的值!!!
 ////@@@针对频谱图的设置,变量以2结尾
 		analyser1.getByteFrequencyData(dataArray2);
 ////@@@针对频谱图的设置,变量以2结尾
 //		let barWidth = (width1 / bufferLength2) * 2.5;
-//		let barHeight;
+		let barHeight;
 		let xx = 0;
 		let sliceWidth2 = width1 * 1.0 / bufferLength2;
 
 		let sliceWidth1 = width1 * 1.0 / bufferLength1;
 		let x = 0;		
 		
-		//画时域图
 		canvasCtx1.beginPath();
-		{
-			canvasCtx1.strokeStyle = 'blue';		
+		{	//画时域图
+			canvasCtx1.strokeStyle = 'blue';
 			for (let i = 0; i < bufferLength1; i++){
 				let v = dataArray1[i] / 128.0;
 				let y = v * height1 /2;
@@ -92,23 +91,24 @@ function visualize1() {
 				}
 				x += sliceWidth1;
 			}
-
 			canvasCtx1.lineTo(width1, height1 / 2);
 		}
-		canvasCtx1.stroke();	
-		
-		//画频域图
-//		canvasCtx1.beginPath();
-//		{
-//			canvasCtx1.strokeStyle = 'red';
-//			for (let i = 0; i < bufferLength2; i++) {
-//				let barHeight = dataArray2[i];
-//				canvasCtx1.moveTo(xx, height1 - barHeight / 2);
-//				canvasCtx1.lineTo(xx, barHeight / 2);
-//				xx += sliceWidth2;	
-//			}
-//		}			
-//		canvasCtx1.stroke();
+////@@@针对频谱图的设置,变量以2结尾
+		{
+			canvasCtx1.strokeStyle = 'red';
+			for (let i = 0; i < bufferLength2; i++) {
+				barHeight = dataArray2[i];
+
+//				canvasCtx1.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+//				canvasCtx1.fillRect(xx, height1 - barHeight / 2, barWidth, barHeight / 2);
+				canvasCtx1.moveTo(xx, height1 - barHeight / 2);
+				canvasCtx1.lineTo(xx, barHeight / 2)
+
+//				xx += barWidth + 1;
+				xx += sliceWidth2;
+			}			
+		}
+		canvasCtx1.stroke();
 	}
 	
 	draw1();
