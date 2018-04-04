@@ -137,27 +137,12 @@ visualize1();
 let button1 = document.querySelector('#button1');
 button1.onclick = () => {
 	console.log("button1 clicked");
-	if(button1.textContent === "暂停显示"){
+	if(button1.textContent === "暂停"){
 		window.cancelAnimationFrame(animation1);
-		button1.textContent = "继续显示";
+		button1.textContent = "继续";
 	}else{
-		button1.textContent = "暂停显示";
+		button1.textContent = "暂停";
 		animation1 = window.requestAnimationFrame(draw1);
 	}
 
 }
-
-let ffthz = document.querySelector('#hzRange');
-ffthz.onchange = () =>{
-    document.querySelector('#ffthz').setAttribute("width","300");
-    document.querySelector('#ffthz').innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频率: " + document.querySelector('#hzRange').value + "HZ";
-
-}
-
-let vol = document.querySelector('#volRange');
-vol.onchange = () =>{
-    
-    document.querySelector('#vol').innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音量: " + document.querySelector('#volRange').value ;
-
-}
-
