@@ -10,17 +10,15 @@ let draw = null;
 let oscillator = null;
 let gain1 = null;
 
+
+
 window.onload = function () {
     audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-    console.log(audioCtx.state);
-    if (audioCtx.state === 'suspended') {
-
-        audioCtx.resume().then(() => {
-            console.log(audioCtx.state);
-        });
-
+        if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+        audioCtx.log(audioCtx.state);
     }
-    console.log(audioCtx.state);
+
     //}
     //let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
@@ -244,7 +242,6 @@ window.onload = function () {
 //---> button1: 显示暂停键   
 let button1 = document.querySelector('#button1');
 button1.onclick = () => {
-
     console.log("button1 clicked");
     if (button1.textContent === "暂停显示") {
         window.cancelAnimationFrame(animation);
