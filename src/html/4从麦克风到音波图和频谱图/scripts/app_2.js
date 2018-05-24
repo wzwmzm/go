@@ -68,11 +68,13 @@ function visualize() {
     const height2 = height1;
     const fftsize2 = fftsize1;
 
+    //第一套线路,是由震荡器直接产生的原始数据
     analyser1.fftSize = fftsize1;
     let bufferLength1_w = analyser1.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
     let dataArry1_w = new Uint8Array(bufferLength1_w);
     let bufferLength1_f = analyser1.frequencyBinCount;
     let dataArry1_f = new window.Uint8Array(bufferLength1_f);
+    //第二套线路,是由麦克疯收集的反馈数据
     analyser2.fftSize = fftsize2;
     let bufferLength2_w = analyser2.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
     let dataArry2_w = new Uint8Array(bufferLength2_w);
@@ -234,13 +236,29 @@ button1.onclick = () => {
     }
 }
 
-//---> 频谱调节
-let ffthz = document.querySelector('#hzRange');
-ffthz.onchange = () => {
-    document.querySelector('#ffthz').innerHTML =
-        `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频率: ${ffthz.value} HZ`
+//---> button2: 频率增加键
+let button2 = document.querySelector('#button2');
+button2.onclick = () =>{
+    fr.value = fr.value*1 + 2;//每次增加 1HZ
+    if (fr.value >= 22000) fr.value = 22000;
+    fr.onchange();
+}
 
-    oscillator.frequency.value = ffthz.value; // 调整频率 
+//---> button3: 频率减少键
+let button3 = document.querySelector('#button3');
+button3.onclick = () =>{
+    fr.value = fr.value * 1 - 2;//每次减少 1HZ
+    if (fr.value <= 0) fr.value = 0;
+    fr.onchange();
+}
+
+//---> 频谱调节
+let fr = document.querySelector('#hzRange');
+fr.onchange = () => {
+    document.querySelector('#ffthz').innerHTML =
+        `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频率: ${fr.value} HZ`
+    oscillator.frequency.value = fr.value; // 调整频率 
+    console.log(`fr = ${oscillator.frequency.value}`);
 }
 
 //---> 音量调节

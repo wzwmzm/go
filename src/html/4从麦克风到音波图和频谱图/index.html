@@ -17,6 +17,8 @@
     <p>
         <button id="button1">暂停显示</button>
         <b id="ffthz">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频率:&nbsp;&nbsp;440&nbsp;</b>
+        <button id="button2">+</button>
+        <button id="button3">-</button>        
         <b><input type="range" id="hzRange" min="0" max="11000" value="440"> 
     (0-11KHZ)</b>
         <b id="vol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音量:&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;</b>
@@ -41,7 +43,7 @@
         input[type=range] {
             -webkit-appearance: none;
             /*清除系统默认样式*/
-            width: 300px;
+            width: 200px;
             /*20%, 设置长度,这里的优先级似乎高于js文件*/
             background: -webkit-linear-gradient(#61bd12, #61bd12) no-repeat, #ddd;
             /*设置左边颜色为#61bd12，右边颜色为#ddd*/
