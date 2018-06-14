@@ -1,4 +1,4 @@
-package mylib
+package mygosl
 
 import (
 	"testing"
