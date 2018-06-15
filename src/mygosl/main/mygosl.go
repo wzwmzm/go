@@ -22,6 +22,7 @@ func myfft() {
 		ii := float64(i * 2)
 		x[i] = complex(ii+1, ii+2)
 	}
+	io.Pf("x = %v\n", x)
 
 	// flags
 	inverse := false //false:傅里叶正变换; true:傅里叶逆变换
@@ -39,12 +40,21 @@ func myfft() {
 	plan.Execute() //实际进行傅里叶变量,可以多次执行
 
 	// print output
-	io.Pf("X = %v\n", x)
+	io.Pf("正变换后的结果 X = %v\n", x)
 
 	// check output
 	//chk.ArrayC(tst, "X", 1e-14, x, test1Xref)
+	iplan := fftw.NewPlan1d(x, true, measure)
+	defer iplan.Free()
+	iplan.Execute()
+	for i := 0; i < N; i++ {
+		x[i] /= complex(float64(N), 0)
+	}
+	io.Pf("逆变换后的结果(已除N) X = %v\n", x)
 }
 
 func main() {
 	mygosl.SayHello()
+	myfft()
+
 }
