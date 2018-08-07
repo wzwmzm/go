@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="shortcut icon" href="/favicon.ico" /> 
+</head>
+<body>
+<script type="text/javascript">
+    var sock = null;
+    var wsuri = "ws://127.0.0.1:4001";
+    window.onload = function() {
+        console.log("onload");
+        sock = new WebSocket(wsuri);  //建立接口,这是关键一句!!!
+        sock.onopen = function() {    //收到消息1
+            console.log("connected to " + wsuri);
+	    document.getElementById("pp1").innerText="connected to " + wsuri;
+        }
+        sock.onclose = function(e) {  //收到消息2
+            console.log("connection closed (" + e.code + ")");
+	    document.getElementById("pp1").innerText="connection closed: " + e.code;
+        }
+        sock.onmessage = function(e) { //收到消息3, 这里是正真的收到消息
+            console.log("message received: " + e.data);
+	    document.getElementById("pp1").innerText=e.data;
+        }
+    };
+    function send() {                  //发送消息, 由第32行调用
+        var msg = document.getElementById('message').value;
+        sock.send(msg);                //发送消息
+    }
+</script>
+<h1>WebSocket Echo Test</h1>
+<form>
+    <p>Message: <input id="message" type="text" value="Hello, world!"></p>
+</form>
+<button onclick="send();">Send Message</button>
+<p id=pp1>
+这里是回函
+<p>
+</body>
+</html>

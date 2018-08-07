@@ -1,0 +1,3 @@
+主程序:  main/mygosl.go
+运行:  go run mygosl.go
+测试:  go test

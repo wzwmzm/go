@@ -1,0 +1,17 @@
+
+
+1,"net/http"是golang的基础包, 里面没有实现websocket功能
+2,"github.com/gorilla"是一个常用网络工具集,是"net/http"方案的扩展. 其中含有"/websocket"包的实现
+3,"github.com/valyala/fasthttp"是目前最快速的网络工具包,其主要技术是用字节和切片代替"net/http"方案, 但没有实现"/websocket"功能. 注意:fasthttp与net/http方案是不可替换的!
+4,"github.com/leavengood/websocket/"是用fasthttp的字节切片技术对"github.com/gorilla/websocket"包进行了改写
+
+5,所以"github.com/leavengood/websocket/"和"github.com/gorilla/websocket"是可替换的. 源程序中只需替换import{...}, 其它不用变.
+
+6,本目录下的代码实列均源自"github.com/gorilla/examples", 根据第5条,只需要替换import{...},(将"github.com/gorilla/websocket"换成"github.com/leavengood/websocket")即可实现包的切换,从而加快速度.
+
+
+7,"https://github.com/kataras/iris"基于fasthttp, 支持 HTTP/2.0 和 websocket, 所以更值得推荐!!!
+
+
+
+
