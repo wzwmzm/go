@@ -19,6 +19,7 @@ func main() {
 		ctx.Writef("<H1>Hello %s<H1>", name)
 	})
 	// http://localhost:8080/user/吴志伟
+	// curl "http://localhost:8080/user/吴志伟"
 
 	// This handles the /user/kataras/42
 	// and fires 400 bad request if /user/kataras/string.
@@ -31,6 +32,7 @@ func main() {
 		ctx.Writef("%s is %d years old", name, age)
 	})
 	// http://localhost:8080/user/吴志伟/26
+	// curl "http://localhost:8080/user/吴志伟/26"
 
 	// However, this one will match /action/{user}/star and also /action/{user}/stars
 	// or even /action/{user}/likes/page/2.
@@ -54,6 +56,7 @@ func main() {
 	// http://localhost:8080/user/kataras/25
 	// http://localhost:8080/action/kataras/upgrade
 	// http://localhost:8080/action/kataras/static
+	// curl "http://localhost:8080/action/kataras/static"
 
 	//Querystring parameters
 	// Query string parameters are parsed using the existing underlying request object.
@@ -66,6 +69,7 @@ func main() {
 		ctx.Writef("Hello %s %s", firstname, lastname)
 	})
 	//http://localhost:8080/welcome?firstname=Jane&lastname=Doe
+	//或者 curl "http://localhost:8080/welcome?firstname=Jane&lastname=Doe"
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//Multipart/Urlencoded Form
@@ -91,6 +95,7 @@ func main() {
 		})
 	})
 	//http://localhost:8080/testpost
+	//或者 curl -X POST "http://localhost:8080/form_post" -F message=吴志伟 -F nick=wzw
 
 	//Another example: query + post form
 	app.Get("/testpostquery", func(ctx iris.Context) {
@@ -114,6 +119,7 @@ func main() {
 		app.Logger().Infof("id: %s; page: %s; name: %s; message: %s", id, page, name, message)
 	})
 	//http://localhost:8080/testpostquery
+	//或者 curl -X POST -F message=hello -F name=吴志伟   "http://localhost:8080/form_postquery?page=abc&id=111"
 
 	// Listen and serve on http://localhost:8080.
 	app.Run(iris.Addr(":8080"))
