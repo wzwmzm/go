@@ -74,7 +74,7 @@ func main() {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//Multipart/Urlencoded Form
 	app.Get("/testpost", func(ctx iris.Context) {
-		ctx.Writef(`
+		ctx.HTML(`
 		<html>
 			<form action='/form_post' method='post'>
 			    message: <input type="text" name="message">
@@ -99,7 +99,7 @@ func main() {
 
 	//Another example: query + post form
 	app.Get("/testpostquery", func(ctx iris.Context) {
-		ctx.Writef(`
+		ctx.HTML(`
 		<html>
 			<form action='/form_postquery?id=123&page=321' method='post'>
 			    message: <input type="text" name="message">
@@ -122,5 +122,34 @@ func main() {
 	//或者 curl -X POST -F message=hello -F name=吴志伟   "http://localhost:8080/form_postquery?page=abc&id=111"
 
 	// Listen and serve on http://localhost:8080.
+
+	////// *.html模板的使用 *.js /////////////////
+	app.RegisterView(iris.HTML("./views", ".html"))
+
+	app.Get("/mb", func(ctx iris.Context) {
+
+		ctx.ViewData("message", "Hello world!")
+
+		ctx.View("hello.html")
+	})
+
+	app.RegisterView(iris.HTML("./js", ".js"))
+
+	app.Get("/app.js", func(ctx iris.Context) {
+
+		ctx.View("app.js")
+	})
+	//http://localhost:8080/mb
+
+	/////////////一个静态网站,包含子目录都可以自动路由寻址//////////////////////
+	app.StaticWeb("/", "./html")
+
+	app.Get("/", func(ctx iris.Context) {
+		ctx.ServeFile("./html/index.html", false) // true for gzip.
+	})
+	//http://localhost:8080                 (含有js子目录)
+	//http://localhost:8080/index.html      (效果同上)
+	//http://localhost:8080/hello.html
+
 	app.Run(iris.Addr(":8080"))
 }
