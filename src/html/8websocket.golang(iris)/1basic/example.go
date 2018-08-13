@@ -142,7 +142,7 @@ func main() {
 	//http://localhost:8080/mb
 
 	/////////////一个静态网站,包含子目录都可以自动路由寻址//////////////////////
-	app.StaticWeb("/", "./html")
+	app.StaticWeb("/", "./html")  //<-----------------------设定网站根目录
 
 	app.Get("/", func(ctx iris.Context) {
 		ctx.ServeFile("./html/index.html", false) // true for gzip.
