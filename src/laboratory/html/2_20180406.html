@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+<head>
+
+    <style>
+
+
+    </style>
+    <meta charset="utf-8">
+    <title>标题即是标签</title>
+</head>
+
+<body>
+    <h2>图形1</h2>
+    <canvas class="visuals" id="canvas1"></canvas>
+    <p>
+        <button id="button1">暂停显示</button>
+        <b id="ffthz">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频率:&nbsp;&nbsp;440&nbsp;</b>
+        <b><input type="range" id="hzRange" min="0" max="11000" value="440"> 
+    (0-11KHZ)</b>
+        <b id="vol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音量:&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;</b>
+        <b><input type="range" id="volRange" min="0" max="10" value="0"> 
+    (%)</b>
+
+
+
+    </p>
+    <h2>图形2</h2>
+    <canvas class="visuals" id="canvas2"></canvas>
+    <h2>图形3</h2>
+    <canvas class="visuals" id="canvas3"></canvas>
+    <h2>图形4</h2>
+    <canvas class="visuals" id="canvas4"></canvas>
+
+    <script type="text/javascript" src="scripts/app_2.js"></script>
+
+    <style>
+        /*横条样式*/ 
+
+        input[type=range] {
+            -webkit-appearance: none;
+            /*清除系统默认样式*/
+            width: 300px;
+            /*20%, 设置长度,这里的优先级似乎高于js文件*/
+            background: -webkit-linear-gradient(#61bd12, #61bd12) no-repeat, #ddd;
+            /*设置左边颜色为#61bd12，右边颜色为#ddd*/
+            height: 3px;
+            /*横条的高度*/
+        }
+
+        /*拖动块的样式*/ 
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            /*清除系统默认样式*/
+            height: 20px;
+            /*拖动块高度*/
+            width: 20px;
+            /*拖动块宽度*/
+            background: #d33a3a;
+            /*拖动块背景*/
+            border-radius: 50%;
+            /*外观设置为圆形*/
+            border: solid 1px #ddd;
+            /*设置边框*/
+        }
+
+    </style>
+</body>
+
+</html>
