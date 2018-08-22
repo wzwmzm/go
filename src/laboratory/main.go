@@ -10,13 +10,13 @@ import (
 func main() {
 	app := iris.New()
 
-	app.StaticWeb("/", "./html") //<-----------------------设定网站根目录
+	app.StaticWeb("/", "./web") //<-----------------------设定网站根目录
 	app.Get("/", func(ctx iris.Context) {
-		ctx.ServeFile("./html/index.html", false) // true for gzip.
+		ctx.ServeFile("./web/index.html", false) // true for gzip.
 	})
 
 	app.Get("/ws", func(ctx iris.Context) {
-		ctx.ServeFile("./html/websockets.html", false) // second parameter: enable gzip?
+		ctx.ServeFile("./web/websockets.html", false) // second parameter: enable gzip?
 	})
 
 	setupWebsocket(app)
@@ -61,3 +61,6 @@ func handleConnection(c websocket.Connection) {
 		c.To(websocket.Broadcast).Emit("chat", msg) //发给所有客户端除了当前客户端
 	})
 }
+
+//http://localhost:8080/
+//http://localhost:8080/ws
