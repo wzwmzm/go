@@ -36,11 +36,11 @@ func sayhello(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, `
 	
-		http://localhost:8080       (显示本提示页) (注意:未命中的地址都会显示本页!!!)
-		http://localhost:8080/c     (WINDOWS 的 C:盘)
-		http://localhost:8080/d     (WINDOWS 的 D:盘)
-		http://localhost:8080/root  (LINUX 的根目录)
-		http://localhost:8080/quit  (退出WEB服务)
+		http://目标主机IP:8080       (显示本提示页) (注意:未命中的地址都会显示本页!!!)
+		http://目标主机IP:8080/c     (WINDOWS 的 C:盘)
+		http://目标主机IP:8080/d     (WINDOWS 的 D:盘)
+		http://目标主机IP:8080/root  (LINUX 的根目录)
+		http://目标主机IP:8080/quit  (退出WEB服务)
 		已知类型文件可以直接打开显示,或者通过"另存为..."来下载. 未知类型文件可以直接下载保存.
 	
 	`) //这个写入到w的是输出到客户端的
