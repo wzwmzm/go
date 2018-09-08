@@ -8,6 +8,7 @@ at this example we registered the 'chat' -->
 <!-- the messages will be shown here -->
 <pre id="output"></pre>
 <!-- import the iris client-side library for browser-->
+<!-- iris-ws.js文件是服务器自动生成的,而非目录下真实存在这个文件-->
 <script src="/iris-ws.js"></script>
 
 <script>
@@ -21,7 +22,7 @@ at this example we registered the 'chat' -->
     var output = document.getElementById("output");
 
     // Ws comes from the auto-served '/iris-ws.js'
-    var socket = new Ws(wsURL)
+    var socket = new Ws(wsURL)       //一个 socket 是通过 协议 IP port 路由 四个部分组成的
     socket.OnConnect(function () {
         output.innerHTML += "Status: Connected\n";
     });
@@ -31,14 +32,17 @@ at this example we registered the 'chat' -->
     });
 
     // read events from the server
+    // 客户端收信处理
     socket.On("chat", function (msg) {
         addMessage(msg);
     });
 
+    // 客户端发信处理
     function send() {
         addMessage("Me: " + input.value); // write ourselves
         socket.Emit("chat", input.value); // send chat event data to the websocket server
-        input.value = ""; // clear the input
+		// "chat" 是事件标志, 后面是内容. 所以一个消息可以通过 协议 主机IP 端口 路由 事件 五个部分来区分        
+		input.value = ""; // clear the input
     }
 
     function addMessage(msg) {

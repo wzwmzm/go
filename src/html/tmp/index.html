@@ -1,179 +1,145 @@
 <!DOCTYPE HTML>
+<!--                      文章链接:http://blog.51cto.com/liuxp0827/1364435 -->
+<!--
+  这段代码关键在于navigator.getUserMedia来获得客户端的媒体资源。进入该页面，将向chrome浏览器客户端请求媒体资源。请求成功后：
+
+
+//创建webkitAudio资源
+var context = new webkitAudioContext();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+//创建媒体流
+ var mediaStreamSource = context.createMediaStreamSource(s);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+//录音实例
+rec = new Recorder(mediaStreamSource);
+
+开始录音，执行rec.record()，看下recorder.js：
+-->
+
+<!--
+  每次刷新登入该页面，客户端就会向服务器发送websocket握手请求，握手成功后，
+js代码中录好音之后 将ws.send(数据)对应到button上，点击按钮就可发送数据了。
+-->
 
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8" />
-
-    <title>Chat by Web Sockets</title>
-
-    <script type="text/javascript" src="js/recorder.js">
-
-
-    </script>
-
-    <script type="text/javascript" src="js/jquery-1.10.1.min.js">
-
-
-    </script>
-
-
+    <title>PONPON Chat by WebSockets</title>
+    <script type="text/javascript" src="/static/lib/recorder.js"> </script>
+    <script type="text/javascript" src="/static/lib/jquery-1.10.1.min.js"> </script>
 
     <style type='text/css'>
 
-
     </style>
-
 </head>
 
 <body>
-
     <audio controls autoplay></audio>
-
-
-
-    <input type="button" id="record" value="Record">
-
-    <input type="button" id="export" value="Export">
-
+    <form>
+        <input type="button" id="record" value="录音">
+        <input type="button" id="export" value="发送">
+    </form>
     <div id="message"></div>
-
 </body>
 
-
-
 <script type='text/javascript'>
+    //回调函数
     var onFail = function(e) {
-
         console.log('Rejected!', e);
-
-    };
-
-
-
+    }; //回调函数                                        
     var onSuccess = function(s) {
-
         var context = new webkitAudioContext();
-
         var mediaStreamSource = context.createMediaStreamSource(s);
-
         rec = new Recorder(mediaStreamSource);
-
-        //rec.record();
-
-
-
-        // audio loopback
-
-        // mediaStreamSource.connect(context.destination);
 
     }
 
-
-
     //window.URL = URL || window.URL || window.webkitURL;
-
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-
+    navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
 
     var rec;
-
     var audio = document.querySelector('#audio');
 
-
-
     function startRecording() {
-
         if (navigator.getUserMedia) {
-
+            //onSuccess, onFail分别为getUserMedia成功或失败的回调函数
             navigator.getUserMedia({
                 audio: true
             }, onSuccess, onFail);
-
         } else {
-
             console.log('navigator.getUserMedia not present');
-
         }
-
     }
-
     startRecording();
-
-    //--------------------     
-
+    //--------------------
     $('#record').click(function() {
-
         rec.record();
-
         var dd = ws.send("start");
-
         $("#message").text("Click export to stop recording");
 
-
-
-        // export a wav every second, so we can send it using websockets
-
+        /*
+          setInterval函数，看到后面3000没？意思是周期为3000毫
+          秒，每过3000毫秒，执行一次前面的function，在此处就是
+          执行function内的rec.clear()和ws.send(blob),直到
+          clearInterval(intervalKey)函数出现则停止
+         */
+        
+//           setInterval函数中function里ws.send(blob)每过3秒就往服务器发送blob数据，
+//           在 recorderWorker.js中的encordWAV函数中，往裸语音数据数据加44位wav头数据，
+//        而数据的长度一直是本周期内所录语音数据的长度，这就会出现，最后在服务器保存了3秒以上的数据，
+//        但是读到的wav头中关于数据长度的值则只有3秒或3秒以内。并且，每次都往数据wav头也是不对的，
+//        44位wav并不是有效的语音数据。所以在recorderWorker.js中应修改encordWAV代码：
+        
         intervalKey = setInterval(function() {
-
             rec.exportWAV(function(blob) {
-
-
-
                 rec.clear();
-
                 ws.send(blob);
-
                 //audio.src = URL.createObjectURL(blob);
-
             });
-
         }, 3000);
-
     });
-
-
-
+//
+//这样就直接往服务器传输裸语音数据流，在record.html上点击发送按钮的事件函数里，添加
+//$('#export').click(function() {
+//               rec.stop();
+//               if (intervalKey==null) {
+//               $("#message").text("请先录音再发送！");
+//                   return
+//               };
+//                ws.send(sampleRate);
+//                    ws.send(channels);
+//                     console.log('sampleRate:'+sampleRate+',channels:'+channels);
+//               ws.send("stop");
+//                 rec.clear();
+//               clearInterval(intervalKey);
+//               $("#message").text("已发送到服务器！");
+//           });
     $('#export').click(function() {
-
         // first send the stop command
-
         rec.stop();
-
         ws.send("stop");
-
         clearInterval(intervalKey);
-
-
-
-        ws.send("analyze");
-
-        $("#message").text("");
-
+        $("#message").text("已发送到服务器！");
     });
 
-
-
-    var ws = new WebSocket("ws://127.0.0.1:8088/websocket/servlet/record");
-
+    var ws = new WebSocket('ws://' + window.location.host + '/record/join');
     ws.onopen = function() {
-
         console.log("Openened connection to websocket");
-
     };
 
     ws.onclose = function() {
-
         console.log("Close connection to websocket");
+    }
 
+    ws.onerror = function() {
+        console.log("Cannot connection to websocket");
     }
 
     ws.onmessage = function(e) {
-
         audio.src = URL.createObjectURL(e.data);
-
     }
 
 </script>
