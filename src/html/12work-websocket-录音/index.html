@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--
+                         http://blog.51cto.com/liuxp0827/1367846
+有用到语音识别的引擎, 用 C文件转的,参考:http://blog.51cto.com/liuxp0827/1374334
+
+-->                                               
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="keywords" content="PONPON,HTK,Go语言"/>
+    <meta name="description" content="基于Beego开发语音识别演示系统"/>
+    <meta name="generator" content="PONPON" />
+                                                   
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/docs.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/highlight.js/7.3/styles/github.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/img/Logoicon.jpg"> 
+                                                   
+    <link rel="stylesheet" href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css"/>
+    <link rel="alternate" type="application/rss+xml" href="/rss.xml"/>
+                                                   
+    <script type="text/javascript" src="js/recorder.js"> </script>
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"> </script>
+    <script type="text/javascript" src="js/recController.js"> </script>
+                                                   
+                                                   
+<title>WebHTK 演示系统</title>
+    </head>
+        <body>
+        <nav id="header">
+         <div class="container960 text-center" >
+             <h3 id="header-h" class="center" >闽南语 - 语音识别演示系统</h3>
+                                                                   
+                                                               
+                                                   
+                 <ul id="resultbox" class="center" style="padding-top:425px;font-size:20px;text-align: center;color:#FFC8B6;font-family:'微软雅黑'">
+                     <li >识别结果</li>
+                 </ul>
+                                                   
+                <form style="padding-top:20px;">
+                    <a id="img" href="javascript://"  >
+                        <img  src="/static/img/aa.png" style="width:85px;height:85px;" alt=""/>
+                    </a>
+                </form>
+                <div id="message" style="padding-top:10px;font-size:16px;color:#F5FFFA;text-align: center;font-family:'微软雅黑'">点击麦克风，开始录音!</div>
+                                                   
+           <script type="text/javascript">
+                                                   
+           var recording = false;
+                                                   
+           function test() {
+         if (!recording) {     
+             document.getElementById("img").innerHTML="<img  src='/static/img/a1.png' style='width:85px;height:85px;'' alt=''/>";
+            toRecord();
+             recording=true;
+        }else{
+                  document.getElementById("img").innerHTML="<img  src='/static/img/aa.png' style='width:85px;height:85px;'' alt=''/>";
+            toSend();
+            recording = false;
+        }
+            };
+                                                   
+            function toRecord(){
+            rec.record();
+             var dd = ws.send("start");
+             $("#message").text("再次点击，结束录音！");
+             intervalKey = setInterval(function() {
+                 rec.exportWAV(function(blob) {
+                     rec.clear();
+                     ws.send(blob);
+                                                   
+                 });
+             }, 300);
+            }
+                                                            
+                                                   
+            function toSend(){
+                rec.stop();
+                if (intervalKey == null) {
+                    $("#message").text("请先录音再发送！");
+                    return
+                };
+                ws.send(sampleRate);
+                ws.send(channels);
+                ws.send("stop");
+                rec.clear();
+                clearInterval(intervalKey);
+                intervalKey = null;
+                                                                   
+            }
+                                                            
+         </script>
+        </div>
+    </nav>
+                                                   
+            <audio class="hide" controls autoplay></audio> 
+        </body> 
+</html>
