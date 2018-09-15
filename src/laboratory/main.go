@@ -60,6 +60,13 @@ func handleConnection(c websocket.Connection) {
 		// Write message to all except this client with:
 		c.To(websocket.Broadcast).Emit("chat", msg) //发给所有客户端除了当前客户端
 	})
+	c.On("wzw", func(f64a interface {}) {
+		fmt.Printf("wzw接收到二进制数....")
+		//将 msg 由 string 转换成 []float
+		//f64a := []byte(msg)
+		fmt.Printf(": %v", f64a)
+        c.Emit("wzw",f64a)
+	})
 }
 
 //http://localhost:8080/
