@@ -71,15 +71,15 @@ function visualize() {
     //第一套线路,是由震荡器直接产生的原始数据
     analyser1.fftSize = fftsize1;
     let bufferLength1_w = analyser1.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
-    let dataArry1_w = new Uint8Array(bufferLength1_w);
-    let bufferLength1_f = analyser1.frequencyBinCount;
-    let dataArry1_f = new window.Uint8Array(bufferLength1_f);
+    let dataArry1_w = new Uint8Array(bufferLength1_w);          //<---放置震荡源的波形数据
+    let bufferLength1_f = analyser1.frequencyBinCount;  
+    let dataArry1_f = new window.Uint8Array(bufferLength1_f);   //<---放置震荡源的频谱数据
     //第二套线路,是由麦克疯收集的反馈数据
     analyser2.fftSize = fftsize2;
     let bufferLength2_w = analyser2.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
-    let dataArry2_w = new Uint8Array(bufferLength2_w);
+    let dataArry2_w = new Uint8Array(bufferLength2_w);          //<---放置声音源的波形数据
     let bufferLength2_f = analyser2.frequencyBinCount;
-    let dataArry2_f = new window.Uint8Array(bufferLength2_f);
+    let dataArry2_f = new window.Uint8Array(bufferLength2_f);   //<---放置声音源的频谱数据
 
 
     //--->正式开始作图,设置画布大小及清屏
@@ -116,13 +116,14 @@ function visualize() {
 
             let x = 0;
             let sliceWidth1_w = width1 * 1.0 / bufferLength1_w;
-            analyser1.getByteTimeDomainData(dataArry1_w); //注意!第一帧数据全部为 128. 取得的是当前的值!
+            analyser1.getByteTimeDomainData(dataArry1_w);       //<-------------取得震荡源波形数据
+            //注意!第一帧数据全部为 128. 取得的是当前的值!
             //console.log(`sliceWidth1_w = ${sliceWidth1_w}`);
             ////@@@针对频谱图的设置,变量以2结尾
             let xx = 0;
             let sliceWidth1_f = width1 * 1.0 / bufferLength1_f;
             //console.log(`sliceWidth1_f = ${sliceWidth1_f}`);
-            analyser1.getByteFrequencyData(dataArry1_f);
+            analyser1.getByteFrequencyData(dataArry1_f);        //<-------------取得震荡源频谱数据
 
             //--->画时域图
             canvasCtx1.beginPath();
@@ -173,11 +174,12 @@ function visualize() {
 
             let x = 0;
             let sliceWidth2_w = width2 * 1.0 / bufferLength2_w;
-            analyser2.getByteTimeDomainData(dataArry2_w); //注意!第一帧数据全部为 128. 取得的是当前的值!
+            analyser2.getByteTimeDomainData(dataArry2_w);       //<-------------取得声音源波形数据
+            //注意!第一帧数据全部为 128. 取得的是当前的值!
             ////@@@针对频谱图的设置,变量以2结尾
             let xx = 0;
             let sliceWidth2_f = width2 * 1.0 / bufferLength2_f;
-            analyser2.getByteFrequencyData(dataArry2_f);
+            analyser2.getByteFrequencyData(dataArry2_f);        //<-------------取得声音源频谱数据
 
             //--->画时域图
             canvasCtx2.beginPath();
