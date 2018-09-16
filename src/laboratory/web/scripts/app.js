@@ -29,6 +29,22 @@ navigator.mediaDevices.getUserMedia({
         audio: true
     })
     .then(function (mediaStream) {
+        //1, 产生的数据一方面直接发送到服务器
+        let mediaRecorder = new MediaRecorder(mediaStream); //<------去录音或回传到服务器端进行分析处理
+        mediaRecorder.start(20);    //20为触发 ondataavailable 事件的时间间隔
+        ////var chunks = [];
+        mediaRecorder.ondataavailable = function(e) {
+        ////    chunks.push(e.data);    //e.data 即为声音数据<----
+            socket.Emit("chat",e.data);
+        }
+        //mediaRecorder.stop();
+        ////var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+        ////chunks = [];
+        ////var audioURL = window.URL.createObjectURL(blob);
+        ////audio.src = audioURL;
+        ////audio.play();
+        
+        //2, 另一方面用来在本地分析画波形图和频谱图
         //这个mediaStream是getUserMedia()返回的值, 可以含有多个音轨及视频
         let source = audioCtx.createMediaStreamSource(mediaStream);
         //<--- source 中含后解码后的音频数据

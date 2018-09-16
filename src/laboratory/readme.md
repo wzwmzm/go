@@ -12,3 +12,21 @@ websockets.html
 	升级到 ws: 并对路由 /echo 发送请求 
 	socket.Emit("chat", input.value);          -->发送
 	socket.On("chat", function (msg) {...});   -->接收
+    
+app.js  音频数据的流转
+    navigator.mediaDevices.getUserMedia({
+            audio: true
+        })
+        .then(function (mediaStream) {
+            //1, 产生的数据一方面直接发送到服务器
+            let mediaRecorder = new MediaRecorder(mediaStream); //<------去录音或回传到服务器端进行分析处理
+            mediaRecorder.start(20);    //20为触发 ondataavailable 事件的时间间隔
+            mediaRecorder.ondataavailable = function(e) {
+                chunks.push(e.data);    //e.data 即为声音数据
+            }
+            //2, 另一方面用来在本地分析画波形图和频谱图
+            //这个mediaStream是getUserMedia()返回的值, 可以含有多个音轨及视频
+            let source = audioCtx.createMediaStreamSource(mediaStream);
+            //<--- source 中含后解码后的音频数据
+            source.connect(analyser2); //
+        })
