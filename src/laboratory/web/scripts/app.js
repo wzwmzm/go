@@ -47,7 +47,27 @@ navigator.mediaDevices.getUserMedia({
         //2, 另一方面用来在本地分析画波形图和频谱图
         //这个mediaStream是getUserMedia()返回的值, 可以含有多个音轨及视频
         let source = audioCtx.createMediaStreamSource(mediaStream);
-        //<--- source 中含后解码后的音频数据
+
+//	/////////上面 1 演示了一种音频数据分流的方法,这里演示另一种方法///////////////////////////////////
+//	// A, 建立 Node	
+//	var scriptNode = audioCtx.createScriptProcessor(4096, 1, 1);
+//	//(bufferSize, numberOfInputChannels, numberOfOutputChannels);
+//	//bufferSize, 音频数据的缓冲大小决定着回调时间间隔,可取值:256, 512, 1024, 2048, 4096, 8192, 16384
+//	//numberOfInputChannels, 输入声道数
+//	//numberOfOutputChannels, 输出声道数
+//	// B, Node 的事件处理,即功能所在
+//	scriptNode.onaudioprocess = function(e) {
+//	  // Loop through the output channels (in this case there is only one)
+//	  for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+//	    var inputData = e.inputBuffer.getChannelData(channel);
+//	  }
+//	}
+//	// C, Node装配连接 
+//	source.connect(scriptNode);
+//	scriptNode.connect(analyser2);
+//	/////////////////////////////////////////////////////////
+
+        //<--- source 中含有解码后的音频数据
         source.connect(analyser2); //
     })
     .catch(function (err) {
