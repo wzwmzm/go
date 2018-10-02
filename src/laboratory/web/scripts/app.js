@@ -1,11 +1,34 @@
 'use strict';
 /*eslint-env browser, es6*/
-/******global Float32Array Uint8Array:true*********/
+/******global Float32Array Uint8Array  Ws :true*********/
 /*eslint no-console: "off"*/
 
 let n_fresh = 0;
 let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-console.log(`audioCtx状态0: ${audioCtx.state}`);//!!!此处的audioCtx是未启动的,必须在客户端由客户动作启动!!!
+console.log(`audioCtx状态0: ${audioCtx.state}`); //!!!此处的audioCtx是未启动的,必须在客户端由客户动作启动!!!
+
+//--->websockets初始化
+var scheme = document.location.protocol == "https:" ? "wss" : "ws";
+var port = document.location.port ? (":" + document.location.port) : "";
+// see app.Get("/echo", ws.Handler()) on main.go
+var wsURL = scheme + "://" + document.location.hostname + port + "/echo";
+//这个websockets应用是指定到服务器的 ws://IP:port/echo 的
+var output1 = document.getElementById("output1");
+var output2 = document.getElementById("output2");
+var output3 = document.getElementById("output3");
+// Ws comes from the auto-served '/iris-ws.js'
+var socket = new Ws(wsURL) //一个 socket 是通过 协议 IP port 路由 四个部分组成的
+socket.OnConnect(function () {
+    output1.innerHTML += "Status: Connected\n";
+});
+socket.OnDisconnect(function () {
+    output1.innerHTML += "Status: Disconnected\n";
+});
+// read events from the server
+// 客户端收信处理
+socket.On("server", function (msg) {
+    output2.innerHTML = "接收消息: " + msg + "\n";
+});
 
 //---> create Oscillator node 振荡源
 let oscillator = audioCtx.createOscillator();
@@ -24,51 +47,57 @@ analyser2.minDecibels = analyser1.minDecibels; //为FFT数据缩放范围指定�
 analyser2.maxDecibels = analyser1.maxDecibels; //为FFT数据缩放范围指定一个最小值和最大值
 analyser2.smoothingTimeConstant = 0; //默认为0.8; 
 
+//---> 建立音频数据处理节点 scriptNode
+var scriptNode = audioCtx.createScriptProcessor(256, 1, 1);
+//(bufferSize, numberOfInputChannels, numberOfOutputChannels);
+//bufferSize, 音频数据的缓冲大小决定着回调时间间隔,可取值:256, 512, 1024, 2048, 4096, 8192, 16384
+//numberOfInputChannels, 输入声道数
+//numberOfOutputChannels, 输出声道数
+// B, Node 的事件处理,即功能所在
+let n_frame = 0; //给发送的消息帧计数,按一帧30个数,声音采样率4096,可以计数2百多万年
+let n_b_frame = 0; //给消息帧的数组计数
+let frame = new Array();
+scriptNode.onaudioprocess = function (e) {
+    let inputBuffer = e.inputBuffer;
+    let outputBuffer = e.outputBuffer;
+    // Loop through the output channels (in this case there is only one) 
+    for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+        let inputData = inputBuffer.getChannelData(channel);
+        let outputData = outputBuffer.getChannelData(channel);
+
+        //将数据从输入复制到输出,否则下一个 Node 将得不到数据
+        for (var sample = 0; sample < inputBuffer.length; sample++) {
+            // make output equal to the same as the input
+            outputData[sample] = inputData[sample];
+            // add noise to each output sample
+            //outputData[sample] += ((Math.random() * 2) - 1) * 0.2; 
+            frame[n_b_frame] = inputData[sample];
+            n_b_frame += 1;
+            //如果满一帧了就发送. 注意!!! 发送的数据长度不要超过约1000个字节,所以这里选择数组长度为30
+            if (n_b_frame>=30){         //<------一次发送30个数
+                //console.log(JSON.stringify(inputData));//!!!inputData解析后是带下标的,frame是不带下标的
+                socket.Emit("server",{count: n_frame, data:frame});
+                n_b_frame = 0;
+                n_frame += 1;
+            }
+        }
+
+    }
+}
+
+
 //---> 话筒音源
 navigator.mediaDevices.getUserMedia({
         audio: true
     })
     .then(function (mediaStream) {
-        //1, 产生的数据一方面直接发送到服务器
-        let mediaRecorder = new MediaRecorder(mediaStream); //<------去录音或回传到服务器端进行分析处理
-        mediaRecorder.start(20);    //20为触发 ondataavailable 事件的时间间隔
-        ////var chunks = [];
-        mediaRecorder.ondataavailable = function(e) {
-        ////    chunks.push(e.data);    //e.data 即为声音数据<----
-            socket.Emit("chat",e.data);
-        }
-        //mediaRecorder.stop();
-        ////var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-        ////chunks = [];
-        ////var audioURL = window.URL.createObjectURL(blob);
-        ////audio.src = audioURL;
-        ////audio.play();
-        
         //2, 另一方面用来在本地分析画波形图和频谱图
         //这个mediaStream是getUserMedia()返回的值, 可以含有多个音轨及视频
         let source = audioCtx.createMediaStreamSource(mediaStream);
-
-//	/////////上面 1 演示了一种音频数据分流的方法,这里演示另一种方法///////////////////////////////////
-//	// A, 建立 Node	
-//	var scriptNode = audioCtx.createScriptProcessor(4096, 1, 1);
-//	//(bufferSize, numberOfInputChannels, numberOfOutputChannels);
-//	//bufferSize, 音频数据的缓冲大小决定着回调时间间隔,可取值:256, 512, 1024, 2048, 4096, 8192, 16384
-//	//numberOfInputChannels, 输入声道数
-//	//numberOfOutputChannels, 输出声道数
-//	// B, Node 的事件处理,即功能所在
-//	scriptNode.onaudioprocess = function(e) {
-//	  // Loop through the output channels (in this case there is only one)
-//	  for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
-//	    var inputData = e.inputBuffer.getChannelData(channel);
-//	  }
-//	}
-//	// C, Node装配连接 
-//	source.connect(scriptNode);
-//	scriptNode.connect(analyser2);
-//	/////////////////////////////////////////////////////////
-
-        //<--- source 中含有解码后的音频数据
-        source.connect(analyser2); //
+        // C, Node装配连接, source 中含有解码后的音频数据
+        source.connect(scriptNode);
+        scriptNode.connect(analyser2);
+        //analyser2.connect(audioCtx.destination);
     })
     .catch(function (err) {
         console.log('The following gUM error occured: ' + err);
@@ -107,15 +136,15 @@ function visualize() {
     //第一套线路,是由震荡器直接产生的原始数据
     analyser1.fftSize = fftsize1;
     let bufferLength1_w = analyser1.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
-    let dataArry1_w = new Uint8Array(bufferLength1_w);          //<---放置震荡源的波形数据
-    let bufferLength1_f = analyser1.frequencyBinCount;  
-    let dataArry1_f = new window.Uint8Array(bufferLength1_f);   //<---放置震荡源的频谱数据
+    let dataArry1_w = new Uint8Array(bufferLength1_w); //<---放置震荡源的波形数据
+    let bufferLength1_f = analyser1.frequencyBinCount;
+    let dataArry1_f = new window.Uint8Array(bufferLength1_f); //<---放置震荡源的频谱数据
     //第二套线路,是由麦克疯收集的反馈数据
     analyser2.fftSize = fftsize2;
     let bufferLength2_w = analyser2.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
-    let dataArry2_w = new Uint8Array(bufferLength2_w);          //<---放置声音源的波形数据
+    let dataArry2_w = new Uint8Array(bufferLength2_w); //<---放置声音源的波形数据
     let bufferLength2_f = analyser2.frequencyBinCount;
-    let dataArry2_f = new window.Uint8Array(bufferLength2_f);   //<---放置声音源的频谱数据
+    let dataArry2_f = new window.Uint8Array(bufferLength2_f); //<---放置声音源的频谱数据
 
 
     //--->正式开始作图,设置画布大小及清屏
@@ -152,14 +181,14 @@ function visualize() {
 
             let x = 0;
             let sliceWidth1_w = width1 * 1.0 / bufferLength1_w;
-            analyser1.getByteTimeDomainData(dataArry1_w);       //<-------------取得震荡源波形数据
+            analyser1.getByteTimeDomainData(dataArry1_w); //<-------------取得震荡源波形数据
             //注意!第一帧数据全部为 128. 取得的是当前的值!
             //console.log(`sliceWidth1_w = ${sliceWidth1_w}`);
             ////@@@针对频谱图的设置,变量以2结尾
             let xx = 0;
             let sliceWidth1_f = width1 * 1.0 / bufferLength1_f;
             //console.log(`sliceWidth1_f = ${sliceWidth1_f}`);
-            analyser1.getByteFrequencyData(dataArry1_f);        //<-------------取得震荡源频谱数据
+            analyser1.getByteFrequencyData(dataArry1_f); //<-------------取得震荡源频谱数据
 
             //--->画时域图
             canvasCtx1.beginPath();
@@ -210,12 +239,12 @@ function visualize() {
 
             let x = 0;
             let sliceWidth2_w = width2 * 1.0 / bufferLength2_w;
-            analyser2.getByteTimeDomainData(dataArry2_w);       //<-------------取得声音源波形数据
+            analyser2.getByteTimeDomainData(dataArry2_w); //<-------------取得声音源波形数据
             //注意!第一帧数据全部为 128. 取得的是当前的值!
             ////@@@针对频谱图的设置,变量以2结尾
             let xx = 0;
             let sliceWidth2_f = width2 * 1.0 / bufferLength2_f;
-            analyser2.getByteFrequencyData(dataArry2_f);        //<-------------取得声音源频谱数据
+            analyser2.getByteFrequencyData(dataArry2_f); //<-------------取得声音源频谱数据
 
             //--->画时域图
             canvasCtx2.beginPath();
@@ -276,16 +305,16 @@ button1.onclick = () => {
 
 //---> button2: 频率增加键
 let button2 = document.querySelector('#button2');
-button2.onclick = () =>{
-    fr.value = fr.value*1 + 2;//每次增加 1HZ
+button2.onclick = () => {
+    fr.value = fr.value * 1 + 2; //每次增加 1HZ
     if (fr.value >= 22000) fr.value = 22000;
     fr.onchange();
 }
 
 //---> button3: 频率减少键
 let button3 = document.querySelector('#button3');
-button3.onclick = () =>{
-    fr.value = fr.value * 1 - 2;//每次减少 1HZ
+button3.onclick = () => {
+    fr.value = fr.value * 1 - 2; //每次减少 1HZ
     if (fr.value <= 0) fr.value = 0;
     fr.onchange();
 }
@@ -315,3 +344,46 @@ window.onload = function () {
     }, 1000);
 
 };
+
+
+/////////////////下面这段程序是用来测试传输的数据的. 
+////websockets 只能传输 number string boolean json 格式的数据  
+//let isNumber = function (obj) {
+//    return !isNaN(obj - 0) && obj !== null && obj !== "" && obj !== false;
+//};
+//let isString = function (obj) {
+//    return Object.prototype.toString.call(obj) == "[object String]";
+//};
+//let isBoolean = function (obj) {
+//    return typeof obj === 'boolean' ||
+//        (typeof obj === 'object' && typeof obj.valueOf() === 'boolean');
+//};
+//let isJSON = function (obj) {
+//    return typeof obj === 'object';
+//};
+//
+//function testEmitdata(data) {
+//    let m = "";
+//    let t = 0;
+//    if (isNumber(data)) {
+//        t = websocketIntMessageType;
+//        m = data.toString();
+//        console.log("isNumber(data) = true")
+//    } else if (isBoolean(data)) {
+//        t = websocketBoolMessageType;
+//        m = data.toString();
+//        console.log("isBoolean(data) = true")
+//    } else if (isString(data)) {
+//        t = websocketStringMessageType;
+//        m = data.toString();
+//        console.log("isString(data) = true")
+//    } else if (isJSON(data)) {
+//        //propably json-object
+//        t = websocketJSONMessageType;
+//        m = JSON.stringify(data);
+//        console.log("isJSON(data) = true")
+//    } else if (data !== null && typeof (data) !== "undefined") {
+//        // if it has a second parameter but it's not a type we know, then fire this:
+//        console.log("unsupported type of input argument passed, try to not include this argument to the 'Emit'");
+//    }
+//}

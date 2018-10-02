@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/websocket"
@@ -36,6 +37,7 @@ func setupWebsocket(app *iris.Application) {
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	})
+	fmt.Println("websockets读写缓冲区各设置为1024 byte")
 	ws.OnConnection(handleConnection) //这里只是设置,还没有开始响应
 
 	// register the server on an endpoint.
@@ -60,12 +62,30 @@ func handleConnection(c websocket.Connection) {
 		// Write message to all except this client with:
 		c.To(websocket.Broadcast).Emit("chat", msg) //发给所有客户端除了当前客户端
 	})
-	c.On("wzw", func(f64a interface {}) {
+	c.On("wzw", func(f64a interface{}) {
 		fmt.Printf("wzw接收到二进制数....")
 		//将 msg 由 string 转换成 []float
 		//f64a := []byte(msg)
 		fmt.Printf(": %v", f64a)
-        c.Emit("wzw",f64a)
+		c.Emit("wzw", f64a)
+	})
+	c.On("server", func(msg interface{}) {
+		fmt.Println("\nserver接收到二进制数....")
+		//将 msg 由 string 转换成 []float
+		//f64a := []byte(msg)
+
+		//fmt.Printf(": %v \n", msg)
+		//fmt.Printf("  data: %v ", msg.(map[string]interface{})["data"].(map[string]interface{})["a"])
+		//fmt.Printf("  TypeOf: %v ", reflect.TypeOf(msg))
+		count := msg.(map[string]interface{})["count"]               //float64
+		data := msg.(map[string]interface{})["data"].([]interface{}) // []float64
+
+		fmt.Printf("count : %v\n", count)
+		fmt.Printf("data : %v   %v\n", data[0], data[9])
+		fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
+		fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
+
+		c.Emit("server", data)
 	})
 }
 
