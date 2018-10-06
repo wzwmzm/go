@@ -151,5 +151,5 @@ func main() {
 	//http://localhost:8080/index.html      (效果同上)
 	//http://localhost:8080/hello.html
 
-	app.Run(iris.Addr(":8080"))
+	app.Run(iris.Addr(":80"))
 }

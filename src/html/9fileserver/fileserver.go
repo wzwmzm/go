@@ -2,27 +2,27 @@ package main
 
 import (
 	"fmt"
-	"html/9fileserver/logf"
+//	"html/9fileserver/logf"
 	"net/http"
 	//	"net/url"
 	"os"
 	//	"sort"
 	//	"strings"
-	_ "unsafe"
+//	_ "unsafe"
 
-	"github.com/bouk/monkey"
+	//"github.com/bouk/monkey"
 )
 
 //交叉编译命令:目标windows32位:隐藏终端窗口: env GOOS=windows GOARCH=386 go build  -ldflags -H=windowsgui fileserver.go
 
 func main() {
 
-	monkey.Patch(logf.DDD, func() int {
-		fmt.Println("monkey4")
-		return 4
-	})
-
-	logf.DDD()
+//	monkey.Patch(logf.DDD, func() int {
+//		fmt.Println("monkey4")
+//		return 4
+//	})
+//
+//	logf.DDD()
 
 	//	monkey.Patch(logf.DirList, func(w http.ResponseWriter, r *http.Request, f http.File) {
 
