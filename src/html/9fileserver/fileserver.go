@@ -66,8 +66,9 @@ func main() {
 	http.Handle("/d/", http.StripPrefix("/d/", http.FileServer(http.Dir("D:\\"))))
 	http.Handle("/e/", http.StripPrefix("/e/", http.FileServer(http.Dir("E:\\"))))
 	http.Handle("/f/", http.StripPrefix("/f/", http.FileServer(http.Dir("F:\\"))))
-
-	err := http.ListenAndServe(":8080", nil)
+	fmt.Println("http://gofans.ga:443...")
+	fmt.Println("http://localhost:443...")
+	err := http.ListenAndServe(":443", nil)
 	if err != nil {
 		fmt.Println(err)
 	}
