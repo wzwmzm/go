@@ -2,62 +2,16 @@ package main
 
 import (
 	"fmt"
-//	"html/9fileserver/logf"
 	"net/http"
-	//	"net/url"
 	"os"
-	//	"sort"
-	//	"strings"
-//	_ "unsafe"
 
-	//"github.com/bouk/monkey"
 )
 
 //交叉编译命令:目标windows32位:隐藏终端窗口: env GOOS=windows GOARCH=386 go build  -ldflags -H=windowsgui fileserver.go
 
 func main() {
 
-//	monkey.Patch(logf.DDD, func() int {
-//		fmt.Println("monkey4")
-//		return 4
-//	})
-//
-//	logf.DDD()
 
-	//	monkey.Patch(logf.DirList, func(w http.ResponseWriter, r *http.Request, f http.File) {
-
-	//		dirs, err := f.Readdir(-1)
-	//		if err != nil {
-	//			logf.Logf(r, "http: error reading directory: %v", err)
-	//			http.Error(w, "Error reading directory", 500)
-	//			return
-	//		}
-	//		sort.Slice(dirs, func(i, j int) bool { return dirs[i].Name() < dirs[j].Name() })
-
-	//		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	//		fmt.Fprintf(w, "<pre>\n")
-	//		for _, d := range dirs {
-	//			name := d.Name()
-	//			if d.IsDir() {
-	//				name += "/"
-	//			}
-	//			// name may contain '?' or '#', which must be escaped to remain
-	//			// part of the URL path, and not indicate the start of a query
-	//			// string or fragment.
-	//			url := url.URL{Path: name}
-	//			var htmlReplacer = strings.NewReplacer(
-	//				"&", "&amp;",
-	//				"<", "&lt;",
-	//				">", "&gt;",
-	//				// "&#34;" is shorter than "&quot;".
-	//				`"`, "&#34;",
-	//				// "&#39;" is shorter than "&apos;" and apos was not in HTML until HTML5.
-	//				"'", "&#39;",
-	//			)
-	//			fmt.Fprintf(w, "<a href=\"%s\">%s</a>\n", url.String(), htmlReplacer.Replace(name))
-	//		}
-	//		fmt.Fprintf(w, "</pre>\n")
-	//	})
 
 	http.HandleFunc("/", sayhello)
 	http.HandleFunc("/quit", quit)
