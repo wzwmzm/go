@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-
 )
 
 //交叉编译命令:目标windows32位:隐藏终端窗口: env GOOS=windows GOARCH=386 go build  -ldflags -H=windowsgui fileserver.go
 
 func main() {
-
-
 
 	http.HandleFunc("/", sayhello)
 	http.HandleFunc("/quit", quit)
@@ -20,9 +17,9 @@ func main() {
 	http.Handle("/d/", http.StripPrefix("/d/", http.FileServer(http.Dir("D:\\"))))
 	http.Handle("/e/", http.StripPrefix("/e/", http.FileServer(http.Dir("E:\\"))))
 	http.Handle("/f/", http.StripPrefix("/f/", http.FileServer(http.Dir("F:\\"))))
-	fmt.Println("http://gofans.ga:443...")
-	fmt.Println("http://localhost:443...")
-	err := http.ListenAndServe(":443", nil)
+	fmt.Println("http://gofans.ga:8888...")
+	fmt.Println("http://localhost:8888...")
+	err := http.ListenAndServe(":8888", nil)
 	if err != nil {
 		fmt.Println(err)
 	}
