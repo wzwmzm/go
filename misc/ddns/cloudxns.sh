@@ -60,3 +60,10 @@ if [ "$(printf "%s" "$RESULT"|grep -c -o "message\":\"success\"")" = 1 ];then
 else
     echo "$(date) -- Update failed"
 fi
+
+
+
+date >> /home/wzw/go/misc/ddns/tmp.log
+$IP  >> date >> /home/wzw/go/misc/ddns/tmp.log
+
+
