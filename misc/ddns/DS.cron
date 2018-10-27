@@ -1,0 +1,2 @@
+0,10,20,30,40,50 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns1.conf
+
