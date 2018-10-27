@@ -2,3 +2,4 @@ pkg/
 bin/
 deploy/
 linux/
+misc/ddns/tmp.log
