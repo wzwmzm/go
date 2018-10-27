@@ -1,5 +1,5 @@
 #!/bin/sh
-
+ 
 CONFIG=$1
 
 if [ ! -f "$CONFIG" ];then
