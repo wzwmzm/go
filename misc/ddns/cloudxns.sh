@@ -63,7 +63,4 @@ fi
 
 
 
-date >> /home/wzw/go/misc/ddns/tmp.log
-$IP  >> date >> /home/wzw/go/misc/ddns/tmp.log
-
 

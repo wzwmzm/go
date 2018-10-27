@@ -2,8 +2,8 @@
 #    sudo service crond start    //启动服务
 #    crontab DS.cron             //装载定时任务
 #分  时  日  月  周几    DDNS  动态域名IP更新
-0,10,20,30,40,50 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns1.conf
-1,11,21,31,41,51 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns2.conf
+0,10,20,30,40,50 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns1.conf >> /home/wzw/go/misc/ddns/tmp.log
+1,11,21,31,41,51 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns2.conf >> /home/wzw/go/misc/ddns/tmp.log
 
 1 1 1 * * echo > /home/wzw/go/misc/ddns/tmp.log
 
