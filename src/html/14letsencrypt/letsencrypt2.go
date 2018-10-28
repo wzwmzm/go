@@ -24,5 +24,5 @@ func main() {
 		},
 	}
 	go http.ListenAndServe(":80", certManager.HTTPHandler(nil))
-	log.Fatal(server.ListenAndServeTLS("", "")) //Key and cert are coming from Let's Encrypt
+	log.Fatal(server.ListenAndServeTLS("gofans.ga.cer", "gafans.ga.key")) //Key and cert are coming from Let's Encrypt
 }
