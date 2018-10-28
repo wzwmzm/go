@@ -8,6 +8,7 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
+//sudo setcap CAP_NET_BIND_SERVICE=+eip ./letsencrypt2
 func main() {
 	certManager := autocert.Manager{
 		Prompt:     autocert.AcceptTOS,

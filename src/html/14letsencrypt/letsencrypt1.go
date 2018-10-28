@@ -27,6 +27,6 @@ func main() {
 	// NOTE: This will not work on domains like this,
 	// use real whitelisted domain(or domains split by whitespaces)
 	// and a non-public e-mail instead.
-	fmt.Println("http://gofans.ga...  自动生成的证书在 letscache 目录")
+	fmt.Println("http://gofans.ga...  将要自动生成的证书在 letscache 目录")
 	app.Run(iris.AutoTLS("gofans.ga:443", "gofans.ga www.gofans.ga", "wzwmzm41@gmail.com"))
 }
