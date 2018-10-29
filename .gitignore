@@ -3,3 +3,4 @@ bin/
 deploy/
 linux/
 misc/ddns/tmp.log
+src/golang.org/x/crypto/.
