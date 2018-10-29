@@ -26,6 +26,6 @@ func main() {
 	go host.NewProxy("gofans.ga:80", target).ListenAndServe() ////
 
 	// start the server (HTTPS) on port 443, this is a blocking func
-	app.Run(iris.TLS("gofans.ga:443", "mycert.cer", "mykey.key")) ////
+	app.Run(iris.TLS("192.168.2.2:443", "mycert.cer", "mykey.key")) ////
 
 }
