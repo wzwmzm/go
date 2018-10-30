@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/url"
 
 	"github.com/kataras/iris"
@@ -11,9 +12,11 @@ import (
 //     sudo setcap CAP_NET_BIND_SERVICE=+eip ./main
 func main() {
 	app := iris.New()
-
+        n := 0
 	app.Get("/", func(ctx iris.Context) {
-		ctx.Writef("Hello from the SECURE server")
+		n = n + 1
+		ctx.Writef("欢迎访问 https://gafans.ga  : %d\n", n)
+		fmt.Printf("欢迎访问 https://gafans.ga  : %d\n", n)
 	})
 
 	app.Get("/mypath", func(ctx iris.Context) {
