@@ -17,16 +17,22 @@ fi
 
 IP=""
 RETRY="0"
-while [ $RETRY -lt 5 ]; do
+while [ $RETRY -lt 90 ]; do
     IP=$(curl -s ip.xdty.org)
     RETRY=$((RETRY+1))
     if [ -z "$IP" ];then
-        sleep 3
+        sleep 6
     else
         break
     fi
 done
 
+if [ -z "$IP" ];then
+	echo "无法获得外网地址."
+	exit 1
+fi
+
+echo "当前_IP = 上次_IP  :   $IP  =   $LAST_IP"
 if [ "$IP" = "$LAST_IP" ];then
     echo "$(date) -- Already updated."
     exit 0
