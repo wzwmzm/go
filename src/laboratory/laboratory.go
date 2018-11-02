@@ -7,6 +7,7 @@ import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/websocket"
 )
+
 //sudo setcap CAP_NET_BIND_SERVICE=+eip ./arm-laboratory
 func main() {
 	app := iris.New()
@@ -16,6 +17,8 @@ func main() {
 		ctx.ServeFile("./web/index.html", false) // true for gzip.
 	})
 
+	//websockets.html 是测试页而非主线.
+	//主线是 INDEX.HTML->APP.JS
 	app.Get("/ws", func(ctx iris.Context) {
 		ctx.ServeFile("./web/websockets.html", false) // second parameter: enable gzip?
 	})
@@ -54,6 +57,10 @@ func setupWebsocket(app *iris.Application) {
 	app.Any("/iris-ws.js", websocket.ClientHandler()) //返回iris-ws.js文件给浏览器
 }
 
+//https://gafans.ga/ws-->websockets.html是测试页
+//响应和处理两个事件: chat    wzw
+//https://gafans.ga(app.js)-->是主线程
+//响应和处理事件:    server
 func handleConnection(c websocket.Connection) {
 	// Read events from browser
 	c.On("chat", func(msg string) {
