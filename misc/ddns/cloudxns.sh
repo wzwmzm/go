@@ -28,7 +28,9 @@ while [ $RETRY -lt 90 ]; do
 done
 
 if [ -z "$IP" ];then
-	echo "无法获得外网地址."
+	echo "$(date) -- 无法获得外网地址."
+	echo ""
+	echo "$(top -n 1)"
 	exit 1
 fi
 
