@@ -1,5 +1,0 @@
-# HTTPS证书自动更新
-35 14 * * * "/home/wzw/.acme.sh"/acme.sh --cron --home "/home/wzw/.acme.sh" > /dev/null
-# 域名自动更新
-36 14 * * * node /home/wzw/project/go/misc/freenom-renewer/app.js > /dev/null
-# DDNS 更新在手机上
