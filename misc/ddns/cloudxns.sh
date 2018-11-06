@@ -34,9 +34,8 @@ if [ -z "$IP" ];then
 	exit 1
 fi
 
-echo "当前_IP = 上次_IP  :   $IP  =   $LAST_IP"
 if [ "$IP" = "$LAST_IP" ];then
-    echo "$(date) -- Already updated."
+    echo "当前_IP = 上次_IP : $IP = $LAST_IP   $(date) -- Already updated."
     exit 0
 fi
 
