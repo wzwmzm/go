@@ -7,13 +7,13 @@
 
 
 #      DDNS  动态域名IP更新
-0,10,20,30,40,50 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns1.conf >> /home/wzw/go/log/my-ddns.log
-1,11,21,31,41,51 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns2.conf >> /home/wzw/go/log/my-ddns.log
+0-59/3 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns1.conf >> /home/wzw/go/log/my-ddns.log
+1-59/3 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns2.conf >> /home/wzw/go/log/my-ddns.log
 1 1 1 * * echo > /home/wzw/go/log/my-ddns.log
 
 #     SSL证书: 自动更新程序 ,自动延期证书.
 #     证书如果自动延期失败,则必须手动更新
-33 0 * * * "/home/wzw/.acme.sh"/acme.sh --cron --home "/home/wzw/.acme.sh" >> /home/wzw/go/log/my-ssl.log
+33 0 5-8/1 * * "/home/wzw/.acme.sh"/acme.sh --cron --home "/home/wzw/.acme.sh" >> /home/wzw/go/log/my-ssl.log
 1 1 10 */12 *  echo > /var/log/my-ssl.log
 # SSL证书手动更新方法:         https://github.com/Neilpang/acme.sh/wiki/dns-manual-mode  https://github.com/Neilpang/acme.sh/
 #"/home/wzw/.acme.sh"/acme.sh --issue  --dns dns_cx -d gofans.ga -d www.gofans.ga >> /var/log/my-ssl.log
