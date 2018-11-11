@@ -17,7 +17,7 @@ fi
 
 IP=""
 RETRY="0"
-while [ $RETRY -lt 90 ]; do
+while [ $RETRY -lt 3 ]; do
     IP=$(curl -s ip.xdty.org)
     RETRY=$((RETRY+1))
     if [ -z "$IP" ];then
@@ -29,8 +29,12 @@ done
 
 if [ -z "$IP" ];then
 	echo "$(date) -- 无法获得外网地址."
-	echo ""
-	echo "$(top -n 1)"
+	echo "ping -c2 gofans.ga..............................."
+	echo "$(ping -c2 gofans.ga)"
+	echo "top -n 1 -b  ...................................."
+	echo "$(top -n 1 -b )"
+	echo "ping -c2 online.sh.cn............................"
+        echo "$(ping -c2 online.sh.cn)"
 	exit 1
 fi
 
