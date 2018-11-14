@@ -28,23 +28,25 @@ while [ $RETRY -lt 3 ]; do
 done
 
 if [ -z "$IP" ];then
-	echo "$(date) -- 无法获得外网地址."
-	echo "重启WIFI连接....................sudo ip link set wlan0 down................."
+	echo "$(date) --- 无法获得外网地址.***  前次地址: $LAST_IP   ***"
+	echo "重启WIFI连接....sudo ip link set wlan0 down...."
 	sudo ip link set wlan0 down
-	sleep 10
-	echo "ping -c2 gofans.ga..............................."
-	ping -c2 gofans.ga
+        sleep 10
+	echo "$(date) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
+	echo ""
+#	echo "ping -c2 gofans.ga..............................."
+#	ping -c2 gofans.ga
 ##	echo "top -n 1 -b  ...................................."
 ##	top -n 1 -b 
-	echo "ping -c2 online.sh.cn............................"
-	ping -c2 online.sh.cn
-	echo "ping -c2 192.168.2.1............................."
-        ping -c2 192.168.2.1
+#	echo "ping -c2 online.sh.cn............................"
+#	ping -c2 online.sh.cn
+#	echo "ping -c2 192.168.2.1............................."
+#       ping -c2 192.168.2.1
 	exit 1
 fi
 
 if [ "$IP" = "$LAST_IP" ];then
-    echo "当前_IP = 上次_IP : $IP = $LAST_IP   $(date) -- Already updated."
+#    echo "当前_IP = 上次_IP : $IP = $LAST_IP   $(date) -- Already updated."
     exit 0
 fi
 
