@@ -50,6 +50,8 @@ if [ "$IP" = "$LAST_IP" ];then
     exit 0
 fi
 
+echo "当前_IP = 上次_IP : $IP = $LAST_IP   $(date) -- 需要更新域名IP."
+
 URL_D="https://www.cloudxns.net/api2/domain"
 DATE=$(date)
 HMAC_D=$(printf "%s" "$API_KEY$URL_D$DATE$SECRET_KEY"|md5sum|cut -d" " -f1)

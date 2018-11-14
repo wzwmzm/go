@@ -41,8 +41,14 @@ func main() {
 	// app.Done(func(ctx iris.Context) {]})
 
 	// POST: scheme://mysubdomain.$domain.com/decode
-	app.Subdomain("mysubdomain.").Post("/decode", func(ctx iris.Context) {})
+	//curl http://mysubdomain.localhost:8080/decode -X POST
+	app.Subdomain("mysubdomain.").Post("/decode", func(ctx iris.Context) {
+		//ctx.Application().Logger().Infof("Begin request for path: %s", ctx.Path())
+		ctx.Application().Logger().Infof("Path: %s | IP: %s", ctx.Path(), ctx.RemoteAddr())
+		ctx.Writef("这是我的子域")
+	})
 	// Method POST: http://localhost:8080/decode
+	//curl http://localhost:8080/decode -X POST
 	app.Post("/decode", func(ctx iris.Context) {
 		var user User
 		ctx.ReadJSON(&user)
@@ -74,7 +80,7 @@ func main() {
 	}
 
 	// Listen for incoming HTTP/1.x & HTTP/2 clients on localhost port 8080.
-	app.Run(iris.Addr(":8080"), iris.WithCharset("UTF-8"), iris.WithoutVersionChecker)
+	app.Run(iris.Addr(":8080"), iris.WithCharset("UTF-8"))
 }
 
 func logThisMiddleware(ctx iris.Context) {
