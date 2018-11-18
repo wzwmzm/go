@@ -7,8 +7,8 @@
 
 
 #      DDNS  动态域名IP更新
-0-59/3 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns1.conf >> /home/wzw/go/log/my-ddns.log
-1-59/3 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns2.conf >> /home/wzw/go/log/my-ddns.log
+*/5 * * * * /home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns1.conf >> /home/wzw/go/log/my-ddns.log;/home/wzw/go/misc/ddns/cloudxns.sh  /home/wzw/go/misc/ddns/cloudxns2.conf >> /home/wzw/go/log/my-ddns.log
+
 1 1 1 * * echo > /home/wzw/go/log/my-ddns.log
 
 #     SSL证书: 自动更新程序 ,自动延期证书.

@@ -1,5 +1,5 @@
 #!/bin/sh
- 
+echo "==========================================================begin====$(date)" 
 CONFIG=$1
 
 if [ ! -f "$CONFIG" ];then
@@ -21,13 +21,35 @@ while [ $RETRY -lt 3 ]; do
     IP=$(curl -s ip.xdty.org)
     RETRY=$((RETRY+1))
     if [ -z "$IP" ];then
-        sleep 6
+        echo "RETRY $RETRY TIME..."
+	sleep 6
     else
         break
     fi
 done
 
+#IP地址合法性检测
+echo "$IP"|grep "^[0-9]\{1,3\}\.\([0-9]\{1,3\}\.\)\{2\}[0-9]\{1,3\}$" > /dev/null;
+if [ $? -ne 0 ]
+then
+	echo "进入IP地址合法性检测第一段++++++++++++++++++++++++++++++++++++++++++++"
+	echo "$(date) --- IP地址非法" 
+        echo "前次地址: $LAST_IP   "
+	echo "本次地址: $IP"
+#	ip addr
+        echo "重启WIFI连接....sudo ip link set wlan0 down...."
+        sudo ip link set wlan0 down
+        sleep 10
+        echo "$(date) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
+        echo ""
+	echo ""
+
+        return 1
+fi
+
+#因为有了上面一段代码,所以本段代码可以省略. 但因为不影响结果,所以本段代码暂且保留.
 if [ -z "$IP" ];then
+	echo "进入IP地址合法性检测第二段++++++++++++++++++++++++++++++++++++++++++++"
 	echo "$(date) --- 无法获得外网地址.***  前次地址: $LAST_IP   ***"
 	echo "重启WIFI连接....sudo ip link set wlan0 down...."
 	sudo ip link set wlan0 down
@@ -46,7 +68,7 @@ if [ -z "$IP" ];then
 fi
 
 if [ "$IP" = "$LAST_IP" ];then
-#    echo "当前_IP = 上次_IP : $IP = $LAST_IP   $(date) -- Already updated."
+    echo "当前_IP = 上次_IP : $IP = $LAST_IP   $(date) -- Already updated."
     exit 0
 fi
 
