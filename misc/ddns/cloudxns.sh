@@ -39,7 +39,7 @@ then
 	echo "$IDSTR $(date +%H:%M:%S)  --- IP地址非法" 
         echo "前次地址: $LAST_IP   "
 	echo "本次地址: $IP"
-	ip addr
+#	ip addr
         echo "重启WIFI连接....sudo ip link set wlan0 down...."
         sudo ip link set wlan0 down
         sleep 10
