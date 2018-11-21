@@ -5,8 +5,8 @@ var moment = require('moment');
 request.get('https://api.freenom.com/v2/domain/list', {
 	qs: {
 		results_per_page: 1000,
-		email: process.env.FREENOM_EMAIL,
-		password: process.env.FREENOM_PASSWORD
+		email: 'wzwmzm41@gmail.com',
+		password: 'wzwmzm329232'
 	},
 	json: true
 }, function(err, res, domains){
