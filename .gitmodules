@@ -46,10 +46,6 @@
         url = https://github.com/kataras/golog.git
         path = src/github.com/kataras/golog
         active = true
-[submodule "httpexpect"]
-        url = https://github.com/iris-contrib/httpexpect.git
-        path = src/github.com/iris-contrib/httpexpect
-        active = true
 [submodule "pio"]
         url = https://github.com/kataras/pio.git
         path = src/github.com/kataras/pio
