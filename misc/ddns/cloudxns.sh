@@ -75,7 +75,7 @@ dnsupdate(){
 	echo "DOMAIN ID: $DOMAIN_ID"
 	URL_R="https://www.cloudxns.net/api2/record/$DOMAIN_ID?host_id=0&row_num=500"
 	HMAC_R=$(printf "%s" "$API_KEY$URL_R$DATE$SECRET_KEY"|md5sum|cut -d" " -f1)
-	RECORD_ID=$(curl -k -s "$URL_R" -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $DATE" -H "API-HMAC: $HMAC_R"|grep -o "record_id\":\"[0-9]*\",\"host_id\":\"[0-9]*\",\"host\":\"$HOST\""|grep -o "record_id\":\"[0-9]*"|grep -o "[0-9]*")
+	RECORD_ID=$(curl -k -s "$URL_R" -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $DATE" -H "API-HMAC: $HMAC_R"|grep -o "record_id\":\"[0-9]*\",\"host_id\":\"[0-9]*\",\"host\":\"$HOST\""|grep -o "record_id\":\"[0-9]*"|grep -o "[0-9]*"|head -1)
 
 	echo "RECORD ID: $RECORD_ID"
 	URL_U="https://www.cloudxns.net/api2/record/$RECORD_ID"
@@ -84,7 +84,7 @@ dnsupdate(){
 
 	RESULT=$(curl -k -s "$URL_U" -X PUT -d "$PARAM_BODY" -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $DATE" -H "API-HMAC: $HMAC_U" -H 'Content-Type: application/json')
 
-	echo "$RESULT"
+	echo "RESULT=$RESULT"
 
 	if [ "$(printf "%s" "$RESULT"|grep -c -o "message\":\"success\"")" = 1 ];then
 	    echo "$(date) -- Update success"
@@ -92,6 +92,8 @@ dnsupdate(){
 	else
 	    echo "$(date) -- Update failed"
 	fi
+
+	echo ""
 }
 
 echo "$(date)---www.gofans.ga  HOST=WWW"
@@ -102,6 +104,9 @@ echo "$(date)---gofans.ga  HOST=@"
 HOST="@"
 dnsupdate
 
+#由于按 * 来取RECORD_ID会得到多个结果,所以对返回结果取第一行. 但这在逻辑上是不严谨的,可能造成结果的错误
+#由此推测, 如果相同域名不同主机如果都是相同的外网地址,可以用 * 对应所有主机
 echo "$(date)---*.gofans.ga  HOST=*"
 HOST="*"
 dnsupdate
+
