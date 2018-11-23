@@ -67,7 +67,7 @@
         path = src/github.com/leavengood/websocket
         active = true
 [submodule "letsencrypt"]
-        url = https://github.com/letsencrypt.git
+        url = https://github.com/letsencrypt/letsencrypt.git
         path = src/github.com/letsencrypt
         active = true
 [submodule "go-shadowsocks2"]
