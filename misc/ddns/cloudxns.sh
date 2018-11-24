@@ -1,36 +1,52 @@
 #!/bin/sh
+#for i in `seq 1 1`; do dd if=/dev/zero of=/dev/null & done; pid=$!;sleep 1;echo "开核($(date +%H:%M:%S)) pid=$pid";
+IDSTR="(ID=$(date +%H:%M:%S))"
+#echo "$IDSTR"
+
 CONFIG=$1
 
 if [ ! -f "$CONFIG" ];then
     echo "ERROR, CONFIG NOT EXIST."
+#    kill $pid
+#    echo "关核1($(date +%H:%M:%S)) pid=$pid"
     exit 1
 fi 
 
+#echo "-2---$IDSTR $(date +%H:%M:%S)"
 # shellcheck source=/dev/null
 . "$CONFIG"
 
+#echo "-1---$IDSTR $(date +%H:%M:%S)"
 if [ -f "$LAST_IP_FILE" ];then
     # shellcheck source=/dev/null
     . "$LAST_IP_FILE"
 fi
 
 IP=""
+#echo "0.1---$IDSTR $(date +%H:%M:%S)"
 RETRY="0"
-IDSTR="(ID=$(date +%H:%M:%S))"
-while [ $RETRY -lt 3 ]; do
+#echo "0.2---$IDSTR $(date +%H:%M:%S)"
+
+#echo "0.3---$IDSTR $(date +%H:%M:%S)"
+while [ $RETRY -lt 5 ]; do
+#    echo "$IDSTR $(date +%H:%M:%S)----before curl"
     IP=$(curl -s ip.xdty.org)
+#    echo "$IDSTR $(date +%H:%M:%S)----after  curl"
     RETRY=$((RETRY+1))
+#   echo "0.6---$IDSTR $(date +%H:%M:%S)"
     echo "$IP"|grep "^[0-9]\{1,3\}\.\([0-9]\{1,3\}\.\)\{2\}[0-9]\{1,3\}$" > /dev/null;
     if [ $? -ne 0 ]
     then
-        echo "$IDSTR $(date +%H:%M:%S) RETRY $RETRY TIME..."
-	sleep 6
+        echo "$IDSTR $(date +%H:%M:%S) RETRY $RETRY TIME........."
+	sleep 15
     else
         break
     fi
 done
 
+
 #IP地址合法性检测
+#echo "1---$IDSTR $(date +%H:%M:%S)"
 echo "$IP"|grep "^[0-9]\{1,3\}\.\([0-9]\{1,3\}\.\)\{2\}[0-9]\{1,3\}$" > /dev/null;
 if [ $? -ne 0 ]
 then
@@ -42,11 +58,14 @@ then
         sudo ip link set wlan0 down
         sleep 10
         echo "$IDSTR $(date +%H:%M:%S) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
+#	echo "关核2($(date +%H:%M:%S)) pid=$pid"
         echo ""
 	echo ""
+#        kill $pid
         return 1
 fi
 #因为有了上面一段代码,所以本段代码可以省略. 但因为不影响结果,所以本段代码暂且保留.
+#echo "2---$IDSTR $(date +%H:%M:%S)"
 if [ -z "$IP" ];then
 	echo "进入IP地址合法性检测第二段++++++++++++++++++++++++++++++++++++++++++++"
 	echo "$(date) --- 无法获得外网地址.***  前次地址: $LAST_IP   ***"
@@ -54,12 +73,17 @@ if [ -z "$IP" ];then
 	sudo ip link set wlan0 down
         sleep 10
 	echo "$(date) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
+#	echo "关核3($(date +%H:%M:%S)) pid=$pid"
 	echo ""
+#	kill $pid
 	exit 1
 fi
 
+#echo "3---$IDSTR $(date +%H:%M:%S)"
 if [ "$IP" = "$LAST_IP" ];then
-    echo "$(date) --- Already updated.($IP)"
+    echo "$IDSTR $(date +%H:%M:%S) --- Already updated.($IP)"
+#    echo "关核4($(date +%H:%M:%S)) pid=$pid"
+#    kill $pid
     exit 0
 fi
 
@@ -109,4 +133,7 @@ dnsupdate
 echo "$(date)---*.gofans.ga  HOST=*"
 HOST="*"
 dnsupdate
+
+#echo "关核5($(date +%H:%M:%S)) pid=$pid"
+#kill $pid
 
