@@ -62,10 +62,10 @@
         url = https://github.com/leavengood/websocket.git
         path = src/github.com/leavengood/websocket
         active = true
-[submodule "letsencrypt"]
-        url = https://github.com/letsencrypt/letsencrypt.git
-        path = src/github.com/letsencrypt
-        active = true
+#[submodule "letsencrypt"]
+#        url = https://github.com/letsencrypt/letsencrypt.git
+#        path = src/github.com/letsencrypt/letsencrypt
+#        active = true
 [submodule "go-shadowsocks2"]
         url = https://github.com/shadowsocks/go-shadowsocks2.git
         path = src/github.com/shadowsocks/go-shadowsocks2
