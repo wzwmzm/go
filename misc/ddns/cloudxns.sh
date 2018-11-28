@@ -29,7 +29,6 @@ while [ $RETRY -lt 5 ]; do
     fi
 done
 
-
 #IP地址合法性检测
 echo "$IP"|grep "^[0-9]\{1,3\}\.\([0-9]\{1,3\}\.\)\{2\}[0-9]\{1,3\}$" > /dev/null;
 if [ $? -ne 0 ]
@@ -38,15 +37,25 @@ then
 	echo "$IDSTR $(date +%H:%M:%S)  --- IP地址非法" 
         echo "前次地址: $LAST_IP   "
 	echo "本次地址: $IP"
+
+	echo ""
         ping -c2 www.baidu.com
+	echo "www.baidu.com 返回码=$?******"
         ping -c2 gofans.ga
-#if [ $? -ne 0 ]
-#then
+	echo "gofans.ga     返回码=$?******"
+	ping -c2 192.168.2.1
+	echo "192.168.2.1   返回码=$?******"
+	ping -c2 127.0.0.1
+	echo "127.0.0.1     返回码=$?******"
+	ping -c2 localhost
+	echo "localhost     返回码=$?******"
+	ping -c2 192.168.2.2
+	echo "192.168.2.2   返回码=$?******"
+
         echo "重启WIFI连接....sudo ip link set wlan0 down...."
         sudo ip link set wlan0 down
         sleep 10
         echo "$IDSTR $(date +%H:%M:%S) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
-#fi	    
         echo ""
 	echo ""
         return 1
@@ -55,8 +64,13 @@ fi
 if [ -z "$IP" ];then
 	echo "进入IP地址合法性检测第二段++++++++++++++++++++++++++++++++++++++++++++"
 	echo "$(date) --- 无法获得外网地址.***  前次地址: $LAST_IP   ***"
-	echo "$(ping -c2 www.baidu.com)"
-	echo "$(ping -c2 gofans.ga)"
+
+        echo "$(ping -c2 www.baidu.com)"
+        echo "$(ping -c2 gofans.ga)"
+        echo "----------------------ping-------------------------------"
+        ping -c2 www.baidu.com
+        ping -c2 gofans.ga
+
 	echo "重启WIFI连接....sudo ip link set wlan0 down...."
 	sudo ip link set wlan0 down
         sleep 10
