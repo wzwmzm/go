@@ -30,14 +30,6 @@
         url = https://github.com/hashicorp/go-version.git
         path = src/github.com/hashicorp/go-version
         active = true
-[submodule "pholcus"]
-        url = https://github.com/henrylee2cn/pholcus.git
-        path = src/github.com/henrylee2cn/pholcus
-        active = true
-[submodule "pholcus_lib"]
-        url = https://github.com/henrylee2cn/pholcus_lib.git
-        path = src/github.com/henrylee2cn/pholcus_lib 
-        active = true
 [submodule "httpexpect"]
         url = https://github.com/iris-contrib/httpexpect.git
         path = src/github.com/iris-contrib/httpexpect 
