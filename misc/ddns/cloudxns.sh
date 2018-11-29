@@ -38,19 +38,10 @@ then
         echo "前次地址: $LAST_IP   "
 	echo "本次地址: $IP"
 
-	echo ""
-        ping -c2 www.baidu.com
-	echo "www.baidu.com 返回码=$?******"
-        ping -c2 gofans.ga
+	ping -c2 gofans.ga
 	echo "gofans.ga     返回码=$?******"
 	ping -c2 192.168.2.1
 	echo "192.168.2.1   返回码=$?******"
-	ping -c2 127.0.0.1
-	echo "127.0.0.1     返回码=$?******"
-	ping -c2 localhost
-	echo "localhost     返回码=$?******"
-	ping -c2 192.168.2.2
-	echo "192.168.2.2   返回码=$?******"
 
         echo "重启WIFI连接....sudo ip link set wlan0 down...."
         sudo ip link set wlan0 down
