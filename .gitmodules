@@ -1,0 +1,80 @@
+[submodule "iris"]
+        url = https://github.com/kataras/iris.git
+	path = src/github.com/kataras/iris
+        active = true
+[submodule "logrus"]
+        url = https://github.com/Sirupsen/logrus.git
+	path = src/github.com/Sirupsen/logrus
+        active = true
+[submodule "chacha20"]
+        url = https://github.com/Yawning/chacha20.git
+        path = src/github.com/Yawning/chacha20
+        active = true
+[submodule "monkey"]
+        url = https://github.com/bouk/monkey.git
+        path = src/github.com/bouk/monkey
+        active = true
+[submodule "gosl"]
+        url = https://github.com/cpmech/gosl.git
+        path = src/github.com/cpmech/gosl 
+        active = true
+[submodule "mux"]
+        url = https://github.com/gorilla/mux.git
+        path = src/github.com/gorilla/mux
+        active = true
+[submodule "websocket"]
+        url = https://github.com/gorilla/websocket.git
+        path = src/github.com/gorilla/websocket
+        active = true
+[submodule "go-version"]
+        url = https://github.com/hashicorp/go-version.git
+        path = src/github.com/hashicorp/go-version
+        active = true
+[submodule "httpexpect"]
+        url = https://github.com/iris-contrib/httpexpect.git
+        path = src/github.com/iris-contrib/httpexpect 
+        active = true
+[submodule "golog"]
+        url = https://github.com/kataras/golog.git
+        path = src/github.com/kataras/golog
+        active = true
+[submodule "pio"]
+        url = https://github.com/kataras/pio.git
+        path = src/github.com/kataras/pio
+        active = true
+[submodule "compress"]
+        url = https://github.com/klauspost/compress.git
+        path = src/github.com/klauspost/compress
+        active = true
+[submodule "cpuid"]
+        url = https://github.com/klauspost/cpuid.git
+        path = src/github.com/klauspost/cpuid
+        active = true
+[submodule "websocket_1"]
+        url = https://github.com/leavengood/websocket.git
+        path = src/github.com/leavengood/websocket
+        active = true
+[submodule "go-shadowsocks2"]
+        url = https://github.com/shadowsocks/go-shadowsocks2.git
+        path = src/github.com/shadowsocks/go-shadowsocks2
+        active = true
+[submodule "bytebufferpool"]
+        url = https://github.com/valyala/bytebufferpool.git
+        path = src/github.com/valyala/bytebufferpool
+        active = true
+[submodule "fasthttp"]
+        url = https://github.com/valyala/fasthttp.git
+        path = src/github.com/valyala/fasthttp
+        active = true
+[submodule "crypto"]
+        url = https://github.com/golang/crypto.git
+        path = src/golang.org/x/crypto
+        active = true
+[submodule "tools"]
+        url = https://github.com/golang/tools.git
+        path = src/golang.org/x/tools
+        active = true
+[submodule "sys"]
+        url = https://github.com/golang/sys.git
+        path = src/golang.org/x/sys
+        active = true
