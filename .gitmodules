@@ -82,3 +82,7 @@
         url = https://github.com/golang/sys.git
         path = src/golang.org/x/sys
         active = true
+[submodule "mock"]
+        url = https://github.com/golang/mock.git
+        path = src/github.com/golang/mock
+        active = true
