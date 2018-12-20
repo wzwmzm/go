@@ -46,6 +46,9 @@ then
 	echo "192.168.2.2   返回码=$?******"
 	ping -c2 192.168.2.3
 	echo "192.168.2.3   返回码=$?******"
+	echo ""
+	echo "......ip route......"
+	ip route
 
 
         echo "重启WIFI连接....sudo ip link set wlan0 down...."
