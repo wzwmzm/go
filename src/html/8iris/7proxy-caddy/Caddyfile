@@ -1,0 +1,11 @@
+1.gofans.ga:44444 {
+	header / Server "Iris"
+	tls	"/home/wzw/project/go/src/html/0gofans.ga/fullchain.cer"  "/home/wzw/project/go/src/html/0gofans.ga/gofans.ga.key"
+	proxy / example.com:9091 # localhost:9091
+}
+
+2.gofans.ga:44444 {
+	header / Server "Iris"
+	tls	"/home/wzw/project/go/src/html/0gofans.ga/fullchain.cer"  "/home/wzw/project/go/src/html/0gofans.ga/gofans.ga.key"
+	proxy / api.example.com:9092 # localhost:9092
+}
