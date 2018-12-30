@@ -4,6 +4,6 @@
 3, 脚本执行完成后，执行 which caddy，可以看到 caddy 已被
 	安装到了 /usr/local/bin/caddy；
 	caddy -version 查看版本号
-4, 运行 : caddy -port 44444 -conf ./Caddyfile
+4, 运行 : caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile
 
 
