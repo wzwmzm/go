@@ -1,20 +1,20 @@
-gofans.ga:44444 {
+gofans.ga:443 {
 	root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
 	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
 }
 
 
-2.gofans.ga:44444 {
+2.gofans.ga:443 {
 	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
 	proxy / 192.168.2.2:8888
 }
 
-3.gofans.ga:44444 {
+3.gofans.ga:443 {
 	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
 	proxy / 192.168.2.3:8888
 }
 
-4.gofans.ga:44444 {
+4.gofans.ga:443 {
 	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
 	proxy / http://www.baidu.com
 }
