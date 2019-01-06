@@ -38,8 +38,8 @@ then
         echo "前次地址: $LAST_IP   "
 	echo "本次地址: $IP"
 
-	ping -c2 gofans.ga
-	echo "gofans.ga     返回码=$?******"
+	ping -c2  $DOMAIN
+	echo "$DOMAIN 返回码=$?******"
 	ping -c2 192.168.2.1
 	echo "192.168.2.1   返回码=$?******"
         ping -c2 192.168.2.2
@@ -100,16 +100,13 @@ dnsupdate(){
 	echo ""
 }
 
-echo "$(date)---www.gofans.ga  HOST=WWW"
-HOST="www"
-dnsupdate
 
-echo "$(date)---gofans.ga  HOST=@"
+echo "$(date)---$DOMAIN  HOST=@"
 HOST="@"
 dnsupdate
 
 #由于按 * 来取RECORD_ID会得到多个结果,所以对返回结果取第一行. 但这在逻辑上是不严谨的,可能造成结果的错误
 #由此推测, 如果相同域名不同主机如果都是相同的外网地址,可以用 * 对应所有主机
-echo "$(date)---*.gofans.ga  HOST=*"
+echo "$(date)---*.$DOMAIN  HOST=*"
 HOST="*"
 dnsupdate
