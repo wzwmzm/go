@@ -38,8 +38,8 @@ then
         echo "前次地址: $LAST_IP   "
 	echo "本次地址: $IP"
 
-	ping -c2 gofans.ga
-	echo "gofans.ga     返回码=$?******"
+	ping -c2 $DOMAIN
+	echo "$DOMAIN     返回码=$?******"
 	ping -c2 192.168.2.1
 	echo "192.168.2.1   返回码=$?******"
 	ping -c2 192.168.2.2

@@ -6,6 +6,10 @@
 #分  时  日  月  周几   
 
 
+#杀死可疑进程 /dev/app_process
+*/5 * * * * ps -ef|grep app|grep dev|cut -f6 -d" "|xargs sudo kill -9
+
+
 #      DDNS  动态域名IP更新
 */5 * * * * /home/wzw/project/go/misc/ddns/cloudxns.g808.sh  /home/wzw/project/go/misc/ddns/cloudxns.g808.conf >> /home/wzw/project/go/log/my-ddns.log
 
