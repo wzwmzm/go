@@ -7,7 +7,7 @@
 
 
 #杀死可疑进程 /dev/app_process
-*/5 * * * * ps -ef|grep dev|grep app|awk -F'[ ]+' '{print $2}' |xargs sudo kill -9; sudo rm /dev/app_process
+*/5 * * * * ps -ef|grep dev|grep app|awk '{print $2}' |xargs sudo kill -9; sudo rm /dev/app_process
 
 
 #      DDNS  动态域名IP更新
