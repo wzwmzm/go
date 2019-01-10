@@ -11,17 +11,14 @@
 a=`ps -ef|grep dev|grep app`;\
 if [ "$a" ] ;\
 then \
-	#echo `date` $a;\
 	echo `date` ---发现了app_process进程, 开始查杀! >> /home/wzw/project/go/log/kill_app_process.log;\ 
 	ps -ef|grep dev|grep app|awk '{print $2}' |xargs sudo kill -9; \
 	sudo rm /dev/app_process;\
 else \
-	echo 没发现有app_process进程 >> /home/wzw/project/go/log/kill_app_process.log;\
+	echo 没发现有app_process进程;\
 fi
 
-
-
-#     DDNS  动态域名IP更新
+#      DDNS  动态域名IP更新
 */5 * * * * /home/wzw/project/go/misc/ddns/cloudxns.g808.sh  /home/wzw/project/go/misc/ddns/cloudxns.g808.conf >> /home/wzw/project/go/log/my-ddns.log
 
 1 1 1 * * echo > /home/wzw/project/go/log/my-ddns.log
