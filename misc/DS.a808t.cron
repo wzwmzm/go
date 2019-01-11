@@ -1,0 +1,26 @@
+# ~/go/misc/ddns/DS.cron
+
+#    service cron status         //查看服务状态 
+#    sudo service crond start    //启动服务
+#    crontab DS.cron             //装载定时任务
+#分  时  日  月  周几   
+
+#	这一步现在由G808来做,本机不需要
+#      DDNS  动态域名IP更新
+*/5 * * * * /home/wzw/project/go/misc/ddns/cloudxns.a808t.sh  /home/wzw/project/go/misc/ddns/cloudxns.a808t.conf >> /home/wzw/project/go/log/my-ddns.log
+1 1 1 * * echo > /home/wzw/project/go/log/my-ddns.log
+
+
+#     SSL证书: 自动更新程序 ,自动延期证书.
+#     证书如果自动延期失败,则必须手动更新
+#33 0 5-8/1 * * "/home/wzw/.acme.sh"/acme.sh --cron --home "/home/wzw/.acme.sh";echo "$(date) --- done!" >> /home/wzw/project/go/log/my-ssl.log
+#1 1 10 */12 *  echo > /home/wzw/project/go/log/my-ssl.log
+
+# SSL证书手动更新方法:         https://github.com/Neilpang/acme.sh/wiki/dns-manual-mode  https://github.com/Neilpang/acme.sh/
+#"/home/wzw/.acme.sh"/acme.sh --issue  --dns dns_cx -d gofans.ga -d www.gofans.ga >> /var/log/my-ssl.log
+#./acme.sh --list //查看证书有效期
+
+# 域名自动延期
+#36 14 */4 * * node /home/wzw/project/go/misc/freenom-renewer/app.js;echo "$(date) --- done!" >> /home/wzw/project/go/log/my-domain.log
+
+

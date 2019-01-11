@@ -7,9 +7,9 @@
 #4, sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/caddy
 #5, 运行 : caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile
 
-gofans.ga:443 {
+ga111.ga:443 {
 	root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
-	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
+	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 #	log requests.log {
 #		rotate_size 50  # Rotate after 50 MB
 #		rotate_age  90  # Keep rotated files for 90 days
@@ -17,23 +17,23 @@ gofans.ga:443 {
 #	}
 }
 
-2.gofans.ga:443 {
-	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
+2.ga111.ga:443 {
+	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 	proxy / 192.168.2.2:8888
 }
 
-3.gofans.ga:443 {
-	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
+3.ga111.ga:443 {
+	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 	proxy / 192.168.2.3:8888
 }
 
-4.gofans.ga:443 {
-	tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
+4.ga111.ga:443 {
+	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 	proxy / https://www.baidu.com
 }
 
-5.gofans.ga:443 {
-        tls     "/home/wzw/.acme.sh/gofans.ga/fullchain.cer"  "/home/wzw/.acme.sh/gofans.ga/gofans.ga.key"
+5.ga111.ga:443 {
+        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
         proxy / https://192.168.2.2:8080 {
 		websocket
 		transparent

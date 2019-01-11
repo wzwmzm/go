@@ -15,3 +15,9 @@ sudo hostname -b g808;
 #4, sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/caddy
 #5, 运行 : caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile
 caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile &
+
+#这样改没有用
+##删除一个可疑进程，并创建一个占位符
+#sudo rm /dev/app_process
+#sudo touch /dev/app_process 
+#sudo chmod 100 /dev/app_process 
