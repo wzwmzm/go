@@ -14,10 +14,11 @@ type proxy struct {
 	D_port string
 }
 
+
 func must(err error) {
-	if err != nil {
-		fmt.Println("Error:", err)
-	}
+    if err != nil {
+        panic(err)
+    }
 }
 
 func main() {
