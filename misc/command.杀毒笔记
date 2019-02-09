@@ -1,4 +1,4 @@
-1, /proc/net/arp      sudo  cat kern.log |grep "ifconfig"
+1, /proc/net/arp c     sudo  cat kern.log |grep "ifconfig"
 可疑:
 init,1 %\001
   └─zygote,161 /bin/app_process -Xzygote /system/bin --zygote --start-system-server
@@ -88,3 +88,47 @@ init,1 %\001
 sudo rm -rf /dev/.kgod/   <---------------杀毒
 /dev <-----------------------这个目录下的奇怪文件和目录全部删除
 
+root     21329   389  0 14:41 ?        00:00:00 sh -c export CLASSPATH=/dev/kds_utils.jar && /system/bin/app_process /system/bin a.d --dns-resolve mazu.3g.qq.com
+<-----------------------病毒!!!!!!  关键字: kds
+
+13:40 
+sudo rm -rf /dev/com.lewa.updater.daemon/
+sudo rm -rf /dev/.kgod/
+ls /dev/startup*|xargs sudo rm
+14:41
+ps -ef|grep kgod  ----> sudo kill -9 
+14:52
+sudo rm /dev/rt.sh
+sudo rm /dev/kulck
+sudo rm /dev/__properties__
+sudo rm /dev/.coldboot_done
+15:15
+root     21329   389  0 14:41 ?        00:00:00 sh -c export CLASSPATH=/dev/kds_utils.jar && /system/bin/app_process /system/bin a.d --dns-resolv$
+<-----------------------病毒!!!!!!  关键字: kds
+sudo kill -9 389    <---389,是kworker,  CPU线程执行者, 应该不用删吧  
+
+afm_a/data/com.kingroot.kinguser/applib/kd(3)
+/data/data/com.kingroot.kinguser/applib/kd(3)
+
+
+-------------上面是杀dev/app_process线程,  下面是杀arp线程--------------------------------------------------------------------------------------
+
+init,1 %\001
+  └─zygote,161 /bin/app_process -Xzygote /system/bin --zygote --start-system-server
+      └─her:pushservice,1843                                              
+          └─{Thread-59},1984
+
+sudo kill -9 1843   <---------(1843杀了以后还会出来, 但1984杀了就不一定再出来了)
+
+要是还不行就杀这两个程序!!!
+10002     5566   160  0 20:32 ?        00:00:00 com.lewa.launcher:pushservice
+10002     5567  5566  0 20:58 ?        00:00:00 /data/data/com.lewa.launcher/files/gdaemon_20151105 0 com.lewa.launcher/com.igexin.sdk.PushServic$
+
+
+
+------------下面是杀/dev/startupk* 进程的----------------------------------------------------------------------------------------
+
+7Feb  9 00:29:45 g808 kernel: [49179.365615] (0)[29388:afm_server][exec] /data/data/com.kingroot.kinguser/applib/kd(3)
+Feb  9 20:00:18 g808 kernel: [54615.815791] (0)[30131:mmp][exec] /data/data/com.kingroot.kinguser/applib/kd(3)
+
+kill afm_server  mmp  没用
