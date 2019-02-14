@@ -1,0 +1,173 @@
+F S UID        PID  PPID CLS PRI ADDR SZ WCHAN  STIME TTY          TIME CMD
+1 S root         2     0 TS   19 -     0 kthrea 2月12 ?       00:00:01 [kthreadd]
+1 S root         3     2 TS   19 -     0 run_ks 2月12 ?       00:00:00   [ksoftirqd/0]
+1 S root         6     2 FF  138 -     0 cpu_st 2月12 ?       00:00:01   [migration/0]
+1 S root        28     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [khelper]
+1 S root        29     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [fs_sync]
+1 S root        30     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [suspend]
+1 S root        31     2 TS   19 -     0 bdi_sy 2月12 ?       00:00:00   [sync_supers]
+1 S root        32     2 TS   19 -     0 bdi_fo 2月12 ?       00:00:00   [bdi-default]
+1 S root        33     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [kblockd]
+1 S root        34     2 TS   19 -     0 hub_th 2月12 ?       00:00:00   [khubd]
+1 S root        36     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [cfg80211]
+5 S root        44     2 FF  138 -     0 pmic_t 2月12 ?       00:00:00   [pmic_thread_kth]
+1 S root        45     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [emi_mpu]
+1 S root        46     2 TS   19 -     0 kswapd 2月12 ?       00:00:00   [kswapd0]
+1 S root        47     2 TS   19 -     0 fsnoti 2月12 ?       00:00:00   [fsnotify_mark]
+1 S root        48     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [crypto]
+1 S root        62     2 TS   19 -     0 worker 2月12 ?       00:00:26   [kworker/u:1]
+1 S root        69     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [uether]
+1 S root        70     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [binder]
+5 D root        71     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [hang_detect]
+1 S root        72     2 IDL  19 -     0 ion_he 2月12 ?       00:00:00   [ion_mm_heap]
+1 D root        73     2 TS   19 -     0 bat_th 2月12 ?       00:01:28   [bat_thread_kthr]
+1 S root        74     2 TS   19 -     0 charge 2月12 ?       00:00:01   [mtk charger_hv_]
+1 S root        75     2 FF  120 -     0 btif_r 2月12 ?       00:00:05   [btif_rxd]
+1 S root        76     2 TS   19 -     0 conn_m 2月12 ?       00:00:00   [conn-md-thread]
+1 S root        77     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [mtk_vibrator]
+1 S root        78     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [autok_queue]
+5 S root        79     2 FF  138 -     0 ktp_th 2月12 ?       00:00:00   [kthermp]
+1 D root        80     2 TS   19 -     0 mt6333 2月12 ?       00:00:00   [mt6333_thread_k]
+1 S root        81     2 TS   19 -     0 disp_i 2月12 ?       00:00:00   [disp_config_upd]
+1 S root        82     2 TS   19 -     0 mmc_qu 2月12 ?       00:00:21   [mmcqd/0]
+1 S root        83     2 TS   19 -     0 mmc_qu 2月12 ?       00:00:00   [mmcqd/0boot0]
+1 S root        84     2 TS   19 -     0 mmc_qu 2月12 ?       00:00:00   [mmcqd/0boot1]
+1 D root        85     2 TS   19 -     0 kthrea 2月12 ?       00:00:00   [disp_captureovl]
+1 S root        86     2 TS   19 -     0 DISP_C 2月12 ?       00:00:00   [disp_capturefb_]
+5 S root        87     2 RR  134 -     0 DISP_C 2月12 ?       00:00:00   [disp_config_upd]
+1 S root        88     2 TS   19 -     0 DISP_C 2月12 ?       00:00:00   [disp_clean_up_k]
+5 S root        89     2 RR  134 -     0 DISP_D 2月12 ?       00:00:00   [disp_ovl_kthrea]
+1 S root        90     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [accdet]
+1 S root        91     2 TS   19 -     0 sendKe 2月12 ?       00:00:00   [keyEvent_send]
+1 S root        92     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [accdet_eint]
+1 S root        93     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [accdet_disable]
+1 S root        94     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [sensor_polling]
+5 S root        95     2 RR   44 -     0 touch_ 2月12 ?       00:00:00   [mtk-tpd]
+1 S root        96     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [gsl_monitor_wor]
+1 S root        97     2 TS   19 -     0 mt_ptp 2月12 ?       00:00:00   [ptp volt]
+1 S root        98     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [deferwq]
+1 S root        99     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [f_mtp]
+1 S root       100     2 TS   19 -     0 sleep_ 2月12 ?       00:00:00   [file-storage]
+5 D root       101     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-0]
+5 D root       102     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-1]
+5 D root       103     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-2]
+5 D root       104     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-3]
+5 D root       105     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-4]
+5 D root       106     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-5]
+5 D root       107     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-6]
+5 D root       108     2 FF  139 -     0 msleep 2月12 ?       00:00:00   [wdtk-7]
+1 S root       111     2 TS   19 -     0 kjourn 2月12 ?       00:00:00   [jbd2/mmcblk0p5-]
+1 S root       112     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [ext4-dio-unwrit]
+1 S root       113     2 TS   19 -     0 bdi_wr 2月12 ?       00:00:05   [flush-179:0]
+1 S root       118     2 TS   19 -     0 kjourn 2月12 ?       00:00:04   [jbd2/mmcblk0p7-]
+1 S root       119     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [ext4-dio-unwrit]
+1 S root       124     2 TS   19 -     0 kjourn 2月12 ?       00:00:00   [jbd2/mmcblk0p6-]
+1 S root       125     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [ext4-dio-unwrit]
+1 S root       133     2 TS   19 -     0 kjourn 2月12 ?       00:00:00   [jbd2/mmcblk0p2-]
+1 S root       134     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [ext4-dio-unwrit]
+1 S root       137     2 TS   19 -     0 kjourn 2月12 ?       00:00:00   [jbd2/mmcblk0p3-]
+1 S root       138     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [ext4-dio-unwrit]
+1 S root       139     2 TS   39 -     0 loop_t 2月12 ?       00:00:00   [loop0]
+1 S root       221     2 TS   19 -     0 osal_w 2月12 ?       00:00:00   [mtk_stp_psm]
+1 S root       222     2 TS   19 -     0 osal_w 2月12 ?       00:00:00   [mtk_stp_btm]
+5 S root       225     2 TS   19 -     0 osal_t 2月12 ?       00:00:00   [mtk_wmtd]
+1 S root       227     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [fm_timer_wq]
+1 S root       228     2 TS   39 -     0 rescue 2月12 ?       00:00:00   [fm_eint_wq]
+1 S root       900     2 TS   19 -     0 tx_thr 2月12 ?       00:00:05   [tx_thread]
+1 S root      1660     2 TS   19 -     0 kaudit 2月12 ?       00:00:00   [kauditd]
+1 S root      2426     2 TS   19 -     0 worker 2月12 ?       00:01:29   [kworker/u:2]
+1 S root      4283     2 TS   19 -     0 worker 05:51 ?        00:00:14   [kworker/0:0]
+1 S root      4313     2 TS   19 -     0 worker 06:01 ?        00:00:12   [kworker/0:1]
+1 S root      4315     2 TS   19 -     0 pm_get 06:04 ?        00:01:03   [kworker/u:0]
+1 S root     17324     2 TS   19 -     0 worker 09:32 ?        00:00:00   [kworker/0:2]
+1 S root     24188     2 TS   19 -     0 bdi_wr 09:56 ?        00:00:00   [flush-0:20]
+1 S root     27245     2 FF  138 -     0 cpu_st 10:05 ?        00:00:00   [migration/1]
+1 S root     27246     2 TS   19 -     0 worker 10:05 ?        00:00:00   [kworker/1:2]
+1 S root     27247     2 TS   19 -     0 run_ks 10:05 ?        00:00:00   [ksoftirqd/1]
+1 S root     27248     2 FF  138 -     0 cpu_st 10:05 ?        00:00:00   [migration/2]
+1 S root     27249     2 TS   19 -     0 worker 10:05 ?        00:00:00   [kworker/2:0]
+1 S root     27250     2 TS   19 -     0 run_ks 10:05 ?        00:00:00   [ksoftirqd/2]
+1 S root     27252     2 TS   19 -     0 worker 10:05 ?        00:00:00   [kworker/1:0]
+4 S root         1     0 TS   19 -   224 poll_s 2月12 ?       00:00:02 /init %?
+4 S root       109     1 TS   19 -   185 poll_s 2月12 ?       00:00:00   /sbin/ueventd
+4 S aid_sys+   141     1 TS   19 -   344 skb_re 2月12 ?       00:00:00   /system/bin/drvbd
+4 S root       143     1 TS   19 -   618 epoll_ 2月12 ?       00:00:14   /sbin/healthd
+4 S aid_sys+   144     1 TS   19 -   283 binder 2月12 ?       00:00:00   /system/bin/servicemanager
+4 S root       145     1 TS   19 -  1263 hrtime 2月12 ?       00:00:00   /system/bin/vold
+4 S aid_sys+   147     1 TS   19 -   246 poll_s 2月12 ?       00:00:00   /system/bin/logwrapper /system/bin/6620_launcher -p /system/etc/firmware/
+0 S aid_sys+   167   147 TS   19 -   266 poll_s 2月12 ?       00:00:00     /system/bin/6620_launcher -p /system/etc/firmware/
+4 S 9996       148     1 TS   19 -   356 ccci_f 2月12 ?       00:00:00   /system/bin/ccci_fsd 0
+4 S aid_sys+   149     1 TS   19 -   381 ccci_v 2月12 ?       00:00:00   /system/bin/ccci_mdinit 0
+0 S root       151     1 TS   19 -   259 sigsus 2月12 ?       00:00:00   /system/bin/sh /system/bin/debuggerd
+4 S root       734   151 RR   68 -   444 poll_s 2月12 ?       00:00:00     /system/bin/debuggerd_real
+4 S aid_she+   153     1 TS   19 -   610 hrtime 2月12 ?       00:00:00   /system/bin/mobile_log_d
+4 S root       154     1 TS   19 -  2498 hrtime 2月12 ?       00:00:01   /system/bin/netd
+4 S aid_she+   155     1 TS   19 -   794 futex_ 2月12 ?       00:00:00   /system/bin/netdiag
+4 S aid_sys+   158     1 RR  124 -  8284 epoll_ 2月12 ?       00:00:11   /system/bin/surfaceflinger
+4 S aid_sys+   159     1 TS   19 -  3393 binder 2月12 ?       00:00:00   /system/bin/aal
+4 S root       160     1 TS   19 - 130937 poll_s 2月12 ?      00:00:04   zygote /bin/app_process -Xzygote /system/bin --zygote --start-system-server
+5 S aid_sys+   743   160 TS   21 - 156646 epoll_ 2月12 ?      00:01:24     system_server
+5 R 10008      827   160 TS   19 - 147742 epoll_ 2月12 ?      00:00:28     com.android.systemui
+5 S 10066      956   160 TS   19 - 138383 epoll_ 2月12 ?      00:00:00     com.google.android.inputmethod.pinyin
+5 S aid_rad+   985   160 TS   19 - 138929 epoll_ 2月12 ?      00:00:01     com.android.phone
+5 S aid_blu+   997   160 TS   19 - 133623 epoll_ 2月12 ?      00:00:00     com.mediatek.bluetooth
+5 S 10002     1011   160 TS   19 - 142716 epoll_ 2月12 ?      00:00:06     com.lewa.launcher
+5 S 10002     1083   160 TS   19 - 136517 epoll_ 2月12 ?      00:00:02     com.lewa.launcher:pushservice
+5 S 10006     1180   160 TS   19 - 136078 epoll_ 2月12 ?      00:00:01     android.process.media
+5 S aid_sys+  1246   160 TS   19 - 133485 epoll_ 2月12 ?      00:00:00     com.adups.fota.sysoper
+5 S 10010     1304   160 TS   19 - 133406 epoll_ 2月12 ?      00:00:00     com.mediatek.omacp
+5 S aid_sys+  1318   160 TS   19 - 133291 epoll_ 2月12 ?      00:00:00     com.lqh.restorresapp
+5 S aid_sys+  1330   160 TS   19 - 133355 epoll_ 2月12 ?      00:00:00     com.mediatek.schpwronoff
+5 S 10071     1347   160 TS   19 - 137144 epoll_ 2月12 ?      00:00:00     cn.qitu.rootangel
+5 S 10012     1365   160 TS   19 - 135396 epoll_ 2月12 ?      00:00:00     ru.meefik.linuxdeploy
+5 S 10020     1381   160 TS   19 - 135841 epoll_ 2月12 ?      00:00:00     com.android.browser
+5 S 10002     1645   160 TS   19 - 135011 epoll_ 2月12 ?      00:00:00     com.lewa.appstore.hd
+4 S aid_drm    161     1 TS   19 -  7856 binder 2月12 ?       00:00:00   /system/bin/drmserver
+4 S aid_med+   162     1 TS   19 -  9956 binder 2月12 ?       00:00:02   /system/bin/mediaserver
+4 S aid_sys+   163     1 TS   19 -  1423 binder 2月12 ?       00:00:01   /system/bin/bwc
+4 S aid_sys+   164     1 TS   19 -  1144 binder 2月12 ?       00:00:00   /system/bin/matv
+4 S aid_rad+   165     1 TS   19 -  8358 binder 2月12 ?       00:00:00   /system/bin/vtservice
+4 S aid_ins+   166     1 TS   19 -   281 unix_s 2月12 ?       00:00:00   /system/bin/installd
+4 S aid_key+   178     1 TS   19 -  1178 binder 2月12 ?       00:00:00   /system/bin/keystore /data/misc/keystore
+4 S aid_gps    179     1 TS   19 -  7329 futex_ 2月12 ?       00:00:00   /system/bin/mtk_agpsd
+4 S aid_she+   181     1 TS   19 -   263 hrtime 2月12 ?       00:00:00   /system/bin/batterywarning
+4 S aid_med+   182     1 RR  116 -  1181 binder 2月12 ?       00:00:00   /system/bin/MtkCodecService
+0 S root       183     1 TS   19 -    96 skb_re 2月12 ?       00:00:00   /system/bin/lewa_fota_service --daemon
+4 S aid_sys+   184     1 TS   19 -   503 skb_re 2月12 ?       00:00:00   /system/bin/fotabinder
+4 S aid_sys+   189     1 TS   19 -  1271 binder 2月12 ?       00:00:00   /system/bin/dm_agent_binder
+4 S aid_sys+   190     1 TS   19 -  1452 binder 2月12 ?       00:00:00   /system/bin/ppl_agent
+4 S aid_blu+   191     1 TS   19 -  3529 poll_s 2月12 ?       00:00:00   /system/bin/mtkbt
+4 S aid_sys+   193     1 TS   19 -  1183 binder 2月12 ?       00:00:00   /system/bin/nvram_agent_binder
+4 S aid_sys+   195     1 TS   19 -   271 hrtime 2月12 ?       00:00:00   /system/bin/thermal
+4 S aid_sys+   196     1 TS   19 -   261 hrtime 2月12 ?       00:00:00   /system/bin/thermald
+4 S aid_med+   207     1 TS   19 -   922 inotif 2月12 ?       00:00:00   /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+4 S 9997       208     1 TS   19 -  6629 hrtime 2月12 ?       00:00:09   /system/bin/em_svr
+4 S root       209     1 TS   19 -   137 skb_re 2月12 ?       00:00:00   /system/bin/su --daemon
+4 S aid_she+   211     1 TS   19 -   900 poll_s 2月12 ?       00:00:00   /sbin/adbd
+4 S aid_she+   502     1 TS   19 -   688 pipe_w 2月12 ?       00:00:00   /system/bin/mdlogger
+4 S aid_rad+   504     1 TS   19 -  4119 hrtime 2月12 ?       00:00:00   /system/bin/gsm0710muxd -s /dev/ttyC0 -f 512 -n 8 -m basic
+4 S aid_rad+   695     1 TS   19 -  7673 hrtime 2月12 ?       00:00:02   /system/bin/rild
+5 S root       737     1 TS   19 -   137 skb_re 2月12 ?       00:00:00   /system/bin/su --daemon
+4 S aid_wifi   944     1 TS   19 -   937 poll_s 2月12 ?       00:00:00   /system/bin/wpa_supplicant -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -I/system/etc/wifi/wpa_supplicant_overlay.conf -N -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -ddd -I/system/etc/wifi/p2p_supplicant_overlay.conf -O/data/misc/wifi/sockets -g@android:wpa_wlan0
+4 S aid_dhcp  1222     1 TS   19 -   246 poll_s 2月12 ?       00:00:00   /system/bin/logwrapper /system/bin/dhcpcd -BK -dd -A -f /system/etc/dhcpcd/dhcpcd.conf -h android-d401dd2c20eb9462 wlan0
+4 S aid_dhcp  1223  1222 TS   19 -   293 poll_s 2月12 ?       00:00:00     /system/bin/dhcpcd -BK -dd -A -f /system/etc/dhcpcd/dhcpcd.conf -h android-d401dd2c20eb9462 wlan0
+5 S root      1674     1 TS   19 -  2096 poll_s 2月12 ?       00:00:00   /usr/sbin/sshd -p 2223
+4 S root      6622  1674 TS   19 -  2486 poll_s 08:58 ?        00:00:00     sshd: wzw [priv]
+5 S wzw       6820  6622 TS   19 -  2486 poll_s 08:59 ?        00:00:05       sshd: wzw@pts/15
+0 S wzw       6821  6820 TS   19 -  1205 poll_s 08:59 pts/15   00:00:00         -bash
+4 S root     11449  1674 TS   19 -  2486 poll_s 09:13 ?        00:00:00     sshd: wzw [priv]
+5 S wzw      11652 11449 TS   19 -  2486 poll_s 09:13 ?        00:00:00       sshd: wzw@pts/16
+0 S wzw      11653 11652 TS   19 -  1205 poll_s 09:13 pts/16   00:00:00         -bash
+4 S root     22672  1674 TS   19 -  2486 poll_s 09:52 ?        00:00:00     sshd: wzw [priv]
+5 S wzw      22864 22672 TS   19 -  2486 poll_s 09:53 ?        00:00:00       sshd: wzw@pts/17
+0 S wzw      22866 22864 TS   19 -  1205 wait   09:53 pts/17   00:00:00         -bash
+0 R wzw      27251 22866 TS   19 -  1627 -      10:05 pts/17   00:00:00           ps -flecH
+4 S root     24714  1674 TS   19 -  2486 poll_s 09:58 ?        00:00:00     sshd: wzw [priv]
+5 S wzw      24899 24714 TS   19 -  2486 poll_s 09:59 ?        00:00:00       sshd: wzw@pts/18
+0 S wzw      24900 24899 TS   19 -  1205 poll_s 09:59 pts/18   00:00:00         -bash
+5 S root      2002     1 TS   19 -  1212 hrtime 2月12 ?       00:00:00   /usr/sbin/cron
+5 S message+  2018     1 TS   19 -  1373 epoll_ 2月12 ?       00:00:00   /usr/bin/dbus-daemon --system
+4 S root      2021     1 TS   19 -  2021 epoll_ 2月12 ?       00:00:00   /lib/systemd/systemd-logind
+4 S root      2039     1 TS   19 - 210322 epoll_ 2月12 ?      00:00:00   /home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm
+4 S root      2040     1 TS   19 - 201994 futex_ 2月12 ?      00:00:04   caddy -port 44444 -conf /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile
+5 S syslog    2075     1 TS   19 -  4942 poll_s 2月12 ?       00:01:47   /usr/sbin/rsyslogd

@@ -1,0 +1,515 @@
+init,1 %\001
+  |-Binder_2,159
+  |   |-{AALServiceMain},798
+  |   `-{Binder_1},799
+  |-Binder_2,163
+  |   |-{BWCServiceMain},173
+  |   `-{Binder_1},174
+  |-MtkCodecService,182
+  |   `-{Binder_1},245
+  |-adbd,211
+  |   |-{adbd},214
+  |   |-{adbd},2423
+  |   `-{adbd},2424
+  |-batterywarning,181
+  |-caddy,2040 -port 44444 -conf /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile
+  |   |-{caddy},2045
+  |   |-{caddy},2046
+  |   |-{caddy},2047
+  |   |-{caddy},2048
+  |   |-{caddy},2070
+  |   |-{caddy},2071
+  |   |-{caddy},2072
+  |   |-{caddy},2073
+  |   |-{caddy},2074
+  |   |-{caddy},2102
+  |   |-{caddy},2103
+  |   |-{caddy},2211
+  |   |-{caddy},2578
+  |   `-{caddy},2593
+  |-ccci_fsd,148 0
+  |-ccci_mdinit,149 0
+  |-cron,2002
+  |-dbus-daemon,2018 --system
+  |-debuggerd,151 /system/bin/debuggerd
+  |   `-debuggerd_real,734
+  |-dm_agent_binder,189
+  |   `-{Binder_1},270
+  |-drmserver,161
+  |   |-{Binder_1},593
+  |   `-{Binder_2},594
+  |-drvbd,141
+  |-em_svr,208
+  |   `-{em_svr},591
+  |-fileserver-arm,2039
+  |   |-{fileserver-arm},2044
+  |   |-{fileserver-arm},2049
+  |   |-{fileserver-arm},2050
+  |   |-{fileserver-arm},2051
+  |   `-{fileserver-arm},2053
+  |-fotabinder,184
+  |   `-{fotabinder},251
+  |-gsm0710muxd,504 -s /dev/ttyC0 -f 512 -n 8 -m basic
+  |   |-{gsm0710muxd},680
+  |   |-{gsm0710muxd},681
+  |   |-{gsm0710muxd},682
+  |   |-{gsm0710muxd},683
+  |   |-{gsm0710muxd},684
+  |   |-{gsm0710muxd},685
+  |   |-{gsm0710muxd},686
+  |   |-{gsm0710muxd},687
+  |   |-{gsm0710muxd},688
+  |   |-{gsm0710muxd},689
+  |   |-{gsm0710muxd},690
+  |   |-{gsm0710muxd},691
+  |   |-{gsm0710muxd},692
+  |   |-{gsm0710muxd},693
+  |   `-{gsm0710muxd},694
+  |-healthd,143
+  |-installd,166
+  |-keystore,178 /data/misc/keystore
+  |-lewa_fota_servi,183 --daemon
+  |-logwrapper,147 /system/bin/6620_launcher -p /system/etc/firmware/
+  |   `-6620_launcher,167 -p /system/etc/firmware/
+  |-logwrapper,1222 /system/bin/dhcpcd -BK -dd -A -f /system/etc/dhcpcd/dhcpcd.conf -h android-d401dd2c20eb9462 wlan0
+  |   `-dhcpcd,1223 -BK -dd -A -f /system/etc/dhcpcd/dhcpcd.conf -h android-d401dd2c20eb9462 wlan0
+  |-matv,164
+  |   `-{Binder_1},168
+  |-mdlogger,502
+  |   `-{mdlogger},524
+  |-mediaserver,162
+  |   |-{ApmAudio},579
+  |   |-{ApmOutput},581
+  |   |-{ApmTone},578
+  |   |-{AudioOut_2},584
+  |   |-{Binder_1},598
+  |   |-{Binder_2},1028
+  |   |-{CCCIReadThread},582
+  |   `-{FileSourceProxy},842
+  |-mobile_log_d,153
+  |   `-{mobile_log_d},276
+  |-mtk_agpsd,179
+  |   |-{mtk_agpsd},286
+  |   |-{mtk_agpsd},287
+  |   |-{mtk_agpsd},288
+  |   |-{mtk_agpsd},289
+  |   |-{mtk_agpsd},290
+  |   |-{mtk_agpsd},291
+  |   |-{mtk_agpsd},292
+  |   |-{mtk_agpsd},293
+  |   |-{mtk_agpsd},294
+  |   |-{mtk_agpsd},295
+  |   |-{mtk_agpsd},296
+  |   |-{mtk_agpsd},297
+  |   |-{mtk_agpsd},298
+  |   |-{mtk_agpsd},311
+  |   |-{mtk_agpsd},312
+  |   |-{mtk_agpsd},313
+  |   |-{mtk_agpsd},314
+  |   |-{mtk_agpsd},315
+  |   |-{mtk_agpsd},316
+  |   |-{mtk_agpsd},317
+  |   |-{mtk_agpsd},318
+  |   |-{mtk_agpsd},319
+  |   |-{mtk_agpsd},320
+  |   `-{mtk_agpsd},321
+  |-mtkbt,191
+  |   `-{mtkbt},427
+  |-netd,154
+  |   |-{netd},668
+  |   |-{netd},669
+  |   |-{netd},670
+  |   |-{netd},671
+  |   |-{netd},672
+  |   |-{netd},673
+  |   `-{netd},674
+  |-netdiag,155
+  |   `-{netdiag},170
+  |-nvram_agent_bin,193
+  |   `-{Binder_1},229
+  |-ppl_agent,190
+  |   |-{Binder_1},230
+  |   `-{Binder_2},231
+  |-rild,695
+  |   |-{rild},697
+  |   |-{rild},698
+  |   |-{rild},699
+  |   |-{rild},700
+  |   |-{rild},701
+  |   |-{rild},702
+  |   |-{rild},703
+  |   |-{rild},704
+  |   |-{rild},705
+  |   |-{rild},706
+  |   |-{rild},707
+  |   |-{rild},708
+  |   |-{rild},709
+  |   |-{rild},710
+  |   |-{rild},711
+  |   |-{rild},712
+  |   |-{rild},713
+  |   |-{rild},714
+  |   |-{rild},715
+  |   |-{rild},716
+  |   |-{rild},717
+  |   |-{rild},718
+  |   |-{rild},719
+  |   |-{rild},720
+  |   |-{rild},721
+  |   `-{rild},722
+  |-rsyslogd,2075
+  |   |-{in:imklog},2076
+  |   `-{rs:main Q:Reg},2078
+  |-sdcard,207 -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+  |   |-{sdcard},223
+  |   `-{sdcard},224
+  |-servicemanager,144
+  |-sshd,1674 -p 2223
+  |   |-sshd,6622         
+  |   |   `-sshd,6820         
+  |   |       `-bash,6821
+  |   |-sshd,11449         
+  |   |   `-sshd,11652         
+  |   |       `-bash,11653
+  |   |-sshd,22672         
+  |   |   `-sshd,22864         
+  |   |       `-bash,22866
+  |   |           `-pstree,26568 -placts
+  |   `-sshd,24714         
+  |       `-sshd,24899         
+  |           `-bash,24900
+  |-su,209 --daemon
+  |-su,737 --daemon
+  |-surfaceflinger,158
+  |   |-{Binder_1},359
+  |   |-{Binder_2},361
+  |   |-{Binder_3},595
+  |   |-{Binder_4},596
+  |   |-{DispSync},360
+  |   |-{EventControl},402
+  |   |-{EventThread},400
+  |   |-{EventThread},401
+  |   |-{HWCDispatchThre},380
+  |   |-{MMComposeThread},379
+  |   |-{SFWatchDog},392
+  |   |-{SWD-Frame},369
+  |   |-{SWD-GPU Job},368
+  |   |-{Swap Worker},387
+  |   |-{UEventThreadHWC},376
+  |   |-{UIComposeThread},377
+  |   |-{VSyncThreadHWC},375
+  |   |-{arch_worker},366
+  |   `-{surfaceflinger},367
+  |-systemd-logind,2021
+  |-thermal,195
+  |-thermald,196
+  |-ueventd,109
+  |-vold,145
+  |   |-{vold},371
+  |   `-{vold},389
+  |-vtservice,165
+  |   `-{Binder_1},597
+  |-wpa_supplicant,944 -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -I/system/etc/wifi/wpa_supplicant_overlay.conf -N -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -ddd -I/system/etc/wifi/p2p_supplicant_overlay.conf -O/data/misc/wifi/sockets -g@android:wpa_wlan0
+  `-zygote,160 /bin/app_process -Xzygote /system/bin --zygote --start-system-server
+      |-.mediatek.omacp,1304                                                         
+      |   |-{Binder_1},1314
+      |   |-{Binder_2},1315
+      |   |-{Compiler},1310
+      |   |-{FinalizerDaemon},1312
+      |   |-{FinalizerWatchd},1313
+      |   |-{GC},1308
+      |   |-{ReferenceQueueD},1311
+      |   `-{Signal Catcher},1309
+      |-.qitu.rootangel,1347                                                          
+      |   |-{.ProcessManager},1361
+      |   |-{Binder_1},1357
+      |   |-{Binder_2},1358
+      |   |-{Binder_3},1363
+      |   |-{Compiler},1353
+      |   |-{FinalizerDaemon},1355
+      |   |-{FinalizerWatchd},1356
+      |   |-{GC},1351
+      |   |-{ReferenceQueueD},1354
+      |   `-{Signal Catcher},1352
+      |-android.browser,1381                                                        
+      |   |-{BackgroundHandl},1397
+      |   |-{Binder_1},1391
+      |   |-{Binder_2},1392
+      |   |-{Compiler},1387
+      |   |-{CookieSyncManag},1394
+      |   |-{FinalizerDaemon},1389
+      |   |-{FinalizerWatchd},1390
+      |   |-{GC},1385
+      |   |-{ReferenceQueueD},1388
+      |   |-{Signal Catcher},1386
+      |   |-{TempCookieMonst},2285
+      |   |-{TempCookieMonst},2286
+      |   `-{pool-2-thread-1},1401
+      |-d.process.media,1180                                                      
+      |   |-{AsyncTask #1},1796
+      |   |-{Binder_1},1190
+      |   |-{Binder_2},1191
+      |   |-{Binder_3},1200
+      |   |-{Compiler},1186
+      |   |-{DownloadReceive},1199
+      |   |-{FinalizerDaemon},1188
+      |   |-{FinalizerWatchd},1189
+      |   |-{GC},1184
+      |   |-{ReferenceQueueD},1187
+      |   |-{Signal Catcher},1185
+      |   |-{ent.InfoHandler},1797
+      |   |-{nt.EventHandler},1803
+      |   `-{thumbs thread},1197
+      |-ewa.appstore.hd,1645                                                       
+      |   |-{Binder_1},1655
+      |   |-{Binder_2},1656
+      |   |-{Compiler},1651
+      |   |-{FinalizerDaemon},1653
+      |   |-{FinalizerWatchd},1654
+      |   |-{GC},1649
+      |   |-{ReferenceQueueD},1652
+      |   |-{Signal Catcher},1650
+      |   |-{launcher-loader},1658
+      |   `-{unread},1659
+      |-fik.linuxdeploy,1365                                                      
+      |   |-{.ProcessManager},1396
+      |   |-{Binder_1},1375
+      |   |-{Binder_2},1376
+      |   |-{Binder_3},1400
+      |   |-{Binder_4},1411
+      |   |-{Compiler},1371
+      |   |-{FinalizerDaemon},1373
+      |   |-{FinalizerWatchd},1374
+      |   |-{GC},1369
+      |   |-{ReferenceQueueD},1372
+      |   |-{Signal Catcher},1370
+      |   `-{Thread-85},1414
+      |-her:pushservice,1083                                              
+      |   |-{Binder_1},1093
+      |   |-{Binder_2},1094
+      |   |-{Compiler},1089
+      |   |-{FinalizerDaemon},1091
+      |   |-{FinalizerWatchd},1092
+      |   |-{GC},1087
+      |   |-{ReferenceQueueD},1090
+      |   |-{Signal Catcher},1088
+      |   |-{TaskService-poo},2111
+      |   |-{Thread-44},1099
+      |   |-{WifiManager},1121
+      |   |-{launcher-loader},1096
+      |   |-{taskService-pro},1101
+      |   `-{unread},1097
+      |-iatek.bluetooth,997                                                     
+      |   |-{Binder_1},1007
+      |   |-{Binder_2},1008
+      |   |-{Compiler},1003
+      |   |-{FinalizerDaemon},1005
+      |   |-{FinalizerWatchd},1006
+      |   |-{GC},1001
+      |   |-{ReferenceQueueD},1004
+      |   `-{Signal Catcher},1002
+      |-m.android.phone,985                                                          
+      |   |-{AsyncQueryWorke},1065
+      |   |-{AsyncTask #1},1066
+      |   |-{Binder_1},995
+      |   |-{Binder_2},996
+      |   |-{Binder_3},1081
+      |   |-{Binder_4},1100
+      |   |-{CallTimeHandler},1069
+      |   |-{CdmaInboundSmsH},1058
+      |   |-{CdmaServiceCate},1060
+      |   |-{CellBroadcastHa},1057
+      |   |-{Compiler},991
+      |   |-{DcHandlerThread},1054
+      |   |-{FinalizerDaemon},993
+      |   |-{FinalizerWatchd},994
+      |   |-{GC},989
+      |   |-{GsmCellBroadcas},1062
+      |   |-{GsmInboundSmsHa},1056
+      |   |-{RILReceiver1},1063
+      |   |-{RILSender1},1035
+      |   |-{ReferenceQueueD},992
+      |   |-{Signal Catcher},990
+      |   `-{SimAssociateHan},1071
+      |-m.lewa.launcher,1011                                                          
+      |   |-{.ProcessManager},1193
+      |   |-{AsyncTask #1},1048
+      |   |-{AsyncTask #2},1049
+      |   |-{AsyncTask #3},2470
+      |   |-{AsyncTask #4},2509
+      |   |-{BIReportService},1179
+      |   |-{Binder_1},1021
+      |   |-{Binder_2},1022
+      |   |-{Binder_3},1111
+      |   |-{Compiler},1017
+      |   |-{FinalizerDaemon},1019
+      |   |-{FinalizerWatchd},1020
+      |   |-{GC},1015
+      |   |-{MDP-0},1053
+      |   |-{ReferenceQueueD},1018
+      |   |-{SWD-Frame},1075
+      |   |-{SWD-GPU Job},1074
+      |   |-{Signal Catcher},1016
+      |   |-{Swap Worker},1076
+      |   |-{WifiManager},1670
+      |   |-{arch_worker},1072
+      |   |-{launcher-loader},1032
+      |   |-{m.lewa.launcher},1073
+      |   |-{pool-4-thread-1},2125
+      |   `-{unread},1033
+      |-ndroid.systemui,827                                                       
+      |   |-{AsyncTask #1},891
+      |   |-{AsyncTask #2},892
+      |   |-{AsyncTask #3},893
+      |   |-{AsyncTask #4},894
+      |   |-{AsyncTask #5},953
+      |   |-{AsyncTask #6},954
+      |   |-{AsyncTask #7},955
+      |   |-{AsyncTask #8},1024
+      |   |-{AsyncTask #9},1025
+      |   |-{AudioTrack},873
+      |   |-{Binder_1},837
+      |   |-{Binder_2},838
+      |   |-{Binder_3},951
+      |   |-{Binder_4},1129
+      |   |-{Binder_5},1130
+      |   |-{Binder_6},1142
+      |   |-{Compiler},833
+      |   |-{FinalizerDaemon},835
+      |   |-{FinalizerWatchd},836
+      |   |-{GC},831
+      |   |-{KeyguardWidgetP},2511
+      |   |-{MDP-0},1050
+      |   |-{ReferenceQueueD},834
+      |   |-{SWD-Frame},898
+      |   |-{SWD-GPU Job},897
+      |   |-{Signal Catcher},832
+      |   |-{SoundPoolThread},841
+      |   |-{SoundPool},840
+      |   |-{Swap Worker},901
+      |   |-{SystemUI Storag},872
+      |   |-{WifiManager},890
+      |   |-{arch_worker},895
+      |   `-{ndroid.systemui},896
+      |-ps.fota.sysoper,1246                                                     
+      |   |-{Binder_1},1256
+      |   |-{Binder_2},1257
+      |   |-{Compiler},1252
+      |   |-{FinalizerDaemon},1254
+      |   |-{FinalizerWatchd},1255
+      |   |-{GC},1250
+      |   |-{ReferenceQueueD},1253
+      |   `-{Signal Catcher},1251
+      |-qh.restorresapp,1318                                                       
+      |   |-{Binder_1},1328
+      |   |-{Binder_2},1329
+      |   |-{Compiler},1324
+      |   |-{FinalizerDaemon},1326
+      |   |-{FinalizerWatchd},1327
+      |   |-{GC},1322
+      |   |-{ReferenceQueueD},1325
+      |   `-{Signal Catcher},1323
+      |-system_server,743                                                              
+      |   |-{.ProcessManager},760
+      |   |-{AMPlus},839
+      |   |-{ActivityManager},767
+      |   |-{AlarmManager},789
+      |   |-{AnrMonitorThrea},772
+      |   |-{AsyncTask #1},819
+      |   |-{AsyncTask #2},899
+      |   |-{AsyncTask #3},1059
+      |   |-{AsyncTask #4},1105
+      |   |-{AsyncTask #5},1178
+      |   |-{AsyncTask #6},1359
+      |   |-{AsyncTask #7},1424
+      |   |-{AsyncTask #8},1969
+      |   |-{AsyncTask #9},2100
+      |   |-{AudioProfileSer},810
+      |   |-{AudioService},809
+      |   |-{Binder_1},753
+      |   |-{Binder_2},754
+      |   |-{Binder_3},762
+      |   |-{Binder_4},878
+      |   |-{Binder_5},1009
+      |   |-{Binder_6},1010
+      |   |-{Binder_7},1023
+      |   |-{CaptivePortalTr},943
+      |   |-{Compiler},749
+      |   |-{ConnectivitySer},804
+      |   |-{CpuTracker},770
+      |   |-{DhcpStateMachin},1218
+      |   |-{DhcpStateMachin},1219
+      |   |-{FileObserver},771
+      |   |-{FinalizerDaemon},751
+      |   |-{FinalizerWatchd},752
+      |   |-{GC},747
+      |   |-{InputDispatcher},790
+      |   |-{InputReader},791
+      |   |-{MountService},792
+      |   |-{MtkAgps},817
+      |   |-{MtkAgps},818
+      |   |-{NetdConnector},795
+      |   |-{NetworkPolicy},797
+      |   |-{NetworkStats},796
+      |   |-{NetworkTimeUpda},976
+      |   |-{NetworkTimeUpda},981
+      |   |-{NsdService},807
+      |   |-{PackageManager},773
+      |   |-{PerfServiceMana},820
+      |   |-{PowerManagerSer},787
+      |   |-{ReferenceQueueD},750
+      |   |-{S.HandlerThread},785
+      |   |-{SensorService},759
+      |   |-{Signal Catcher},748
+      |   |-{SoundPoolThread},1134
+      |   |-{SoundPool},1133
+      |   |-{SyncHandler-0},1192
+      |   |-{Thread-57},816
+      |   |-{Thread-65},870
+      |   |-{Timer-0},2104
+      |   |-{UEventObserver},814
+      |   |-{UsbDebuggingMan},1143
+      |   |-{VoldConnector},793
+      |   |-{WifiManager},805
+      |   |-{WifiMonitor},1030
+      |   |-{WifiP2pService},800
+      |   |-{WifiSMForObserv},802
+      |   |-{WifiService},803
+      |   |-{WifiStateMachin},801
+      |   |-{WifiWatchdogSta},806
+      |   |-{WindowManager},763
+      |   |-{android.bg},768
+      |   |-{android.fg},764
+      |   |-{android.io},766
+      |   |-{android.ui},765
+      |   |-{backup},815
+      |   |-{mDnsConnector},808
+      |   |-{pool-1-thread-1},1177
+      |   |-{system_server},788
+      |   `-{watchdog},952
+      |-tek.schpwronoff,1330                                                   
+      |   |-{Binder_1},1340
+      |   |-{Binder_2},1341
+      |   |-{Compiler},1336
+      |   |-{FinalizerDaemon},1338
+      |   |-{FinalizerWatchd},1339
+      |   |-{GC},1334
+      |   |-{ReferenceQueueD},1337
+      |   `-{Signal Catcher},1335
+      |-utmethod.pinyin,956                                      
+      |   |-{AsyncTask #1},2115
+      |   |-{AsyncTask #2},2210
+      |   |-{AsyncTask #3},4361
+      |   |-{Background task},1027
+      |   |-{Binder_1},966
+      |   |-{Binder_2},967
+      |   |-{Compiler},962
+      |   |-{FinalizerDaemon},964
+      |   |-{FinalizerWatchd},965
+      |   |-{GC},960
+      |   |-{ReferenceQueueD},963
+      |   |-{Signal Catcher},961
+      |   `-{pool-1-thread-1},1026
+      |-{FinalizerDaemon},4910
+      |-{FinalizerWatchd},4911
+      `-{ReferenceQueueD},4909
