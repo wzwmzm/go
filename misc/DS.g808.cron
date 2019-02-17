@@ -8,6 +8,9 @@
 
 #杀死可疑进程 /dev/app_process
 #*/5 * * * * /home/wzw/project/go/misc/g808-kill-app-process.sh >> /home/wzw/project/go/log/kill_app_process.log
+sudo rm /dev/rt.sh
+sudo rm /dev/startup* 
+
 
 
 #     DDNS  动态域名IP更新
