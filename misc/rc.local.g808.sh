@@ -1,7 +1,12 @@
 sudo hostname -b g808;
 
-sudo setcap CAP_NET_BIND_SERVICE=+eip "/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm"
-"/home/wzw/project/go/src/html/9fileserver(net.http)/"fileserver-arm &
+#sudo setcap CAP_NET_BIND_SERVICE=+eip "/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm"
+#"/home/wzw/project/go/src/html/9fileserver(net.http)/"fileserver-arm &
+#<----------------注意: 选用上面, 或是下面的!!!
+#选用下面的须建立目录 mkdir ~/p ;并拷贝 fileserver-arm 文件
+sudo setcap CAP_NET_BIND_SERVICE=+eip "/home/wzw/p/fileserver-arm"
+"/home/wzw/p/"fileserver-arm &
+
 
 
 
