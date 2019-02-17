@@ -1,3 +1,14 @@
+ps -flecH
+pstree -placts
+sudo cat /var/log/kern.log|grep ktools
+sudo cat /var/log/kern.log|awk '/1424[1-5]/&&/fork/{print}'
+
+总结:
+1,一次性删除手机上关于kingroot的文件或目录
+2,每次开机后一次性删除 /dev/rt.sh 文件
+3,/dev/startup* 文件不再增加
+
+
 1, /proc/net/arp c     sudo  cat kern.log |grep "ifconfig"
 可疑:
 init,1 %\001
