@@ -22,6 +22,7 @@ sudo setcap CAP_NET_BIND_SERVICE=+eip "/home/wzw/p/fileserver-arm"
 #        caddy -version 查看版本号
 sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/caddy
 #5, 运行 : caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile
+#   -port 44444  是指caddy作为web服务器运行在44444端口
 caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile &
 
 #这样改没有用
