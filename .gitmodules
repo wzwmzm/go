@@ -1,3 +1,11 @@
+[submodule "go-xorm/core"]
+        url = https://github.com/go-xorm/core.git
+        path = src/github.com/go-xorm/core
+        active = true
+[submodule "go-xorm/builder"]
+        url = https://github.com/go-xorm/builder.git
+        path = src/github.com/go-xorm/builder
+        active = true
 [submodule "xorm"]
         url = https://github.com/go-xorm/xorm.git
         path = src/github.com/go-xorm/xorm
