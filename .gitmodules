@@ -1,3 +1,11 @@
+[submodule "xorm"]
+        url = https://github.com/go-xorm/xorm.git
+        path = src/github.com/go-xorm/xorm
+        active = true
+[submodule "go-sqlite3"]
+        url = https://github.com/mattn/go-sqlite3.git
+        path = src/github.com/mattn/go-sqlite3
+        active = true
 [submodule "golang-x-net"]
         url = https://github.com/golang/net.git
         path = src/golang.org/x/net
