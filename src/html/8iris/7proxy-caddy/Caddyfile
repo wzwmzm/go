@@ -20,16 +20,17 @@ ga111.ga:443 {
 }
 
 # 2号机的fileserver:8888
+#'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm'
 2.ga111.ga:443 {
 	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 	proxy / 192.168.2.2:8888
 }
 
 # 2号机的徐高阳:8080
-22.ga111.ga:443 {
-        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
-        proxy / 192.168.2.2:8080
-}
+#22.ga111.ga:443 {
+#        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
+#        proxy / 192.168.2.2:8080
+#}
 
 # 2号机的实验室:8080(暂停)
 #5.ga111.ga:443 {
@@ -42,16 +43,17 @@ ga111.ga:443 {
 
 
 # 3号机的fileserver:8888
+#'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm'
 3.ga111.ga:443 {
 	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 	proxy / 192.168.2.3:8888
 }
 
 # 3号机的徐高阳:8080
-33.ga111.ga:443 {
-        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
-        proxy / 192.168.2.3:8080
-}
+#33.ga111.ga:443 {
+#        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
+#        proxy / 192.168.2.3:8080
+#}
 
 
 # 重定向到百度
@@ -70,4 +72,4 @@ ga111.ga:443 {
 #	}
 
 
-}
+
