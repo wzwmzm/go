@@ -29,9 +29,9 @@ func main() {
 	// http://localhost:8080
 	// http://localhost:8080
 	// write something, press submit, see the result.
-	app.Run(iris.TLS("192.168.2.2:443", "mycert.cer", "mykey.key")) ////<---
+	//app.Run(iris.TLS("192.168.2.2:443", "mycert.cer", "mykey.key")) ////<---
 	//mycert.cer === fullchain.cer
-	//app.Run(iris.Addr(":8088"))
+	app.Run(iris.Addr(":80888"))
 }
 
 //curl --no-buffer -H 'Connection: keep-alive, Upgrade' -H 'Upgrade: websocket' -v -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: websocket' http://localhost:8080/ws | od -t c
