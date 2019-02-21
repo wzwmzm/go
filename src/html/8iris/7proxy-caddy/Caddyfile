@@ -32,10 +32,11 @@ ga111.ga:443 {
 #        proxy / 192.168.2.2:8080
 #}
 
-# 2号机的实验室:8080(暂停)
-#5.ga111.ga:443 {
-#        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
-#        proxy / https://192.168.2.2:8080 {
+# 2号机的实验室:80888
+# '/home/wzw/project/go/src/laboratory:80888'
+5.ga111.ga:443 {
+        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
+        proxy / 192.168.2.2:80888 {
 #               websocket
 #               transparent
 #               except static
