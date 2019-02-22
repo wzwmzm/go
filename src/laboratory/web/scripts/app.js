@@ -54,9 +54,10 @@ var scriptNode = audioCtx.createScriptProcessor(256, 1, 1);
 //numberOfInputChannels, 输入声道数
 //numberOfOutputChannels, 输出声道数
 // B, Node 的事件处理,即功能所在
-let n_frame = 0; //给发送的消息帧计数,按一帧30个数,声音采样率4096,可以计数2百多万年
-let n_b_frame = 0; //给消息帧的数组计数
-let frame = new Array();
+// 1 * 消息 = 30 * 数据
+let n_frame = 0; //给发送的消息编号,一个消息包含30个数据,声音采样率4096,可以计数2百多万年
+let n_b_frame = 0; //给消息内部的数据计数,满30个数据打包成一个消息发送
+let frame = new Array();//frame是一个数组,也是将要发送的一个消息,满了30个数据就发送
 scriptNode.onaudioprocess = function (e) {
     let inputBuffer = e.inputBuffer;
     let outputBuffer = e.outputBuffer;
@@ -86,6 +87,7 @@ scriptNode.onaudioprocess = function (e) {
 }
 
 
+//有两条装配路径, 这里是路径1
 //---> 话筒音源
 navigator.mediaDevices.getUserMedia({
         audio: true
@@ -95,9 +97,9 @@ navigator.mediaDevices.getUserMedia({
         //这个mediaStream是getUserMedia()返回的值, 可以含有多个音轨及视频
         let source = audioCtx.createMediaStreamSource(mediaStream);
         // C, Node装配连接, source 中含有解码后的音频数据
-        source.connect(scriptNode);
-        scriptNode.connect(analyser2);
-        //analyser2.connect(audioCtx.destination);
+        source.connect(scriptNode);                         // 话筒音源    --> scriptNode(数据传输处理)
+        scriptNode.connect(analyser2);                      // scriptNode --> 示波器2
+        //analyser2.connect(audioCtx.destination);          // 示波器2     --> 音频输出
     })
     .catch(function (err) {
         console.log('The following gUM error occured: ' + err);
@@ -107,10 +109,11 @@ navigator.mediaDevices.getUserMedia({
 let gain1 = audioCtx.createGain();
 gain1.gain.value = 0; //初始音量为0
 
+//有两条装配路径, 这里是路径2
 //---> audioNode 连接
-oscillator.connect(analyser1);
-analyser1.connect(gain1);
-gain1.connect(audioCtx.destination);
+oscillator.connect(analyser1);                              // 振荡源  --> 示波器1
+analyser1.connect(gain1);                                   // 示波器1 --> 放大器
+gain1.connect(audioCtx.destination);                        // 放大器  --> 音频输出
 
 //---> 作图准备
 let animation; //用来暂停动画显示
