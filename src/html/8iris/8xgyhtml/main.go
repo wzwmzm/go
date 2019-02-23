@@ -54,8 +54,9 @@ func main() {
 		app.Logger().Fatalf("orm failed to initialized User table: %v", err)
 	}
 
-	app.Get("/insert", func(ctx iris.Context) {
-		user := &User{Username: "kataras", Salt: "hash---", Password: "hashed", CreatedAt: time.Now(), UpdatedAt: time.Now()}
+	//app.Get("/insert", func(ctx iris.Context) {
+	app.Get("/", func(ctx iris.Context) {
+	user := &User{Username: "kataras", Salt: "hash---", Password: "hashed", CreatedAt: time.Now(), UpdatedAt: time.Now()}
 		orm.Insert(user)
 
 		ctx.Writef("user inserted: %#v", user)
