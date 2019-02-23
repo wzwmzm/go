@@ -39,7 +39,7 @@ type User struct {
 func main() {
 	app := iris.New()
 
-	orm, err := xorm.NewEngine("sqlite3", "./test.db.nogit")
+	orm, err := xorm.NewEngine("sqlite3", "./test.db")
 	if err != nil {
 		app.Logger().Fatalf("orm failed to initialized: %v", err)
 	}
@@ -70,5 +70,5 @@ func main() {
 
 	// http://localhost:8080/insert
 	// http://localhost:8080/get
-	app.Run(iris.Addr(":8080"), iris.WithoutServerError(iris.ErrServerClosed))
+	app.Run(iris.Addr(":8101"), iris.WithoutServerError(iris.ErrServerClosed))
 }

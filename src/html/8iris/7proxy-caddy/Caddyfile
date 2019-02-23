@@ -20,7 +20,7 @@ ga111.ga:443 {
 }
 
 # 2号机的fileserver:8888
-#'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm'
+#'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver.arm'
 2.ga111.ga:443 {
 	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 	proxy / 192.168.2.2:8888
@@ -31,6 +31,14 @@ ga111.ga:443 {
         tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
         proxy / https://2.ga111.ga/root/home/wzw/project/go/src/html/8iris/8xgyhtml/
 }
+
+# 2号机的xgyhtml.arm:8101
+# /home/wzw/project/go/src/html/8iris/8xgyhtml/xgyhtml.arm
+7.ga111.ga:443 {
+        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
+        proxy / 192.168.2.2:8101/
+}
+
 
 # 2号机的实验室:8100
 # '/home/wzw/project/go/src/laboratory:8100'
