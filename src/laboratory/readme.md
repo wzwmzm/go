@@ -13,6 +13,18 @@ websockets.html
 	socket.Emit("chat", input.value);          -->发送
 	socket.On("chat", function (msg) {...});   -->接收
     
+
+//有两条装配路径, 
+							    // 这里是路径1,---> 话筒音源
+        source.connect(scriptNode);                         // 话筒音源    --> scriptNode(数据传输处理)
+        scriptNode.connect(analyser2);                      // scriptNode --> 示波器2
+        //analyser2.connect(audioCtx.destination);          // 示波器2     --> 音频输出
+//
+                                                            // 这里是路径2,---> audioNode 连接
+oscillator.connect(analyser1);                              // 振荡源  --> 示波器1
+analyser1.connect(gain1);                                   // 示波器1 --> 放大器
+gain1.connect(audioCtx.destination);                        // 放大器  --> 音频输出
+//////////////////////////////////////////////////////////////
 app.js  音频数据的流转
     navigator.mediaDevices.getUserMedia({
             audio: true
