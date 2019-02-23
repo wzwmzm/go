@@ -3,4 +3,7 @@ bin/
 linux/
 log/
 tmp/
-*.nogit
+*.arm
+*.exe
+*.x86
+*.db
