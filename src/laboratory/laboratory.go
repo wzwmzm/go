@@ -30,7 +30,7 @@ func main() {
 	// write something, press submit, see the result.
 	//app.Run(iris.TLS("192.168.2.2:443", "mycert.cer", "mykey.key")) ////<---------------
 	//mycert.cer === fullchain.cer
-	app.Run(iris.Addr(":8100"))        //<------------------------------------------------
+	app.Run(iris.Addr(":8100")) //<------------------------------------------------
 }
 
 //curl --no-buffer -H 'Connection: keep-alive, Upgrade' -H 'Upgrade: websocket' -v -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: websocket' http://localhost:8080/ws | od -t c      //<-----针对二进制文件
@@ -40,6 +40,8 @@ func setupWebsocket(app *iris.Application) {
 	ws := websocket.New(websocket.Config{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
+		//BinaryMessages bool		//缺省值为FALSE.  以二进制数据代替UTF-8文本
+		//EnableCompression bool		//当前只在"NO CONTEXT TAKEOVER"模式下才支持此属性.  只有服务器和客户端都支持压缩才管用
 	})
 	fmt.Println("websockets读写缓冲区各设置为1024 byte")
 	ws.OnConnection(handleConnection) //这里只是设置,还没有开始响应
@@ -51,11 +53,11 @@ func setupWebsocket(app *iris.Application) {
 	//真正的响应并不是ws.Handler(),而是 handleConnection()
 	//如果要架设多个websockets服务,可以通过不同的路由设置来完成,即IP:PROT是相同的,只是后面的路由不同.
 	//可以生成多个ws1 := websocket.New(),然后app.Get("/path", ws1.Handler())
-    
+
 	// serve the javascript built'n client-side library,
 	// see websockets.html script tags, this path is used.
 	app.Any("/iris-ws.js", websocket.ClientHandler()) //返回iris-ws.js文件给浏览器
-    //这里是动态地获取 iris-ws.js 页以便随时更新. 将来成品时需将此页静态化
+	//这里是动态地获取 iris-ws.js 页以便随时更新. 将来成品时需将此页静态化
 }
 
 //https://gafans.ga/ws-->websockets.html是测试页
@@ -63,18 +65,29 @@ func setupWebsocket(app *iris.Application) {
 //https://gafans.ga(app.js)-->是主线程
 //响应和处理事件:    server
 func handleConnection(c websocket.Connection) {
-	// Read events from browser
-    // "chat"会话, 在websockets.html的第一个"send"按键
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//c.ID() string		// 连接建立时的ID,也是这个连接的缺省房间号
+	//c.Server() *Server// Server returns the websocket server instance
+	//c.To(string) Emitter	//给指定房间发消息
+	//JOIN可以加入一个STRING指定的房间,如果不存在则建立它.
+	//一个房间可以有多个连接, 一个连接可以加入多个房间
+	//c.Join(string)		STRING为自己定义的房间号
+	//c.EMIT() 将消息发给连接时缺省建立的房间及后来JOIN的房间
+
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//"chat"是事件编号
+	//与WEBSOCKETS.HTML对应
 	c.On("chat", func(msg string) {
 		// Print the message to the console, c.Context() is the iris's http context.
 		fmt.Printf("%s sent: %s\n", c.Context().RemoteAddr(), msg)
 		// Write message back to the client message owner with:
-		c.Emit("chat", msg) //回给当前客户端
+		c.Emit("chat", msg) //给缺省房间及后来加入的房间发消息
 		// Write message to all except this client with:
 		c.To(websocket.Broadcast).Emit("chat", msg) //发给所有客户端除了当前客户端
 	})
-    
-    // "wzw"会话, 在websockets.html的第二个按键
+
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//"WZW"是事件编号
 	c.On("wzw", func(f64a interface{}) {
 		fmt.Printf("wzw接收到二进制数....")
 		//将 msg 由 string 转换成 []float
@@ -82,8 +95,10 @@ func handleConnection(c websocket.Connection) {
 		fmt.Printf(": %v", f64a)
 		c.Emit("wzw", f64a)
 	})
-    
-    //"server"会话,在app.js里传输多媒体数据用
+
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//"SERVER"为事件编号
+	//"server"会话,在app.js里传输多媒体数据用
 	c.On("server", func(msg interface{}) {
 		fmt.Println("\nserver接收到二进制数....")
 		//将 msg 由 string 转换成 []float

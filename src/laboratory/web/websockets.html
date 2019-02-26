@@ -35,8 +35,17 @@ at this example we registered the 'chat' -->
         output.innerHTML += "Status: Disconnected\n";
     });
 
-    // read events from the server
-    // 客户端收信处理
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//c.ID() string		// 连接建立时的ID,也是这个连接的缺省房间号
+	//c.Server() *Server// Server returns the websocket server instance
+	//c.To(string) Emitter	//给指定房间发消息
+	//JOIN可以加入一个STRING指定的房间,如果不存在则建立它.
+	//一个房间可以有多个连接, 一个连接可以加入多个房间
+	//c.Join(string)
+	//c.EMIT() 将消息发给连接时缺省建立的房间及后来JOIN的房间
+
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//"chat""wzw"是事件编号
     socket.On("chat", function(msg) {
         addMessage(msg);
     });
@@ -47,9 +56,7 @@ at this example we registered the 'chat' -->
     // 客户端发信处理
     function send() {
         addMessage("Me: " + input.value); // write ourselves
-        socket.Emit("chat", input.value); // send chat event data to the websocket server
-        //socket.Emit("12342342343");
-        // "chat" 是事件标志, 后面是内容. 所以一个消息可以通过 协议 主机IP 端口 路由 事件 五个部分来区分        
+        socket.Emit("chat", input.value); // send chat event data to the websocket server        
         input.value = ""; // clear the input
     }
 
@@ -63,7 +70,7 @@ at this example we registered the 'chat' -->
         f64a[2] = f64a[0] + f64a[1];
         f64a = new Array(111, 222, 333);
         var str = "1234567890"
-        socket.Emit("wzw", f64a)
+        socket.Emit("wzw", f64a)    
         addMessage("Me: 发送二进制数...")
     }
 
