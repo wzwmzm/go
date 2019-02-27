@@ -72,7 +72,7 @@ func handleConnection(c websocket.Connection) {
 	//JOIN可以加入一个STRING指定的房间,如果不存在则建立它.
 	//一个房间可以有多个连接, 一个连接可以加入多个房间
 	//c.Join(string)		STRING为自己定义的房间号
-	//c.EMIT() 将消息发给连接时缺省建立的房间及后来JOIN的房间
+	//c.EMIT() 将消息发给连接时缺省建立的房间,发送给自己
 
 	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
 	//"chat"是事件编号
@@ -81,7 +81,7 @@ func handleConnection(c websocket.Connection) {
 		// Print the message to the console, c.Context() is the iris's http context.
 		fmt.Printf("%s sent: %s\n", c.Context().RemoteAddr(), msg)
 		// Write message back to the client message owner with:
-		c.Emit("chat", msg) //给缺省房间及后来加入的房间发消息
+		c.Emit("chat", msg) //给缺省房间发消息,就是给连接本身发消息
 		// Write message to all except this client with:
 		c.To(websocket.Broadcast).Emit("chat", msg) //发给所有客户端除了当前客户端
 	})
