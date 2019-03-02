@@ -8,6 +8,8 @@ import (
 	"github.com/kataras/iris/websocket"
 )
 
+var conn map[websocket.Connection]bool //only record connections of "newroom"
+
 //sudo setcap CAP_NET_BIND_SERVICE=+eip ./arm-laboratory
 func main() {
 	app := iris.New()
@@ -22,6 +24,8 @@ func main() {
 		ctx.ServeFile("./web/websockets.html", false) // second parameter: enable gzip?
 	})
 
+	conn = make(map[websocket.Connection]bool)
+
 	setupWebsocket(app)
 
 	// x2
@@ -32,6 +36,9 @@ func main() {
 	//mycert.cer === fullchain.cer
 	app.Run(iris.Addr(":8100")) //<------------------------------------------------
 }
+
+//var conn map[websocket.Connection]bool		//only record connections of "newroom"
+//conn = make(map[websocket.Connection]bool)
 
 //curl --no-buffer -H 'Connection: keep-alive, Upgrade' -H 'Upgrade: websocket' -v -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: websocket' http://localhost:8080/ws | od -t c      //<-----针对二进制文件
 //curl --no-buffer -H 'Connection: keep-alive, Upgrade' -H 'Upgrade: websocket' -v -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: websocket' http://localhost:8080/ws                //<-----针对文本文件
@@ -117,6 +124,42 @@ func handleConnection(c websocket.Connection) {
 
 		c.Emit("server", data)
 	})
+
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//"SERVER"为事件编号
+	//"server"会话,在app.js里传输多媒体数据用
+	c.On("newroom", func(msg interface{}) {
+		fmt.Println("\nsnewroom接收到二进制数....")
+		//将 msg 由 string 转换成 []float
+		//f64a := []byte(msg)
+
+		//fmt.Printf(": %v \n", msg)
+		//fmt.Printf("  data: %v ", msg.(map[string]interface{})["data"].(map[string]interface{})["a"])
+		//fmt.Printf("  TypeOf: %v ", reflect.TypeOf(msg))
+		count := msg.(map[string]interface{})["count"]               //float64
+		data := msg.(map[string]interface{})["data"].([]interface{}) // []float64
+
+		fmt.Printf("count : %v\n", count)
+		//打印全部30个数
+		fmt.Printf("data : %v   \n", data)
+		//只打印其中两个数
+		//fmt.Printf("data : %v   %v\n", data[0], data[9])
+		fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
+		fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
+
+		c.Emit("newroom", data)
+	})
+	c.On("connect", func(msg string) {
+		if msg == "connect" {
+			fmt.Printf("connect----> %v----%v\n", c, c.ID())
+			conn[c] = true
+		}
+	})
+	c.OnDisconnect(func() {
+		fmt.Printf("disconnect dealwith c.OnDisconnect----> %v----%v\n", c, c.ID())
+		delete(conn, c)
+	})
+
 }
 
 //http://localhost:8080/
