@@ -67,6 +67,9 @@ then
 #       echo "重启WIFI连接....sudo ip link set wlan0 down...."
         sudo ip link set wlan0 down
         sleep 10
+	arp -s 192.168.2.2 ac:38:70:53:03:d6
+	arp -s 192.168.2.1 cc:81:da:4e:2e:a1
+	echo "arp -s 192.168.2.2 ac:38:70:53:03:d6"
         echo "$IDSTR $(date +%H:%M:%S) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
         echo ""
 	echo ""

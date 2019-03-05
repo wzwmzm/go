@@ -42,3 +42,6 @@ func broadcast(Conn map[websocket.Connection]bool, message string) {
 		k.To("room1").Emit("chat", message)
 	}
 }
+
+
+

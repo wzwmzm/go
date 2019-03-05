@@ -14,8 +14,14 @@ var conn map[websocket.Connection]bool //only record connections of "newroom"
 func main() {
 	app := iris.New()
 
-	app.StaticWeb("/", "./web") //<-----------------------设定网站根目录
-	app.Get("/", func(ctx iris.Context) {
+	app.StaticWeb("/", "./web")    //<------------------设定网站根目录
+    //app.RegisterView(iris.HTML("./web", ".html")) 
+	app.RegisterView(iris.HTML("./web", ".html").Reload(true))  
+    //设定显示模板.  
+    //.Reload(true)每次请求时重载模板...(开发模式)
+
+    
+    app.Get("/", func(ctx iris.Context) {
 		ctx.ServeFile("./web/index.html", false) // true for gzip.
 	})
 	//websockets.html 是测试页而非主线.
@@ -25,8 +31,16 @@ func main() {
 	})
 
 	conn = make(map[websocket.Connection]bool)
-
 	setupWebsocket(app)
+    
+    app.Get("/entry", func(ctx iris.Context) {
+        //显示数据
+
+        ctx.ViewData("roomlist", roomlist)
+        ctx.View("entry.html")
+    })
+    
+
 
 	// x2
 	// http://localhost:8080
