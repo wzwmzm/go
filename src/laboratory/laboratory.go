@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"reflect"
-
+    "encoding/json"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/websocket"
 )
 
-var conn map[websocket.Connection]bool //only record connections of "newroom"
+var roomlist map[string]websocket.Connection //only record connections of "newroom"
 
 //sudo setcap CAP_NET_BIND_SERVICE=+eip ./arm-laboratory
 func main() {
@@ -30,14 +30,17 @@ func main() {
 		ctx.ServeFile("./web/websockets.html", false) // second parameter: enable gzip?
 	})
 
-	conn = make(map[websocket.Connection]bool)
+	roomlist = make(map[string]websocket.Connection)
 	setupWebsocket(app)
     
     app.Get("/entry", func(ctx iris.Context) {
-        //显示数据
-
-        ctx.ViewData("roomlist", roomlist)
-        ctx.View("entry.html")
+    //显示数据
+    rooms, err := json.Marshal(roomlist)
+    if err != nil {
+        fmt.Println("json.Marshal failed:", err)
+    }
+    ctx.ViewData("rooms", rooms)
+    ctx.View("entry.html")
     })
     
 
@@ -143,7 +146,6 @@ func handleConnection(c websocket.Connection) {
 	//"SERVER"为事件编号
 	//"server"会话,在app.js里传输多媒体数据用
 	c.On("newroom", func(msg interface{}) {
-		fmt.Println("\nsnewroom接收到二进制数....")
 		//将 msg 由 string 转换成 []float
 		//f64a := []byte(msg)
 
@@ -153,25 +155,33 @@ func handleConnection(c websocket.Connection) {
 		count := msg.(map[string]interface{})["count"]               //float64
 		data := msg.(map[string]interface{})["data"].([]interface{}) // []float64
 
-		fmt.Printf("count : %v\n", count)
+		_,_=count,data
 		//打印全部30个数
-		fmt.Printf("data : %v   \n", data)
 		//只打印其中两个数
+        //fmt.Println("\nsnewroom接收到二进制数....")
+		//fmt.Printf("count : %v\n", count)
+		//fmt.Printf("data : %v   \n", data)
 		//fmt.Printf("data : %v   %v\n", data[0], data[9])
-		fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
-		fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
+		//fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
+		//fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
 
 		c.Emit("newroom", data)
 	})
+    
 	c.On("connect", func(msg string) {
 		if msg == "connect" {
-			fmt.Printf("connect----> %v----%v\n", c, c.ID())
-			conn[c] = true
+			fmt.Printf("connect----> %v\n", c.ID())
+			//c=={<nil> 0xc4201cf680 fbf9a337-ab0d-481e-a7d6-e136803b4a96 1 false [0x8a9230] [] [] [] [] [] map[server:[0x8a8a50] newroom:[0x8a8eb0] connect:[0x8a9030] chat:[0x8a86b0] wzw:[0x8a8950]] true 0xc4201d0d80 0xc4201d0da0 0xc4201d0dc0 0xc4201623f0 [] 0xc42010e420 {0 0}}
+            //c.ID()==fbf9a337-ab0d-481e-a7d6-e136803b4a96
+            //conn==map[0xc42010f1e0:true 0xc42010e160:true]
+            
+            roomlist[c.ID()] = c
+            fmt.Printf("roomlist[]---%v\n", roomlist)
 		}
 	})
 	c.OnDisconnect(func() {
-		fmt.Printf("disconnect dealwith c.OnDisconnect----> %v----%v\n", c, c.ID())
-		delete(conn, c)
+		fmt.Printf("disconnect c.OnDisconnect----> %v\n", c.ID())
+        delete(roomlist, c.ID())
 	})
 
 }
