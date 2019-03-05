@@ -37,10 +37,10 @@ then
         echo "前次地址: $LAST_IP   "
         echo "本次地址: $IP"
 
-        echo  "cat /proc/net/arp"
-        cat /proc/net/arp
-        echo "ip neigh show"
-        ip neigh show
+#        echo  "cat /proc/net/arp"
+#        cat /proc/net/arp
+        echo "arp -n"
+        arp -n
         #清除 arp 缓存   sudo ip neigh flush dev wlp3s0
 
         ping -c2  $DOMAIN  > /dev/null
