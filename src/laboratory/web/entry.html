@@ -1,6 +1,9 @@
-<!doctype html><!--HTML5格式-->
+<!doctype html>
+<!--HTML5格式-->
 <html>
+
 <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="1.css">
     </link>
     <style>
@@ -27,7 +30,6 @@
            grid-template-columns: repeat(3, 1fr);
         }
     </style>
-    <meta charset="utf-8">
     <title>标题即是标签</title>
 </head>
 
@@ -35,18 +37,24 @@
     <div class="title1">
         <p></p>
         <a href="newroom.html">开房间</a>
-        <hr /><hr />
+        <hr />
+        <hr />
         <p>进房间</p>
     </div>
-    <div class="wrapper">
-        <div>{{.rooms}}</div>
-        <div>Two</div>
-        <div>Three</div>
-        <div>Four</div>
-        <div>Five</div>
+    <div class="wrapper" id="rooms">
+        
     </div>
 
 
     <script type="text/javascript" src="1.js"></script>
+
+    <script type="text/javascript">
+        jsonstr_rooms = JSON.parse({{.rooms}});
+        ctrl_rooms = document.getElementById("rooms");
+        for (x in jsonstr_rooms) {
+            ctrl_rooms.innerHTML += "<div>" + x + " : " + jsonstr_rooms[x] + "</div>";
+}
+    </script>
 </body>
+
 </html>

@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
+    "strconv"
 	"reflect"
     "encoding/json"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/websocket"
 )
 
-var roomlist map[string]websocket.Connection //only record connections of "newroom"
-
+var roomlist map[string]string  //房间号数组roomlist[ c.ID() ] = 房间号
+var n_room int                  //给新开房间记数
 //sudo setcap CAP_NET_BIND_SERVICE=+eip ./arm-laboratory
 func main() {
 	app := iris.New()
@@ -30,18 +31,26 @@ func main() {
 		ctx.ServeFile("./web/websockets.html", false) // second parameter: enable gzip?
 	})
 
-	roomlist = make(map[string]websocket.Connection)
+	roomlist = make(map[string]string)
+    n_room = 0;
 	setupWebsocket(app)
     
     app.Get("/entry", func(ctx iris.Context) {
-    //显示数据
+    //显示数据.
+    //roomlist typeof map
+    //rooms typeof []byte
+    //jsonstr typeof string <------- we need this!!!
     rooms, err := json.Marshal(roomlist)
+    var jsonstr_rooms string
+    jsonstr_rooms = string(rooms)
+    fmt.Printf("rooms ------: %v\n", jsonstr_rooms)
     if err != nil {
-        fmt.Println("json.Marshal failed:", err)
-    }
-    ctx.ViewData("rooms", rooms)
+        fmt.Println("json.Marshal(roomlist) failed:", err)
+        ctx.HTML("<b>json.Marshal(roomlist) failed!</b>")
+    }else{
+    ctx.ViewData("rooms", jsonstr_rooms)
     ctx.View("entry.html")
-    })
+    }})
     
 
 
@@ -51,7 +60,7 @@ func main() {
 	// write something, press submit, see the result.
 	//app.Run(iris.TLS("192.168.2.2:443", "mycert.cer", "mykey.key")) ////<---------------
 	//mycert.cer === fullchain.cer
-	app.Run(iris.Addr(":8100")) //<------------------------------------------------
+	app.Run(iris.Addr(":8100"), iris.WithCharset("UTF-8")) //<------------------------------------------------
 }
 
 //var conn map[websocket.Connection]bool		//only record connections of "newroom"
@@ -174,8 +183,8 @@ func handleConnection(c websocket.Connection) {
 			//c=={<nil> 0xc4201cf680 fbf9a337-ab0d-481e-a7d6-e136803b4a96 1 false [0x8a9230] [] [] [] [] [] map[server:[0x8a8a50] newroom:[0x8a8eb0] connect:[0x8a9030] chat:[0x8a86b0] wzw:[0x8a8950]] true 0xc4201d0d80 0xc4201d0da0 0xc4201d0dc0 0xc4201623f0 [] 0xc42010e420 {0 0}}
             //c.ID()==fbf9a337-ab0d-481e-a7d6-e136803b4a96
             //conn==map[0xc42010f1e0:true 0xc42010e160:true]
-            
-            roomlist[c.ID()] = c
+            n_room = n_room + 1
+            roomlist[ c.ID() ] = "room " + strconv.Itoa(n_room)
             fmt.Printf("roomlist[]---%v\n", roomlist)
 		}
 	})
