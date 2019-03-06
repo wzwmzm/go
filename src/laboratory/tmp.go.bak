@@ -45,6 +45,7 @@ func broadcast(Conn map[websocket.Connection]bool, message string) {
 
 
 
+<<<<<<< HEAD
 
 可以浏览以下示例，以便更好理解
 
@@ -72,3 +73,5 @@ func broadcast(Conn map[websocket.Connection]bool, message string) {
 - [概览](hero/overview)
 - [Sessions](hero/sessions) **NEW**
 - [另一种依赖注入的例子和通常的较好实践](hero/smart-contract/main.go) **NEW**
+=======
+>>>>>>> 6bf964738eb7f9e74f8eefc18d3d941eaac10b07

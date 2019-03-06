@@ -37,10 +37,10 @@ then
         echo "前次地址: $LAST_IP   "
         echo "本次地址: $IP"
 
-        echo  "cat /proc/net/arp"
-        cat /proc/net/arp
-        echo "ip neigh show"
-        ip neigh show
+#        echo  "cat /proc/net/arp"
+#        cat /proc/net/arp
+        echo "arp -n"
+        arp -n
         #清除 arp 缓存   sudo ip neigh flush dev wlp3s0
 
         ping -c2  $DOMAIN  > /dev/null
@@ -67,6 +67,9 @@ then
 #       echo "重启WIFI连接....sudo ip link set wlan0 down...."
         sudo ip link set wlan0 down
         sleep 10
+	arp -s 192.168.2.3  00:08:22:31:20:76
+	arp -s 192.168.2.1  cc:81:da:4e:2e:a1
+	echo "arp -s 192.168.2.3  00:08:22:31:20:76"
         echo "$IDSTR $(date +%H:%M:%S) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
         echo ""
 	echo ""
