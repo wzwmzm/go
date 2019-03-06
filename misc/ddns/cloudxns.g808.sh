@@ -69,6 +69,7 @@ then
         sleep 10
 	arp -s 192.168.2.2 ac:38:70:53:03:d6
 	arp -s 192.168.2.1 cc:81:da:4e:2e:a1
+	arp -n
 	echo "arp -s 192.168.2.2 ac:38:70:53:03:d6"
         echo "$IDSTR $(date +%H:%M:%S) --- 重启WIFI后IP=$(curl -s ip.xdty.org) "
         echo ""
