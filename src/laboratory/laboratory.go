@@ -36,21 +36,26 @@ func main() {
 	setupWebsocket(app)
     
     app.Get("/entry", func(ctx iris.Context) {
-    //显示数据.
-    //roomlist typeof map
-    //rooms typeof []byte
-    //jsonstr typeof string <------- we need this!!!
-    rooms, err := json.Marshal(roomlist)
-    var jsonstr_rooms string
-    jsonstr_rooms = string(rooms)
-    fmt.Printf("rooms ------: %v\n", jsonstr_rooms)
-    if err != nil {
-        fmt.Println("json.Marshal(roomlist) failed:", err)
-        ctx.HTML("<b>json.Marshal(roomlist) failed!</b>")
-    }else{
-    ctx.ViewData("rooms", jsonstr_rooms)
-    ctx.View("entry.html")
+        //显示数据.
+        //roomlist typeof map
+        //rooms typeof []byte
+        //jsonstr typeof string <------- we need this!!!
+        rooms, err := json.Marshal(roomlist)
+        var jsonstr_rooms string
+        jsonstr_rooms = string(rooms)
+        fmt.Printf("rooms ------: %v\n", jsonstr_rooms)
+        if err != nil {
+            fmt.Println("json.Marshal(roomlist) failed:", err)
+            ctx.HTML("<b>json.Marshal(roomlist) failed!</b>")
+        }else{
+        ctx.ViewData("rooms", jsonstr_rooms)
+        ctx.View("entry.html")
     }})
+    
+    app.Get("/room/{roomid:string}", func(ctx iris.Context){
+        roomid := ctx.Params().Get("roomid")
+        fmt.Printf("roomid-----%v", roomid)
+    })
     
 
 
@@ -184,7 +189,7 @@ func handleConnection(c websocket.Connection) {
             //c.ID()==fbf9a337-ab0d-481e-a7d6-e136803b4a96
             //conn==map[0xc42010f1e0:true 0xc42010e160:true]
             n_room = n_room + 1
-            roomlist[ c.ID() ] = "room " + strconv.Itoa(n_room)
+            roomlist[ c.ID() ] = "room" + strconv.Itoa(n_room)
             fmt.Printf("roomlist[]---%v\n", roomlist)
 		}
 	})

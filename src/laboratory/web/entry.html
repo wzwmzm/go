@@ -52,7 +52,8 @@
         jsonstr_rooms = JSON.parse({{.rooms}});
         ctrl_rooms = document.getElementById("rooms");
         for (x in jsonstr_rooms) {
-            ctrl_rooms.innerHTML += "<div>" + x + " : " + jsonstr_rooms[x] + "</div>";
+            roomid = jsonstr_rooms[x]
+            ctrl_rooms.innerHTML += `<div onclick="getElementById('` + roomid +  `').submit()">` +  x + ` : ` + roomid + `<form  id="` + roomid + `" action="/room/` + roomid + `" method="get"></form></div>`;
 }
     </script>
 </body>
