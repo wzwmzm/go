@@ -55,6 +55,8 @@ func main() {
     app.Get("/room/{roomid:string}", func(ctx iris.Context){
         roomid := ctx.Params().Get("roomid")
         fmt.Printf("roomid-----%v", roomid)
+        ctx.ViewData("roomid", roomid)
+        ctx.View("getinroom.html")
     })
     
 
@@ -103,6 +105,7 @@ func setupWebsocket(app *iris.Application) {
 //https://gafans.ga(app.js)-->是主线程
 //响应和处理事件:    server
 func handleConnection(c websocket.Connection) {
+    var roomid string //要么是新开房间号,要么是进入的房间号
 	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
 	//c.ID() string		// 连接建立时的ID,也是这个连接的缺省房间号
 	//c.Server() *Server// Server returns the websocket server instance
@@ -178,20 +181,27 @@ func handleConnection(c websocket.Connection) {
 		//fmt.Printf("data : %v   %v\n", data[0], data[9])
 		//fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
 		//fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
-
-		c.Emit("newroom", data)
+        c.To(roomid).Emit("newroom",data)
+		//c.Emit("newroom", data)
 	})
     
 	c.On("connect", func(msg string) {
-		if msg == "connect" {
-			fmt.Printf("connect----> %v\n", c.ID())
+		if msg == "newroom" {
+			fmt.Printf("newroom----> %v\n", c.ID())
 			//c=={<nil> 0xc4201cf680 fbf9a337-ab0d-481e-a7d6-e136803b4a96 1 false [0x8a9230] [] [] [] [] [] map[server:[0x8a8a50] newroom:[0x8a8eb0] connect:[0x8a9030] chat:[0x8a86b0] wzw:[0x8a8950]] true 0xc4201d0d80 0xc4201d0da0 0xc4201d0dc0 0xc4201623f0 [] 0xc42010e420 {0 0}}
             //c.ID()==fbf9a337-ab0d-481e-a7d6-e136803b4a96
             //conn==map[0xc42010f1e0:true 0xc42010e160:true]
             n_room = n_room + 1
-            roomlist[ c.ID() ] = "room" + strconv.Itoa(n_room)
+            roomid = "room" + strconv.Itoa(n_room)
+            roomlist[ c.ID() ] = roomid
+            c.Join( roomid )
+            //c.To( newroom ).Emit
             fmt.Printf("roomlist[]---%v\n", roomlist)
-		}
+        
+        }else {
+            roomid = msg
+            c.Join( msg )
+        }
 	})
 	c.OnDisconnect(func() {
 		fmt.Printf("disconnect c.OnDisconnect----> %v\n", c.ID())
