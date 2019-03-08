@@ -21,7 +21,7 @@ var output3 = document.getElementById("output3");
 var socket = new Ws(wsURL) //一个 socket 是通过 协议 IP port 路由 四个部分组成的
 socket.OnConnect(function () {
     output1.innerHTML += "Status: Connected\n";
-    socket.Emit("connect","connect");
+    socket.Emit("connect","newroom");
 });
 socket.OnDisconnect(function () {
     output1.innerHTML += "Status: Disconnected\n";
