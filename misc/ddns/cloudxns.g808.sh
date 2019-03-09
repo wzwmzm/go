@@ -44,7 +44,7 @@ then
 
 	echo "arp -n"
 	arp -n
-
+	echo "arp -n           返回码=$?******"
 	ping -c2  $DOMAIN  > /dev/null
 	echo "$DOMAIN		返回码=$?******"
 	ping -c2 192.168.2.1 > /dev/null
