@@ -1,7 +1,9 @@
 #!/bin/sh
 #for i in `seq 1 1`; do dd if=/dev/zero of=/dev/null & done; pid=$!;sleep 1;echo "开核($(date +%H:%M:%S)) pid=$pid";
-arp -s 192.168.2.3  00:08:22:31:20:76
-arp -s 192.168.2.1  cc:81:da:4e:2e:a1
+/usr/sbin/arp -s 192.168.2.3  00:08:22:31:20:76
+/usr/sbin/arp -s 192.168.2.1  cc:81:da:4e:2e:a1
+/usr/sbin/arp -n
+echo "arp -n           返回码=$?******"
 
 
 IDSTR="(ID=$(date +%H:%M:%S))"
@@ -40,10 +42,6 @@ then
         echo "进入IP地址合法性检测第一段++++++++++++++++++++++++++++++++++++++++++++"
         echo "前次地址: $LAST_IP   "
         echo "本次地址: $IP"
-
-        echo "arp -n"
-        arp -n
-        echo "arp -n           返回码=$?******"
 
         ping -c2  $DOMAIN  > /dev/null
         echo "$DOMAIN           返回码=$?******"
