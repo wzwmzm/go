@@ -18,12 +18,15 @@ var output2 = document.getElementById("output2");
 var output3 = document.getElementById("output3");
 
 // Ws comes from the auto-served '/iris-ws.js'
-var socket = new Ws(wsURL) //一个 socket 是通过 协议 IP port 路由 四个部分组成的
+var socket = new Ws(wsURL); //一个 socket 是通过 协议 IP port 路由 四个部分组成的
+let connected = false;       //websockets连接标志
 socket.OnConnect(function () {
+    connected = true;
     output1.innerHTML += "Status: Connected\n";
     socket.Emit("connect","newroom");
 });
 socket.OnDisconnect(function () {
+    connected = false;
     output1.innerHTML += "Status: Disconnected\n";
 });
 // read events from the server
@@ -62,7 +65,9 @@ scriptNode.onaudioprocess = function (e) {
             //如果满一帧了就发送. 注意!!! 发送的数据长度不要超过约1000个字节,所以这里选择数组长度为30
             if (n_b_frame>=30){         //<------一次发送30个数
                 //console.log(JSON.stringify(inputData));//!!!inputData解析后是带下标的,frame是不带下标的
-                socket.Emit("newroom",{count: n_frame, data:frame});
+                if (connected == true){
+                    socket.Emit("newroom",{count: n_frame, data:frame});    
+                }
                 n_b_frame = 0;
                 n_frame += 1;
             }
@@ -81,6 +86,7 @@ navigator.mediaDevices.getUserMedia({
         //这个mediaStream是getUserMedia()返回的值, 可以含有多个音轨及视频
         let source = audioCtx.createMediaStreamSource(mediaStream);
         // C, Node装配连接, source 中含有解码后的音频数据
+        //setTimeout(function(){},2000);                      //暂停2秒，等待websocket连接
         source.connect(scriptNode);                         // 话筒音源    --> scriptNode(数据传输处理)
     
         //好象scriptNode一定还要再接输出,不然就不工作!!! 不知道为什么
