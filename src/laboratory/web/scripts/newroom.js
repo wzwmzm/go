@@ -3,26 +3,29 @@
 /******global Float32Array Uint8Array  Ws :true*********/
 /*eslint no-console: "off"*/
 
+//这个websockets应用是指定到服务器的 ws://IP:port/echo 的
+var output1 = document.getElementById("output1");
+var output2 = document.getElementById("output2");
+var output3 = document.getElementById("output3");
+
 let n_fresh = 0;
 let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 console.log(`audioCtx状态0: ${audioCtx.state}`); //!!!此处的audioCtx是未启动的,必须在客户端由客户动作启动!!!
+output3.innerHTML  += `0, audioCtx状态0: ${audioCtx.state}, 如果显示 suspended,说明audioCtx未启动,必须在客户端由客户动作启动!!!\n`;
 
 //--->websockets初始化
 var scheme = document.location.protocol == "https:" ? "wss" : "ws";
 var port = document.location.port ? (":" + document.location.port) : "";
 // see app.Get("/echo", ws.Handler()) on main.go
 var wsURL = scheme + "://" + document.location.hostname + port + "/echo";
-//这个websockets应用是指定到服务器的 ws://IP:port/echo 的
-var output1 = document.getElementById("output1");
-var output2 = document.getElementById("output2");
-var output3 = document.getElementById("output3");
 
 // Ws comes from the auto-served '/iris-ws.js'
 var socket = new Ws(wsURL); //一个 socket 是通过 协议 IP port 路由 四个部分组成的
 let connected = false;       //websockets连接标志
 socket.OnConnect(function () {
     connected = true;
-    output1.innerHTML += "Status: Connected\n";
+    output1.innerHTML += "Status: Connected---\n";
+    output3.innerHTML += "-----------------\n"; 
     socket.Emit("connect","newroom");
 });
 socket.OnDisconnect(function () {
@@ -37,6 +40,8 @@ socket.On("newroom", function (msg) {
 
 //---> 建立音频数据处理节点 scriptNode
 var scriptNode = audioCtx.createScriptProcessor(256, 1, 1);
+output3.innerHTML += "1,  建立音频数据处理节点 scriptNode 成功!\n";
+
 //(bufferSize, numberOfInputChannels, numberOfOutputChannels);
 //bufferSize, 音频数据的缓冲大小决定着回调时间间隔,可取值:256, 512, 1024, 2048, 4096, 8192, 16384
 //numberOfInputChannels, 输入声道数
@@ -67,7 +72,10 @@ scriptNode.onaudioprocess = function (e) {
                 //console.log(JSON.stringify(inputData));//!!!inputData解析后是带下标的,frame是不带下标的
                 if (connected == true){
                     socket.Emit("newroom",{count: n_frame, data:frame});    
-                }
+                }else{
+		    output3.innerHTML  += "3, 发送时发现未连接 connect != true\n";
+
+		}
                 n_b_frame = 0;
                 n_frame += 1;
             }
@@ -91,11 +99,16 @@ navigator.mediaDevices.getUserMedia({
     
         //好象scriptNode一定还要再接输出,不然就不工作!!! 不知道为什么
         scriptNode.connect(audioCtx.createAnalyser()); 
+
+	output3.innerHTML += "2, navigator.mediaDevices.getUserMedia获取成功, 音频节点数据流装配成功!\n";
+
         //scriptNode.connect(audioCtx.destination); 
         //scriptNode.connect(analyser2);                      // scriptNode --> 示波器2
         //analyser2.connect(audioCtx.destination);          // 示波器2     --> 音频输出
     })
     .catch(function (err) {
         console.log('The following gUM error occured: ' + err);
+	output3.innerHTML  += "2, navigator.mediaDevices.getUserMedia 获取失败, 音频节点装配失败: " + err + "\n";
+
     });
 
