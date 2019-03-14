@@ -10,3 +10,8 @@ sudo hostname -b a808t;
 
 #ksm是内存中相同页面的一种合并机制,  此处设置为关闭
 #sudo sh -c "echo 0 >/sys/kernel/mm/ksm/run"
+
+
+
+#科学上网
+sudo /usr/bin/sslocal -c /etc/shadowsocks/config.json -d start
