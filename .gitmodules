@@ -102,3 +102,8 @@
         url = https://github.com/golang/mock.git
         path = src/github.com/golang/mock
         active = true
+[submodule "aead/chacha20"]
+        url = https://github.com/aead/chacha20.git
+        path = src/github.com/aead/chacha20
+        active = true
+
