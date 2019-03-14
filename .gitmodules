@@ -74,10 +74,6 @@
         url = https://github.com/leavengood/websocket.git
         path = src/github.com/leavengood/websocket
         active = true
-[submodule "go-shadowsocks2"]
-        url = https://github.com/shadowsocks/go-shadowsocks2.git
-        path = src/github.com/shadowsocks/go-shadowsocks2
-        active = true
 [submodule "bytebufferpool"]
         url = https://github.com/valyala/bytebufferpool.git
         path = src/github.com/valyala/bytebufferpool
