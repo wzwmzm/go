@@ -47,14 +47,12 @@ ga111.ga:443 {
         proxy / 192.168.2.2:8100 {
                websocket
                transparent
-#               except static
        }
 }
 
 
 # 2号机的ss翻墙:7070
 ss.ga111.ga:7070 {
-        #tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
         proxy / 192.168.2.2:7070 
 }
 
