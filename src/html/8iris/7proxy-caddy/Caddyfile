@@ -50,20 +50,18 @@ ga111.ga:443 {
        }
 }
 
+#2号机的SS翻墙：7070  <-------------不能这样设置SS代理，但是http://可以也是必须这样设置。
+#http://ss.ga111.ga:7070 {
+#        proxy / 192.168.2.2:7070
+#}
 
-# 2号机的ss翻墙:7070
-ss.ga111.ga:7070 {
-        proxy / 192.168.2.2:7070 
-}
-
-
-
-# 3号机的fileserver:8888
+#3号机的fileserver:8888
 #'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm'
 3.ga111.ga:443 {
 	tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
 	proxy / 192.168.2.3:8888
 }
+
 
 # 3号机的徐高阳:8080
 #33.ga111.ga:443 {
