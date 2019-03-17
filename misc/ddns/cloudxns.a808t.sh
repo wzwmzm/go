@@ -3,7 +3,7 @@
 /usr/sbin/arp -s 192.168.2.3  00:08:22:31:20:76
 /usr/sbin/arp -s 192.168.2.1  cc:81:da:4e:2e:a1
 #/usr/sbin/arp -n
-echo "arp -n           返回码=$?******"
+echo -n "arp -n   返回码=$?******"
 
 
 IDSTR="(ID=$(date +%H:%M:%S))"
@@ -39,9 +39,11 @@ done
 echo "$IP"|grep "^[0-9]\{1,3\}\.\([0-9]\{1,3\}\.\)\{2\}[0-9]\{1,3\}$" > /dev/null;
 if [ $? -ne 0 ]
 then
-        echo "进入IP地址合法性检测第一段++++++++++++++++++++++++++++++++++++++++++++"
+	echo "" 
+	echo "进入IP地址合法性检测第一段++++++++++++++++++++++++++++++++++++++++++++"
         echo "前次地址: $LAST_IP   "
         echo "本次地址: $IP"
+	/usr/sbin/arp -n
 
         ping -c2  $DOMAIN  > /dev/null
         echo "$DOMAIN           返回码=$?******"
