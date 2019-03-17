@@ -30,3 +30,6 @@ caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyf
 #sudo touch /dev/app_process 
 #sudo chmod 100 /dev/app_process 
 
+
+#科学上网
+sudo /usr/local/bin/sslocal -c /etc/shadowsocks/config.json -d start
