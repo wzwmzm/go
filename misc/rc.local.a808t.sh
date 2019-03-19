@@ -15,3 +15,10 @@ sudo hostname -b a808t;
 
 #科学上网
 sudo /usr/bin/sslocal -c /etc/shadowsocks/config.json -d start
+
+
+
+#尝试解决随机断网问题
+/bin/ping -i 15 192.168.2.1 &
+
+
