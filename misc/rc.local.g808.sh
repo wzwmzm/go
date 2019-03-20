@@ -1,4 +1,4 @@
-sudo hostname -b g808;
+sudo /bin/hostname -b g808;
 
 
 #sudo setcap CAP_NET_BIND_SERVICE=+eip "/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver.arm"
