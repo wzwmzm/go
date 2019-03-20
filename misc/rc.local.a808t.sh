@@ -22,3 +22,8 @@ sudo /usr/bin/sslocal -c /etc/shadowsocks/config.json -d start
 /bin/ping -i 15 192.168.2.1 &
 
 
+#关闭交换内存
+sudo /sbin/swapoff -a
+
+
+
