@@ -1,4 +1,4 @@
-sudo hostname -b g808;
+sudo /bin/hostname -b g808;
 
 
 #sudo setcap CAP_NET_BIND_SERVICE=+eip "/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver.arm"
@@ -33,3 +33,17 @@ caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyf
 
 #科学上网
 sudo /usr/local/bin/sslocal -c /etc/shadowsocks/config.json -d start
+
+
+
+
+#尝试解决随机断网问题
+/bin/ping -i 15 192.168.2.1 &
+
+
+#关闭交换内存
+/sbin/swapoff -a
+
+
+
+
