@@ -25,10 +25,10 @@ fi
 IP=""
 RETRY="0"
 while [ $RETRY -lt 3 ]; do
-    echo -n "$(date +%H:%M:%S)---"
     IP=$(curl -s ip.xdty.org)
     RETRY=$((RETRY+1))
     echo "$IP"|grep "^[0-9]\{1,3\}\.\([0-9]\{1,3\}\.\)\{2\}[0-9]\{1,3\}$" > /dev/null;
+    echo -n "$(date +%H:%M:%S)---"
     if [ $? -ne 0 ]
     then
 	sleep 15
