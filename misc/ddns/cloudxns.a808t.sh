@@ -25,7 +25,7 @@ IP=""
 RETRY="0"
 while [ $RETRY -lt 3 ]; do
     IP=$(curl -s ip.xdty.org)
-    echo -n "$(date +%H:%M:%S)[$RETYR]---"
+    echo -n "$(date +%H:%M:%S)[$RETRY]---"
     RETRY=$((RETRY+1))
     echo "$IP"|grep "^[0-9]\{1,3\}\.\([0-9]\{1,3\}\.\)\{2\}[0-9]\{1,3\}$" > /dev/null;
     if [ $? -ne 0 ]
