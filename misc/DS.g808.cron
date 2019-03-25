@@ -33,5 +33,6 @@
 
 # 域名自动延期(免费域名无法免费续期)
 #36 14 */4 * * /home/wzw/project/go/misc/freenom-renewer/autorun.sh;echo "$(date) --- done!" >> /home/wzw/project/go/log/my-domain.log
-
+# /usr/bin/curl -X POST https://api.freenom.com/v2/domain/renew.xml -d  "domainname=ga111.ga&period=3Y&email=wzwmzm41@gmail.com&password=wzwmzm329232" >> /home/wzw/project/go/log/my-domain.log
+#05 19 * * * /home/wzw/project/go/misc/freenom-renew.sh >> /home/wzw/project/go/log/my-domain.log
 
