@@ -30,7 +30,22 @@ socket.OnDisconnect(function () {
 });
 // read events from the server
 // 客户端收信处理
-socket.On("newroom", function (msg) {
-    output2.innerHTML = "接收消息: " + msg + "\n";
+socket.On("newroom", function (datas) {
+    let Datas = JSON.parse(datas);
+    output2.innerHTML = "接收消息: " + Datas[3] + "\n";
+   
+//AudioBuffer 代表内存中的一段音频数据，
+//可以通过 AudioContext.createBuffer() 方法从原始数据创建,
+//然后就可以被放入一个 AudioBufferSourceNode 中使用
+    let Buffer = audioCtx.createBuffer(1, 30, audioCtx.sampleRate);
+    let nowBuffering = Buffer.getChannelData(0);
+    nowBuffering = Datas
+//    for (let i = 0; i < 30; i++) {
+//        nowBuffering[i] = Datas[i];
+//    }
+    let source = audioCtx.createBufferSource();
+    source.buffer = Buffer;
+    source.connect(audioCtx.destination);
+    source.start(0);
 });
 
