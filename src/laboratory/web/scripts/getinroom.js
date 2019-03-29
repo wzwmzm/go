@@ -37,15 +37,17 @@ socket.On("newroom", function (datas) {
 //AudioBuffer 代表内存中的一段音频数据，
 //可以通过 AudioContext.createBuffer() 方法从原始数据创建,
 //然后就可以被放入一个 AudioBufferSourceNode 中使用
-    let Buffer = audioCtx.createBuffer(1, 30, audioCtx.sampleRate);
+    let Buffer = audioCtx.createBuffer(1, 40, audioCtx.sampleRate);
     let nowBuffering = Buffer.getChannelData(0);	// Float32Array
-    nowBuffering = Datas;
-//    for (let i = 0; i < 30; i++) {
-//        nowBuffering[i] = Datas[i];
-//    }
+//    nowBuffering = Datas;
+    for (let i = 0; i < 40; i++) {
+        nowBuffering[i] = Datas[i];
+    }
     let source = audioCtx.createBufferSource();
     source.buffer = Buffer;
     source.connect(audioCtx.destination);
-    source.start(0);
+    source.start();
 });
+
+
 

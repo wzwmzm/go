@@ -32,10 +32,21 @@ socket.OnDisconnect(function () {
     connected = false;
     output1.innerHTML += "Status: Disconnected\n";
 });
+socket.conn.onclose = function (e) {
+            console.log('WebSocket关闭: ')
+            console.log(e)
+          }
+
+socket.conn.onerror = function (e) {
+            console.log('WebSocket发生错误: ')
+            console.log(e)
+          }
+
 // read events from the server
 // 客户端收信处理
 socket.On("newroom", function (msg) {
-    output2.innerHTML = "接收消息: " + msg + "\n";
+    let Datas = JSON.parse(msg);
+    output2.innerHTML = "接收消息: " + Datas[3] + "\n";
 });
 
 //---> 建立音频数据处理节点 scriptNode
@@ -68,14 +79,13 @@ scriptNode.onaudioprocess = function (e) {
             frame[n_b_frame] = inputData[sample];
             n_b_frame += 1;
             //如果满一帧了就发送. 注意!!! 发送的数据长度不要超过约1000个字节,所以这里选择数组长度为30
-            if (n_b_frame>=30){         //<------一次发送30个数
+            if (n_b_frame>=40){         //<------一次发送30个数
                 //console.log(JSON.stringify(inputData));//!!!inputData解析后是带下标的,frame是不带下标的
                 if (connected == true){
                     socket.Emit("newroom",{count: n_frame, data:frame});    
                 }else{
-		    output3.innerHTML  += "3, 发送时发现未连接 connect != true\n";
-
-		}
+                    output3.innerHTML  += "3, 发送时发现未连接 connect != true\n";
+                }
                 n_b_frame = 0;
                 n_frame += 1;
             }

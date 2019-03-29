@@ -78,8 +78,8 @@ func main() {
 func setupWebsocket(app *iris.Application) {
 	// create our echo websocket server
 	ws := websocket.New(websocket.Config{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
+		ReadBufferSize:  2048,
+		WriteBufferSize: 2048,
 		//BinaryMessages bool		//缺省值为FALSE.  以二进制数据代替UTF-8文本
 		//EnableCompression bool		//当前只在"NO CONTEXT TAKEOVER"模式下才支持此属性.  只有服务器和客户端都支持压缩才管用
 	})
