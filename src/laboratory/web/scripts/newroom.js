@@ -79,7 +79,7 @@ scriptNode.onaudioprocess = function (e) {
             frame[n_b_frame] = inputData[sample];
             n_b_frame += 1;
             //如果满一帧了就发送. 注意!!! 发送的数据长度不要超过约1000个字节,所以这里选择数组长度为30
-            if (n_b_frame>=40){         //<------一次发送30个数
+            if (n_b_frame>=30){         //<------一次发送30个数
                 //console.log(JSON.stringify(inputData));//!!!inputData解析后是带下标的,frame是不带下标的
                 if (connected == true){
                     socket.Emit("newroom",{count: n_frame, data:frame});    
