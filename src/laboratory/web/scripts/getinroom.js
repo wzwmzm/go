@@ -28,25 +28,35 @@ socket.OnConnect(function () {
 socket.OnDisconnect(function () {
     output1.innerHTML += "Status: Disconnected\n";
 });
+
 // read events from the server
 // 客户端收信处理
-socket.On("newroom", function (datas) {
-    let Datas = JSON.parse(datas);
-    output2.innerHTML = "接收消息: " + Datas[3] + "\n";
-   
 //AudioBuffer 代表内存中的一段音频数据，
 //可以通过 AudioContext.createBuffer() 方法从原始数据创建,
 //然后就可以被放入一个 AudioBufferSourceNode 中使用
-    let Buffer = audioCtx.createBuffer(1, 30, audioCtx.sampleRate);
-    let nowBuffering = Buffer.getChannelData(0);	// Float32Array
+let source = audioCtx.createBufferSource();
+let Buffer = audioCtx.createBuffer(1, 30*1000, audioCtx.sampleRate);
+let nowBuffering = Buffer.getChannelData(0);	// Float32Array
+let n_frame = 0;
+socket.On("newroom", function (msg) {
+    let Datas = JSON.parse(msg);
+    output2.innerHTML = "接收消息: " + Datas["count"] +"---"+ Datas["data"][3] + "\n";
+    //output3.innerHTML += "Buffer = " + Buffer + "\n";
+
 //    nowBuffering = Datas;
     for (let i = 0; i < 30; i++) {
-        nowBuffering[i] = Datas[i];
+        nowBuffering[n_frame*30+i] = Datas["data"][i];
     }
-    let source = audioCtx.createBufferSource();
-    source.buffer = Buffer;
-    source.connect(audioCtx.destination);
-    source.start();
+    n_frame = n_frame + 1;
+    if (n_frame>=1000){
+        n_frame = 0;
+        source.buffer = Buffer;
+        source.connect(audioCtx.destination);
+        source.start();
+        source = audioCtx.createBufferSource();
+        Buffer = audioCtx.createBuffer(1, 30*1000, audioCtx.sampleRate);
+        nowBuffering = Buffer.getChannelData(0);
+    }
 });
 
 

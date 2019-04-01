@@ -181,7 +181,7 @@ func handleConnection(c websocket.Connection) {
 		//fmt.Printf("data : %v   %v\n", data[0], data[9])
 		//fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
 		//fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
-        c.To(roomid).Emit("newroom",data)
+        c.To(roomid).Emit("newroom",msg)
 		//c.Emit("newroom", data)
 	})
     

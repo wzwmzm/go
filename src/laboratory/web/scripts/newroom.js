@@ -46,7 +46,7 @@ socket.conn.onerror = function (e) {
 // 客户端收信处理
 socket.On("newroom", function (msg) {
     let Datas = JSON.parse(msg);
-    output2.innerHTML = "接收消息: " + Datas[3] + "\n";
+    output2.innerHTML = "接收消息: " + Datas["count"] +"---"+ Datas["data"][3] + "\n";
 });
 
 //---> 建立音频数据处理节点 scriptNode
