@@ -54,8 +54,8 @@ socket.On("newroom", function (msg) {
         source.connect(audioCtx.destination);
         source.start();
         source = audioCtx.createBufferSource();
-        Buffer = audioCtx.createBuffer(1, 30*1000, audioCtx.sampleRate);
-        nowBuffering = Buffer.getChannelData(0);
+        //Buffer = audioCtx.createBuffer(1, 30*1000, audioCtx.sampleRate);
+        //nowBuffering = Buffer.getChannelData(0);
     }
 });
 
