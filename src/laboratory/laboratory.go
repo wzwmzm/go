@@ -169,6 +169,15 @@ func handleConnection(c websocket.Connection) {
 		//fmt.Printf(": %v \n", msg)
 		//fmt.Printf("  data: %v ", msg.(map[string]interface{})["data"].(map[string]interface{})["a"])
 		//fmt.Printf("  TypeOf: %v ", reflect.TypeOf(msg))
+        
+//采样率是44.1K, 如果希望频率分辨度是4HZ, 则采样数需要 44.1K / 4 = 11K (个)
+//采样率是44.1K, 如果希望时间分辨度是10ms（通常在0.02~0.05s这样的数量级), 则采样数为 44.1K / 1000 *10 = 441 (个)
+//綜上, 建立一个 11K 的采样数组, 其中440个填上采样数据, 其余填0, 对此采样数组进行FFT, 取得的结果符合频率分辨度为4HZ,时间分辨度是10ms的要求. 
+//
+        //我们选用的参数:
+        //采样率44.1KHZ;
+        //频率分辨度5HZ;采样数组长8.82K;取2的幂 = 8192;<--
+        //时间分辨度约20ms;实际采样数=44.1K/1000*20=882 = 900 (1帧30个,取30帧)<--
 		count := msg.(map[string]interface{})["count"]               //float64
 		data := msg.(map[string]interface{})["data"].([]interface{}) // []float64
 

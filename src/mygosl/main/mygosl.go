@@ -1,6 +1,8 @@
 package main
 
 import (
+	//           FFTW 的使用可能需要安装: sudo apt-get install fftw3 fftw3-dev pkg-config
+
 	//	"math"
 	//	"math/cmplx"
 	"mygosl"
@@ -12,7 +14,7 @@ import (
 )
 
 // tests ///////////////////////////////////////////////////////////////////////////////////////////
-
+//时域数组经过傅里叶正变化后得到频域数组, 这个频域数组再经过傅里叶逆变化后得到的数组除以N可以还原得到原先的时域数组.
 func myfft() {
 
 	// set input data
