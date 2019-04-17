@@ -11,6 +11,7 @@ import (
 
 var roomlist map[string]string  //房间号数组roomlist[ c.ID() ] = 房间号
 var n_room int                  //给新开房间记数
+ch1 := make(chan interface{}，30)   //在c.On("newroom")中收到远方来的 msg「30」数据帧后转发给后续FFTW处理
 //sudo setcap CAP_NET_BIND_SERVICE=+eip ./arm-laboratory
 func main() {
 	app := iris.New()
@@ -163,6 +164,7 @@ func handleConnection(c websocket.Connection) {
 	//"SERVER"为事件编号
 	//"server"会话,在app.js里传输多媒体数据用
 	c.On("newroom", func(msg interface{}) {
+        ch1 <- msg
 		//将 msg 由 string 转换成 []float
 		//f64a := []byte(msg)
 
