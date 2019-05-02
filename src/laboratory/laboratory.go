@@ -17,6 +17,7 @@ func main() {
     ch1 = make(chan interface{}, 30)
     defer close(ch1)
     go func(){
+        fmt.Println("hello,hello")
         select{
             case data := <-ch1 :
                 fmt.Println(data.(map[string]interface{})["count"])
