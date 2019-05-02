@@ -11,9 +11,20 @@ import (
 
 var roomlist map[string]string  //房间号数组roomlist[ c.ID() ] = 房间号
 var n_room int                  //给新开房间记数
-ch1 := make(chan interface{}，30)   //在c.On("newroom")中收到远方来的 msg「30」数据帧后转发给后续FFTW处理
+var ch1 chan interface{}   //在c.On("newroom")中收到远方来的 msg「30」数据帧后转发给后续FFTW处理
 //sudo setcap CAP_NET_BIND_SERVICE=+eip ./arm-laboratory
 func main() {
+    ch1 = make(chan interface{}, 30)
+    defer close(ch1)
+    go func(){
+        select{
+            case data := <-ch1 :
+                fmt.Println(data.(map[string]interface{})["count"])
+                
+        }
+        
+    }()
+    
 	app := iris.New()
 
 	app.StaticWeb("/", "./web")    //<------------------设定网站根目录
@@ -84,7 +95,7 @@ func setupWebsocket(app *iris.Application) {
 		//BinaryMessages bool		//缺省值为FALSE.  以二进制数据代替UTF-8文本
 		//EnableCompression bool		//当前只在"NO CONTEXT TAKEOVER"模式下才支持此属性.  只有服务器和客户端都支持压缩才管用
 	})
-	fmt.Println("websockets读写缓冲区各设置为1024 byte")
+	fmt.Println("websockets读写缓冲区各设置为2048 byte")
 	ws.OnConnection(handleConnection) //这里只是设置,还没有开始响应
 
 	// register the server on an endpoint.
