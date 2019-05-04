@@ -45,8 +45,9 @@ socket.conn.onerror = function (e) {
 // read events from the server
 // 客户端收信处理
 socket.On("newroom", function (msg) {
+    console.log("socket.On(newroom)...正在接收服务器端发回的数据包...")
     let Datas = JSON.parse(msg);
-    output2.innerHTML = "接收消息: " + Datas["count"] +"---"+ Datas["data"][3] + "\n";
+    output2.innerHTML = "newroom接收消息:count---Data[3] " + Datas["count"] +"---"+ Datas["data"][3] + "\n";
 });
 
 //---> 建立音频数据处理节点 scriptNode
@@ -63,6 +64,7 @@ let n_frame = 0; //给发送的消息编号,一个消息包含30个数据,声音
 let n_b_frame = 0; //给消息内部的数据计数,满30个数据打包成一个消息发送
 let frame = new Array();//frame是一个数组,也是将要发送的一个消息,满了30个数据就发送
 scriptNode.onaudioprocess = function (e) {
+    console.log('scriptNode.onaudioprocess...正在录音及发送音频数据包... ')
     let inputBuffer = e.inputBuffer;
     let outputBuffer = e.outputBuffer;
     // Loop through the output channels (in this case there is only one) 

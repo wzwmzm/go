@@ -17,13 +17,17 @@ func main() {
     ch1 = make(chan interface{}, 30)
     defer close(ch1)
     go func(){
-        fmt.Println("hello,hello")
-        select{
-            case data := <-ch1 :
-                fmt.Println(data.(map[string]interface{})["count"])
-                
+        //fmt.Println("hello,hello")
+        for data := range ch1 {
+            fmt.Println("go func()收到数据:", data.(map[string]interface{})["count"])
         }
-        
+//        while(true){
+//            select{
+//                case data := <-ch1 :
+//                    fmt.Println("go func()收到数据:", data.(map[string]interface{})["count"])
+//
+//            }
+//        }
     }()
     
 	app := iris.New()
@@ -176,6 +180,7 @@ func handleConnection(c websocket.Connection) {
 	//"SERVER"为事件编号
 	//"server"会话,在app.js里传输多媒体数据用
 	c.On("newroom", func(msg interface{}) {
+        fmt.Printf("c.On(newroom)...正在接收客户端数据,并发回客户端...... \n")
         ch1 <- msg
 		//将 msg 由 string 转换成 []float
 		//f64a := []byte(msg)
@@ -198,8 +203,7 @@ func handleConnection(c websocket.Connection) {
 		_,_=count,data
 		//打印全部30个数
 		//只打印其中两个数
-        //fmt.Println("\nsnewroom接收到二进制数....")
-		//fmt.Printf("count : %v\n", count)
+        //fmt.Printf("count : %v\n", count)
 		//fmt.Printf("data : %v   \n", data)
 		//fmt.Printf("data : %v   %v\n", data[0], data[9])
 		//fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
