@@ -173,7 +173,7 @@ func handleConnection(c websocket.Connection) {
 	//"SERVER"为事件编号
 	//"server"会话,在app.js里传输多媒体数据用
 	c.On("newroom", func(msg interface{}) {
-        fmt.Printf("c.On(newroom)...正在接收客户端数据,并发回客户端...... \n")
+        //fmt.Printf("c.On(newroom)...正在接收客户端数据,并发回客户端...... \n")
         ch1 <- msg
 		//将 msg 由 string 转换成 []float
 		//f64a := []byte(msg)
@@ -201,6 +201,8 @@ func handleConnection(c websocket.Connection) {
 		//fmt.Printf("data : %v   %v\n", data[0], data[9])
 		//fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
 		//fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
+        
+        fmt.Printf("c.On(newroom)................%v \n", count)
         c.To(roomid).Emit("newroom",msg)
 		//c.Emit("newroom", data)
 	})
