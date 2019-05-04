@@ -21,13 +21,6 @@ func main() {
         for data := range ch1 {
             fmt.Println("go func()收到数据:", data.(map[string]interface{})["count"])
         }
-//        while(true){
-//            select{
-//                case data := <-ch1 :
-//                    fmt.Println("go func()收到数据:", data.(map[string]interface{})["count"])
-//
-//            }
-//        }
     }()
     
 	app := iris.New()
