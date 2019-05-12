@@ -172,7 +172,7 @@ func handleConnection(c websocket.Connection) {
 	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
 	//"SERVER"为事件编号
 	//"server"会话,在app.js里传输多媒体数据用
-	c.On("newroom111", func(msg interface{}) {
+	c.On("newroom", func(msg interface{}) {
         //fmt.Printf("c.On(newroom)...正在接收客户端数据,并发回客户端...... \n")
         ch1 <- msg
 		//将 msg 由 string 转换成 []float
@@ -207,21 +207,7 @@ func handleConnection(c websocket.Connection) {
 		//c.Emit("newroom", data)
 	})
     
-    c.On("newroom", func(msg interface{}) {
-        count := msg.(map[string]interface{})["count"]               //float64
-		data := msg.(map[string]interface{})["data"].([]interface{}) // []float64
 
-		_,_=count,data
-		//打印全部30个数
-		//只打印其中两个数
-        //fmt.Printf("count : %v\n", count)
-		//fmt.Printf("data : %v   \n", data)
-		//fmt.Printf("data : %v   %v\n", data[0], data[9])
-		//fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
-		//fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
-        
-        fmt.Printf("c.On(newroom)................%v \n", count)
-    })
     
 	c.On("connect", func(msg string) {
 		if msg == "newroom" {
