@@ -25,13 +25,14 @@ func main() {
 	// navigate to a page, wait for an element, click
 	var example string
 	err := chromedp.Run(ctx,
-		chromedp.Navigate(`https://golang.org/pkg/time/`),
+		chromedp.Navigate(`file:///home/wzw/project/go/src/html/14spider/1chromedp/time.html`),
 		// wait for footer element is visible (ie, page is loaded)
 		chromedp.WaitVisible(`#footer`),
 		// find and click "Expand All" link
 		chromedp.Click(`#pkg-examples > div`, chromedp.NodeVisible),
 		// retrieve the value of the textarea
-		chromedp.Value(`#example_After .play .input textarea`, &example),
+		//chromedp.Value(`#example_After .play .input textarea`, &example),
+		chromedp.Value(`//*[@id="example_After"]/div[2]/div/div[1]/textarea`, &example),
 	)
 	if err != nil {
 		log.Fatal(err)

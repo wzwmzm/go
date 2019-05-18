@@ -27,7 +27,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	filepath := wd + "/main.go"
+	filepath := wd + "/upload.go"
 
 	// get some info about the file
 	fi, err := os.Stat(filepath)
@@ -44,14 +44,14 @@ func main() {
 	defer cancel()
 
 	// run task list
-	var sz string
+	var sz string	//这个sz实际并未采用
 	err = chromedp.Run(ctx, upload(filepath, &sz))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	log.Printf("original size: %d, upload size: %d", fi.Size(), <-result)
-}
+}	//这里的两个size并不是从返回的页面中取得
 
 func upload(filepath string, sz *string) chromedp.Tasks {
 	return chromedp.Tasks{
@@ -59,30 +59,30 @@ func upload(filepath string, sz *string) chromedp.Tasks {
 		chromedp.SendKeys(`input[name="upload"]`, filepath, chromedp.NodeVisible),
 		chromedp.Click(`input[name="submit"]`),
 		chromedp.Text(`#result`, sz, chromedp.ByID, chromedp.NodeVisible),
-	}
+	}				//这个sz实际并未采用
 }
 
 func uploadServer(addr string, result chan int) error {
 	// create http server and result channel
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		fmt.Fprintf(res, uploadHTML)
+		fmt.Fprintf(res, uploadHTML)//服务器等待上传
 	})
 	mux.HandleFunc("/upload", func(res http.ResponseWriter, req *http.Request) {
-		f, _, err := req.FormFile("upload")
+		f, _, err := req.FormFile("upload")//上传路由是/upload, 上传文件的变量名upload
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusBadRequest)
 			return
 		}
 		defer f.Close()
 
-		buf, err := ioutil.ReadAll(f)
+		buf, err := ioutil.ReadAll(f)//上传文件放入buf中
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		fmt.Fprintf(res, resultHTML, len(buf))
+		fmt.Fprintf(res, resultHTML, len(buf))//将上传文件的长度写入返回的页面中
 
 		result <- len(buf)
 	})

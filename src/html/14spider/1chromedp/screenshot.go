@@ -17,7 +17,7 @@ func main() {
 
 	// run task list
 	var buf []byte
-	err := chromedp.Run(ctx, screenshot(`https://www.google.com/`, `#main`, &buf))
+	err := chromedp.Run(ctx, screenshot(`https://music.163.com/#/my/m/music/playlist?id=576833809`, `#g_iframe`, &buf))
 	if err != nil {
 		log.Fatal(err)
 	}

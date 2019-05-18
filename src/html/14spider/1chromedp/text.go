@@ -18,7 +18,7 @@ func main() {
 	// run task list
 	var res string
 	err := chromedp.Run(ctx,
-		chromedp.Navigate(`https://golang.org/pkg/time/`),
+		chromedp.Navigate(`file:///home/wzw/project/go/src/html/14spider/1chromedp/time.html`),
 		chromedp.Text(`#pkg-overview`, &res, chromedp.NodeVisible, chromedp.ByID),
 	)
 	if err != nil {

@@ -41,7 +41,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("chrome received cookies: %s", res)
+	log.Printf("chrome received cookies(假,只是网页变量): %s", res)
 }
 
 // cookieServer creates a simple HTTP server that logs any passed cookies.
@@ -50,14 +50,14 @@ func cookieServer(addr string) error {
 	mux.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
 		cookies := req.Cookies()
 		for i, cookie := range cookies {
-			log.Printf("from %s, server received cookie %d: %v", req.RemoteAddr, i, cookie)
-		}
+			log.Printf("from %s, server received cookie(服务器收到的cookie,只是客户端选择发送的部分) %d: %v", req.RemoteAddr, i, cookie)				//服务器端收到的客户端cookie
+		}	
 		buf, err := json.MarshalIndent(req.Cookies(), "", "  ")
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		fmt.Fprintf(res, indexHTML, string(buf))
+		fmt.Fprintf(res, indexHTML, string(buf))//将cookie写入网页
 	})
 	return http.ListenAndServe(addr, mux)
 }
@@ -69,7 +69,8 @@ func setcookies(host string, res *string, cookies ...string) chromedp.Tasks {
 		panic("length of cookies must be divisible by 2")
 	}
 	return chromedp.Tasks{
-		chromedp.ActionFunc(func(ctx context.Context, h cdp.Executor) error {
+		chromedp.ActionFunc(func(ctx context.Context) error {
+			//此段是将cookie写入请求头并发送给服务器
 			// create cookie expiration
 			expr := cdp.TimeSinceEpoch(time.Now().Add(180 * 24 * time.Hour))
 			// add cookies to chrome
@@ -78,7 +79,7 @@ func setcookies(host string, res *string, cookies ...string) chromedp.Tasks {
 					WithExpires(&expr).
 					WithDomain("localhost").
 					WithHTTPOnly(true).
-					Do(ctx, h)
+					Do(ctx)
 				if err != nil {
 					return err
 				}
@@ -91,16 +92,17 @@ func setcookies(host string, res *string, cookies ...string) chromedp.Tasks {
 		// navigate to site
 		chromedp.Navigate(host),
 		// read the returned values
-		chromedp.Text(`#result`, res, chromedp.ByID, chromedp.NodeVisible),
+		chromedp.Text(`#result`, res, chromedp.ByID, chromedp.NodeVisible),//这里是取到网页的变量,不是真的cookie
 		// read network values
-		chromedp.ActionFunc(func(ctx context.Context, h cdp.Executor) error {
-			cookies, err := network.GetAllCookies().Do(ctx, h)
+		chromedp.ActionFunc(func(ctx context.Context) error {
+			//这里是客户端取得的cookie
+			cookies, err := network.GetAllCookies().Do(ctx)
 			if err != nil {
 				return err
 			}
 
 			for i, cookie := range cookies {
-				log.Printf("chrome cookie %d: %+v", i, cookie)
+				log.Printf("chrome cookie(真,客户端保存的所有cookie) %d: %+v", i, cookie)
 			}
 
 			return nil
