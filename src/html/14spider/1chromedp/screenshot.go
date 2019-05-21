@@ -9,7 +9,7 @@ import (
 
 	"github.com/chromedp/chromedp"
 )
-
+//    #largePic
 func main() {
 	// create context
 	ctx, cancel := chromedp.NewContext(context.Background())
@@ -17,7 +17,7 @@ func main() {
 
 	// run task list
 	var buf []byte
-	err := chromedp.Run(ctx, screenshot(`https://music.163.com/#/my/m/music/playlist?id=576833809`, `#g_iframe`, &buf))
+	err := chromedp.Run(ctx, screenshot(`http://product.dangdang.com/23273491.html`, `#largePic`, &buf))
 	if err != nil {
 		log.Fatal(err)
 	}
