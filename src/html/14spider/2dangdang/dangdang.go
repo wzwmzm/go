@@ -12,7 +12,11 @@ import (
         "github.com/chromedp/chromedp"
 )
 
-
+/*
+BEGIN	是开始页
+ADD	是连续获取的页数
+ID	是单个页
+*/
 type Config struct {
     Begin       int64
     Add         int64
@@ -64,11 +68,21 @@ func main() {
 	var picaddr string		//封面图片地址
 
 // create chrome instance
-var ctx context.Context
-var cancel context.CancelFunc
+	var ctx context.Context
+	var cancel context.CancelFunc
+
+	url_begin := config.Begin
+	url_end := config.Begin + config.Add
+	url_id := config.Id
+	_ = url_end
+	_ = url_id
+
 
 LOOP :
 	B_SM, B_CBS, B_CBSJ, B_ZZ, B_NRJJ, B_ML, B_ISBN, B_JG, B_PICADDR := true, true, true, true, true,true, true, true, true
+	url := fmt.Sprintf("http://product.dangdang.com/%v.html", url_begin)
+	fmt.Println(url)
+	if url_begin += 1; url_begin > url_end { return }
 //
 BEGIN :
 //begin := func(ctx *context.Context, cancel *context.CancelFunc){
@@ -97,11 +111,13 @@ BEGIN :
 		//chromedp.Navigate(`http://product.dangdang.com/1439904136.html`),(预售版)
 		//chromedp.Navigate(`http://product.dangdang.com/23273491.html`),(标准版)
 		//http://product.dangdang.com/26921715.html                      (最新版)
-	if err := chromedp.Run(ctx, chromedp.Navigate(`http://product.dangdang.com/20003044.html`)); err != nil {
+	//if err := chromedp.Run(ctx, chromedp.Navigate(`http://product.dangdang.com/20003044.html`)); err != nil {
 	//if err := chromedp.Run(ctx, chromedp.Navigate(`http://product.dangdang.com/26921715.html`)); err != nil {
 	//if err := chromedp.Run(ctx, chromedp.Navigate(`http://product.dangdang.com/1439904136.html`)); err != nil {
 	//if err := chromedp.Run(ctx, chromedp.Navigate(`http://product.dangdang.com/23273491.html`)); err != nil {
 	//if err := chromedp.Run(ctx, chromedp.Navigate(`http://www.google.com`)); err != nil {
+
+        if err := chromedp.Run(ctx, chromedp.Navigate(url)); err != nil {
 		fmt.Printf("1, 打不开网页: %v\n", err)
 		goto LOOP
 		//return 2	//head()的返回码
@@ -233,6 +249,9 @@ if B_PICADDR {
 	//log.Printf("Go's time.After 书名:\t%s\n", shuming)
 	log.Printf("Go's time.After 内容简介:\t%s\n\n", neirongjianjie)
         log.Printf("Go's time.After 目录:\t%s\n", mulu)
+
+
+	goto LOOP
 
 
 }
