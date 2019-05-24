@@ -54,7 +54,7 @@ type projectDesc struct {
 func listAwesomeGoProjects(ctx context.Context, sect string) (map[string]projectDesc, error) {
 	// force max timeout of 15 seconds for retrieving and processing the data
 	var cancel func()
-	ctx, cancel = context.WithTimeout(ctx, 10*time.Second)
+	ctx, cancel = context.WithTimeout(ctx, 20*time.Second)
 	defer cancel()
 
 	sel := fmt.Sprintf(`//p[text()[contains(., '%s')]]`, sect)
