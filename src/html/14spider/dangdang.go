@@ -125,7 +125,7 @@ BEGIN :
         ctx, cancel = chromedp.NewContext(context.Background(), chromedp.WithLogf(log.Printf),)
         defer cancel()
 
-        ctx, cancel = context.WithTimeout(ctx, 10*time.Second)
+        ctx, cancel = context.WithTimeout(ctx, 20*time.Second)
         defer cancel()
 
 	fmt.Println("   开始----------------------------")
