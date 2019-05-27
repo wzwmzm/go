@@ -47,7 +47,7 @@ socket.conn.onerror = function (e) {
 socket.On("newroom", function (msg) {
     //console.log("socket.On(newroom)...正在接收服务器端发回的数据包...")
     let Datas = JSON.parse(msg);
-    output2.innerHTML = "newroom接收消息:count---Data[3] " + Datas["count"] +"---"+ Datas["data"][3] + "\n";
+    output2.innerHTML = "newroom接收消息:count---Data[3] " + Datas["count"] + "----回环差:" + (n_frame-Datas["count"]) + "---" + Datas["data"][3] + "\n";
 });
 
 //---> 建立音频数据处理节点 scriptNode
