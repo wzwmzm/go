@@ -1,0 +1,8 @@
+音频卡顿可以参考下面几篇文章：
+
+
+https://zhuanlan.zhihu.com/p/26374202
+
+https://developer.mozilla.org/en-US/docs/Web/API/MediaSource
+
+https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/samples/dn551368(v=vs.85)
