@@ -1,4 +1,7 @@
-<!-------        第一部分是常规的websockets,  下面第二部分才是直播        -------->
+<!DOCTYPE html>
+<html lang="en">
+
+<!-------        input,output是常规的websockets,  output1才是直播        -------->
 <!-- the message's input -->
 <input id="input" type="text" />
 
@@ -8,6 +11,15 @@ at this example we registered the 'chat' -->
 
 <!-- the messages will be shown here -->
 <pre id="output"></pre>
+
+<!----   直播    直播    直播    直播    直播    直播    直播    直播    直播   直播  ----->
+<video autoplay id="video" style="width:1600;height:900px"></video>
+ 
+    <canvas id="output1" style="display:none"></canvas>
+
+
+
+
 <!-- import the iris client-side library for browser-->
 <script src="/iris-ws.js"></script>
 
@@ -21,81 +33,27 @@ at this example we registered the 'chat' -->
     var input = document.getElementById("input");
     var output = document.getElementById("output");
 
-    // Ws comes from the auto-served '/iris-ws.js'
-    var socket = new Ws(wsURL)
-    socket.OnConnect(function () {
-        output.innerHTML += "Status: Connected\n";
-    });
-
-    socket.OnDisconnect(function () {
-        output.innerHTML += "Status: Disconnected\n";
-    });
-
-    // read events from the server
-    socket.On("chat", function (msg) {
-        addMessage(msg);
-    });
-
-    function send() {
-        addMessage("Me: " + input.value); // write ourselves
-        socket.Emit("chat", input.value); // send chat event data to the websocket server
-        input.value = ""; // clear the input
-    }
-
-    function addMessage(msg) {
-        output.innerHTML += msg + "\n";
-    }
-</script>
-
-
-
-<!----   直播    直播    直播    直播    直播    直播    直播    直播    直播   直播  ----->
-<video autoplay id="sourcevid" style="width:1600;height:900px"></video>
- 
-    <canvas id="output" style="display:none"></canvas>
-
-
-
-
-<script type="text/javascript" charset="utf-8">
-    var scheme = document.location.protocol == "https:" ? "wss" : "ws";
-    var port = document.location.port ? (":" + document.location.port) : "";
-    // see app.Get("/echo", ws.Handler()) on main.go
-    var wsURL = scheme + "://" + document.location.hostname + port+"/echo";
-        //这个websockets应用是指定到服务器的 ws://IP:port/echo 的
-
-    var input = document.getElementById("input");
-    var output = document.getElementById("output");
-
-    // Ws comes from the auto-served '/iris-ws.js'
-    var socket = new Ws(wsURL)
-
-
-        var back = document.getElementById('output');
- 
+    var back = document.getElementById('output1');		//直播
+    
+    
+    	//直播 -----------------------------------------------//直播
         //返回一个用于在画布上绘图的环境。
+
+    
+    
+
+    var backcontext = back.getContext('2d');
  
-        var backcontext = back.getContext('2d');
- 
-        var video = document.getElementsByTagName('video')[0];
+        var video = document.getElementById('video');
  
         var success = function(stream){
  
             //获取视屏流，转换为url
- 
-            video.src = window.URL.createObjectURL(stream);
- 
+         	video.srcObject = stream;
+        	video.play();
+             
         }
  
-        //打开socket
- 
-        socket.onopen = function(){
- 
-            draw();
- 
-            console.log("open success")
- 
-        }
  
         // 将视频帧绘制到Canvas对象上,Canvas每100ms切换帧，形成肉眼视频效果  
  
@@ -119,25 +77,58 @@ at this example we registered the 'chat' -->
  
             }
  
-            if(video.src){
+            if(video.srcObject){
  
                 // Canvas的内容转化成PNG data URI并发送到服务器，0.5为和压缩系数
- 
-                socket.send(back.toDataURL("image/jpeg", 0.5));
- 
+ 		//socket.Emit("chat", input.value); // send chat event data to the websocket server
+                //socket.send(back.toDataURL("image/jpeg", 0.5));
+ 		socket.Emit("png", back.toDataURL("image/jpeg", 0.5));
             }
  
             setTimeout(draw, 100);
  
-        }
+        }//draw
  
-        //调用设备的摄像头,并将资源放入video标签
+         //调用设备的摄像头,并将资源放入video标签
  
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
  
         navigator.mozGetUserMedia || navigator.msGetUserMedia;
  
         navigator.getUserMedia({video:true, audio:false}, success, console.log);
+    
+    
+
+    // Ws comes from the auto-served '/iris-ws.js'
+    var socket = new Ws(wsURL)
+    socket.OnConnect(function () {
+
+	draw();							//直播
+        output.innerHTML += "Status: Connected\n";
+    });
+
+    socket.OnDisconnect(function () {
+        output.innerHTML += "Status: Disconnected\n";
+    });
+
+    // read events from the server
+    socket.On("chat", function (msg) {
+        addMessage(msg);
+    });
+
+    function send() {
+        addMessage("Me: " + input.value); // write ourselves
+        socket.Emit("chat", input.value); // send chat event data to the websocket server
+        input.value = ""; // clear the input
+    }
+
+    function addMessage(msg) {
+        output.innerHTML += msg + "\n";
+    }
+
+
+
  
     </script>
 
+</html>
