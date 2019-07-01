@@ -19,7 +19,7 @@
     var photo = null;
     var startbutton = null;
 
-    function startup() {                    //注册在load事件上,见下面
+    function startup() { //注册在load事件上,见下面
         video = document.getElementById('video');
         canvas = document.getElementById('canvas');
         photo = document.getElementById('photo');
@@ -30,7 +30,7 @@
                 audio: false
             })
             .then(function (stream) {
-                video.srcObject = stream;   //直接播放摄像头的视频
+                video.srcObject = stream; //直接播放摄像头的视频
                 video.play();
             })
             .catch(function (err) {
