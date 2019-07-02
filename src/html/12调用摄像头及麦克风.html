@@ -29,7 +29,7 @@
         // Put video listeners into place
         if(navigator.getUserMedia) { // Standard
             navigator.getUserMedia(videoObj, function(stream) {
-                video.src = stream;
+                video.srcObject = stream;
                 video.play();
             }, errBack);
         } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
