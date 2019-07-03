@@ -30,7 +30,7 @@
                 audio: false
             })
             .then(function (stream) {
-                video.srcObject = stream; //直接播放摄像头的视频
+                video.srcObject = stream; //<---1,直接播放摄像头的视频
                 video.play();
             })
             .catch(function (err) {
@@ -87,10 +87,10 @@
         if (width && height) {
             canvas.width = width;
             canvas.height = height;
-            context.drawImage(video, 0, 0, width, height);
+            context.drawImage(video, 0, 0, width, height);//<---2,其实这里就已经拍照了,但不显示(#canvas {display:none;}) 
 
-            var data = canvas.toDataURL('image/png');
-            photo.setAttribute('src', data);
+            var data = canvas.toDataURL('image/png');//<---3,将照片转换成文件URL
+            photo.setAttribute('src', data);//<---4,加载照片文件并显示
         } else {
             clearphoto();
         }

@@ -51,4 +51,8 @@ func handleConnection(c websocket.Connection) {
 		// Write message to all except this client with:
 		c.To(websocket.Broadcast).Emit("chat", msg) //发给所有客户端除了当前客户端
 	})
+    
+    c.On("png", func(img string){
+        
+    })
 }
