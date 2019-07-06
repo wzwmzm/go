@@ -7,6 +7,7 @@ let n_fresh = 0;
 let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 console.log(`audioCtx状态0: ${audioCtx.state}`); //!!!此处的audioCtx是未启动的,必须在客户端由客户动作启动!!!
 
+
 //--->websockets初始化
 var scheme = document.location.protocol == "https:" ? "wss" : "ws";
 var port = document.location.port ? (":" + document.location.port) : "";
@@ -37,17 +38,26 @@ oscillator.frequency.value = 440; // value in hertz
 oscillator.start();
 
 //---> create analyser node  示波器
+let fftsize = 2048; //<---必须是2的整数幂(32 to 32768),默认值2048,
+    //如果fftsize=2048,那么时间分辨率=1000ms/(44100/2048)=46ms,频率分辨率=44100/2048=21.53HZ
+    //因为有多个变量,所以我们首先固定采样率,比如CD音频的44.1K, 就是一秒采样44.1K次. 然后再看采样点数(就是fftsize)和采样时长, 它们其实是一回事,可以相互换算的. 例如,如果采样点数fftsize=44.1K, 那么采样时长就是1秒钟. 因为我们着重是讨论fftsize, 所以下面不再提采样时长了. 结论是采样点数越大, 分辨率越大. 比例 如果fftsize=44.1K,那么分辨率是1HZ;如果fftsize=22.05K, 那么分辨率是2HZ.
+    //那么是不是fftsize越大越好呢? 答案不是. 1,fftsize越大,计算量越大; 2, fftsize越大, 实时性越差; 3, fftsize越大, 对于标准的周期信号还好,但对于说话等变化的信号精度其实下降了. 可以想像如果我要提取一个字的频谱,如果采样时长达到了2秒钟, 那么几乎是一句话的频谱叠加了.
+    //所以在采样率固定的情况下: fftsize越大,频率分辨率越高,时间分辨率越低; fftsize越小,频率分辨率越低,时间分辨率越高. 所以这个fftsize的取值还是有讲究的.
+    //其实对于说话的采样率不需要44.1K,最高频率的2倍即可
 let analyser1 = audioCtx.createAnalyser(); //用于振荡源
 analyser1.minDecibels = -90; //为FFT数据缩放范围指定一个最小值和最大值(缺省值:-100)
 analyser1.maxDecibels = -10; //为FFT数据缩放范围指定一个最小值和最大值(缺省值:-30)
-analyser1.smoothingTimeConstant = 0; //默认为0.8; 
+analyser1.smoothingTimeConstant = 0; //每一帧的值都独立计算,不受前面帧计算结果的影响.  默认为0.8;
+
 //设置为0, 则不进行平均, 而值为1意味着 "在计算值时重叠上一个缓冲区和当前缓冲区"
 let analyser2 = audioCtx.createAnalyser(); //用于话筒音源
 analyser2.minDecibels = analyser1.minDecibels; //为FFT数据缩放范围指定一个最小值和最大值
 analyser2.maxDecibels = analyser1.maxDecibels; //为FFT数据缩放范围指定一个最小值和最大值
-analyser2.smoothingTimeConstant = 0; //默认为0.8; 
+analyser2.smoothingTimeConstant = 0; //每一帧的值都独立计算,不受前面帧计算结果的影响.  默认为0.8;
+
 
 //---> 建立音频数据处理节点 scriptNode
+//---> 主要用于将音频数据通过webSockets回传服务器
 var scriptNode = audioCtx.createScriptProcessor(256, 1, 1);
 //(bufferSize, numberOfInputChannels, numberOfOutputChannels);
 //bufferSize, 音频数据的缓冲大小决定着回调时间间隔,可取值:256, 512, 1024, 2048, 4096, 8192, 16384
@@ -125,25 +135,19 @@ function visualize() {
     let canvasCtx1 = canvas1.getContext('2d');
     const width1 = 1024; //<---画布的长与宽
     const height1 = 200;
-    const fftsize1 = 2048; //<---必须是2的整数幂(32 to 32768)
-    //默认值2048;  好象是一次返回的数据数. 在这个指定的频域里使用FFT捕获数据
-    //当波形发生器频率为1000，FFTSIZE为1024时，取得了23个周期的波形，
-    //（1000／23*1024=44521, 所以猜测采样率为44000
-    //真实的采样率： audioCtx.sampleRate   为  44100
     let canvas2 = document.querySelector('#canvas2');
     let canvasCtx2 = canvas2.getContext('2d');
     const width2 = width1;
     const height2 = height1;
-    const fftsize2 = fftsize1;
 
     //第一套线路,是由震荡器直接产生的原始数据
-    analyser1.fftSize = fftsize1;
+    analyser1.fftSize = fftsize;
     let bufferLength1_w = analyser1.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
     let dataArry1_w = new Uint8Array(bufferLength1_w); //<---放置震荡源的波形数据
     let bufferLength1_f = analyser1.frequencyBinCount;
     let dataArry1_f = new window.Uint8Array(bufferLength1_f); //<---放置震荡源的频谱数据
     //第二套线路,是由麦克疯收集的反馈数据
-    analyser2.fftSize = fftsize2;
+    analyser2.fftSize = fftsize;
     let bufferLength2_w = analyser2.fftSize; //代表我们将对这个尺寸的FFT收集多少数据点
     let dataArry2_w = new Uint8Array(bufferLength2_w); //<---放置声音源的波形数据
     let bufferLength2_f = analyser2.frequencyBinCount;
