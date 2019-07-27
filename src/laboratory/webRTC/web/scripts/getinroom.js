@@ -48,7 +48,7 @@ socket.On("newroom", function (msg) {
         nowBuffering[n_frame*30+i] = Datas["data"][i];
     }
     n_frame = n_frame + 1;
-    if (n_frame>=1000){
+    if ( n_frame>=1000 ){
         n_frame = 0;
         source.buffer = Buffer;
         source.connect(audioCtx.destination);

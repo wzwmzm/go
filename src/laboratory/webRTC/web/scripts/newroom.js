@@ -58,7 +58,6 @@ output3.innerHTML += "1,  建立音频数据处理节点 scriptNode 成功!\n";
 //bufferSize, 音频数据的缓冲大小决定着回调时间间隔,可取值:256, 512, 1024, 2048, 4096, 8192, 16384
 //numberOfInputChannels, 输入声道数
 //numberOfOutputChannels, 输出声道数
-// B, Node 的事件处理,即功能所在
 // 1 * 消息(frame) = 30 * 数据
 let n_frame = 0; //给发送的消息编号,一个消息包含30个数据,声音采样率4096,可以计数2百多万年
 let n_b_frame = 0; //给消息内部的数据计数,满30个数据打包成一个消息发送
