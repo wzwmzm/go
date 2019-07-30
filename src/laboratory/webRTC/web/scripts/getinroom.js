@@ -35,7 +35,7 @@ socket.OnDisconnect(function () {
 //可以通过 AudioContext.createBuffer() 方法从原始数据创建,
 //然后就可以被放入一个 AudioBufferSourceNode 中使用
 let source = audioCtx.createBufferSource();
-let Buffer = audioCtx.createBuffer(1, 30*123, audioCtx.sampleRate);
+let Buffer = audioCtx.createBuffer(1, 30*1234, audioCtx.sampleRate);
 let nowBuffering = Buffer.getChannelData(0);	// Float32Array
 let n_frame = 0;
         source.buffer = Buffer;
@@ -52,7 +52,7 @@ socket.On("newroom", function (msg) {
         nowBuffering[n_frame*30+i] = Datas["data"][i];
     }
     n_frame = n_frame + 1;
-    if ( n_frame>=123 ){
+    if ( n_frame>=1234 ){
         n_frame = 0;
         //source.buffer = Buffer;
         //source.connect(audioCtx.destination);
