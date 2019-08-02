@@ -84,7 +84,7 @@ scriptNode.onaudioprocess = function (e) {
                 //console.log(JSON.stringify(inputData));//!!!inputData解析后是带下标的,frame是不带下标的
                 if (connected == true){
                     socket.Emit("newroom",{count: n_frame, data:frame});   
-                    console.log('scriptNode.onaudioprocess...发送音频数据包... '+n_frame)
+                    //console.log('scriptNode.onaudioprocess...发送音频数据包... '+n_frame)
                 }else{
                     output3.innerHTML  += "3, 发送时发现未连接 connect != true\n";
                 }
