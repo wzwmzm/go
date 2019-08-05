@@ -98,6 +98,7 @@ scriptNode.onaudioprocess = function (e) {
 
 //多媒体节点装配
 //---> 话筒音源
+//navigator.mediaDevices.getUserMedia只能在安全源(HTTPS)的情况下使用,或者设置chrome://flags/#unsafely-treat-insecure-origin-as-secure=http://home.com:8100 (enable)(事先在/etc/hosts中将home.com设置成需要的IP地址)
 navigator.mediaDevices.getUserMedia({
         audio: true
     })
