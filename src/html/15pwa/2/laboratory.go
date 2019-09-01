@@ -42,20 +42,20 @@ func main() {
     
 	app := iris.New()
 
-	app.StaticWeb("/", "./web")    //<------------------设定网站根目录
+	app.StaticWeb("/", "./public")    //<------------------设定网站根目录
     //app.RegisterView(iris.HTML("./web", ".html")) 
-	app.RegisterView(iris.HTML("./web", ".html").Reload(true))  
+	app.RegisterView(iris.HTML("./public", ".html").Reload(true))  
     //设定显示模板.  
     //.Reload(true)每次请求时重载模板...(开发模式)
 
     
     app.Get("/", func(ctx iris.Context) {
-		ctx.ServeFile("./web/index.html", false) // true for gzip.
+		ctx.ServeFile("./public/index.html", false) // true for gzip.
 	})
 	//websockets.html 是测试页而非主线.
 	//主线是 INDEX.HTML->APP.JS
 	app.Get("/ws", func(ctx iris.Context) {
-		ctx.ServeFile("./web/websockets.html", false) // second parameter: enable gzip?
+		ctx.ServeFile("./public/websockets.html", false) // second parameter: enable gzip?
 	})
 
 	roomlist = make(map[string]string)
@@ -95,7 +95,7 @@ func main() {
 	//app.Run(iris.TLS("192.168.2.2:443", "mycert.cer", "mykey.key")) ////<---------------
 	//mycert.cer === fullchain.cer
 	//app.Run(iris.Addr(":8100"), iris.WithCharset("UTF-8")) 
-    app.Run(iris.TLS(":8100", "mycert.cer", "mykey.key"))
+    app.Run(iris.TLS(":443", "mycert.cer", "mykey.key"))
     //<------------------------------------------------
 }
 

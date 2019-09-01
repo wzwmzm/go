@@ -47,7 +47,7 @@ socket.conn.onerror = function (e) {
 let n_recive=0;
 let nn_recive=0;
 socket.On("newroom", function (msg) {
-    if (n_recive++ < 5000){  //这里是为了避免过于频繁刷新render
+    if (n_recive++ < 10000){  //这里是为了避免过于频繁刷新render
         return;
     }
     n_recive = 0;

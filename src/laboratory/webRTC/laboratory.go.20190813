@@ -11,32 +11,15 @@ import (
 
 var roomlist map[string]string  //房间号数组roomlist[ c.ID() ] = 房间号
 var n_room int                  //给新开房间记数
-type message struct {
-    c websocket.Connection
-    roomid string
-    msg *interface{}
-}
-var ch1 chan *message   //在c.On("newroom")中收到远方来的 msg「30」数据帧后转发给后续FFTW处理
+var ch1 chan interface{}   //在c.On("newroom")中收到远方来的 msg「30」数据帧后转发给后续FFTW处理
 //sudo setcap CAP_NET_BIND_SERVICE=+eip ./arm-laboratory
 func main() {
-    ch1 = make(chan *message, 512)
+    ch1 = make(chan interface{}, 30)
     defer close(ch1)
-    
     go func(){
         //fmt.Println("hello,hello")
-        for msg := range ch1 {
-            c := (*msg).c
-            m := (*msg).msg
-            
-            c.To((*msg).roomid).Emit("newroom",*m)
-            
-            
-            //fmt.Println("go func()收到数据:", (*m).(map[string]interface{})["count"])  
-            //count := (*m).(map[string]interface{})["count"]  
-            //data  := (*m).(map[string]interface{})["data"].([]interface{}) 
-            //_,_=count,data	
-            //fmt.Printf("c.On(newroom)................%v \n", count)
-            //fmt.Printf("c.On(newroom)................%v \n", data)
+        for data := range ch1 {
+            fmt.Println("go func()收到数据:", data.(map[string]interface{})["count"])
         }
     }()
     
@@ -193,15 +176,10 @@ func handleConnection(c websocket.Connection) {
 	//"server"会话,在app.js里传输多媒体数据用
 	c.On("newroom", func(msg interface{}) {
         //fmt.Printf("c.On(newroom)...正在接收客户端数据,并发回客户端...... \n")
+        c.To(roomid).Emit("newroom",msg)
         
-        //c.To(roomid).Emit("newroom",msg)
-        ch1 <- &message{c, roomid, &msg}
-		//count := msg.(map[string]interface{})["count"]             
-		//data := msg.(map[string]interface{})["data"].([]interface{}) 
-		//_,_=count,data	
-        //fmt.Printf("c.On(newroom)................%v \n", count)
-        
-        //将 msg 由 string 转换成 []float
+        ch1 <- msg
+		//将 msg 由 string 转换成 []float
 		//f64a := []byte(msg)
 
 		//fmt.Printf(": %v \n", msg)
@@ -216,10 +194,10 @@ func handleConnection(c websocket.Connection) {
         //采样率44.1KHZ;
         //频率分辨度5HZ;采样数组长8.82K;取2的幂 = 8192;<--
         //时间分辨度约20ms;实际采样数=44.1K/1000*20=882 = 900 (1帧30个,取30帧)<--
-		//count := msg.(map[string]interface{})["count"]               //float64
-		//data := msg.(map[string]interface{})["data"].([]interface{}) // []float64
+		count := msg.(map[string]interface{})["count"]               //float64
+		data := msg.(map[string]interface{})["data"].([]interface{}) // []float64
 
-		//_,_=count,data
+		_,_=count,data
 		//打印全部30个数
 		//只打印其中两个数
         //fmt.Printf("count : %v\n", count)
@@ -228,7 +206,7 @@ func handleConnection(c websocket.Connection) {
 		//fmt.Printf("TypeOf data: %v \n", reflect.TypeOf(data[0]))
 		//fmt.Printf("TypeOf count: %v \n", reflect.TypeOf(count))
         
-        //fmt.Printf("c.On(newroom)................%v \n", count)
+        fmt.Printf("c.On(newroom)................%v \n", count)
         //c.To(roomid).Emit("newroom",msg)
 		//c.Emit("newroom", data)
 	})
