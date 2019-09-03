@@ -328,7 +328,7 @@ const WEATHERINFO = {
         }
         return;
     },
-}
+}	//const WEATHERINFO = {
 
 const SW = {
     // 注册

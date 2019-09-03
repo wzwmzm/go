@@ -5,7 +5,7 @@
 //                           -> 检查网络情况 -> 离线：展示indexDB中的卡片信息
 //                                           -> 在线：先展示indexDB，再更新
 // 千万不能把sw.js也缓存进去，不然你的应用就永远更新不了了
-const CACHENAME = 'weather-' + 'v7';
+const CACHENAME = 'weather-' + 'v8';
 const PATH = '';
 const fileToCache = [
     PATH + '/',
