@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<meta name="application-name" content="百度天气" />
+		<meta name="msapplication-TileColor" content="#222">
+		<meta name="msapplication-square70x70logo" content="images/icons/icon-32x32.png" />
+		<meta name="msapplication-square150x150logo" content="images/icons/icon-144x144.png" />
+		<meta name="msapplication-square310x310logo" content="images/icons/icon-256x256.png" />
+
+
+    <script src="./fontSet.js"></script>
+
+    <link rel="manifest" href="./manifest.json" crossorigin="use-credentials">
+
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./style.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="cover" class="cover" style="display:none"></div>
+
+    <header>
+        <h1>Weather PWA</h1>
+        <div class="list">
+            <img src="./images/icons/plus.svg" id="add">
+            <ul id="cityList">
+                <li><span class="city_item">北京</span></li>
+                <li><span class="city_item">上海</span></li>
+                <li><span class="city_item">天津</span></li>
+                <li><span class="city_item">福州</span></li>
+                <li><span class="city_item">武汉</span></li>
+                <li><span class="city_item">杭州</span></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container" id="container"></div>
+
+    <script id="main">
+        function insertAfter(newEl, targetEl) {
+            var parentEl = targetEl.parentNode;
+
+            if (parentEl.lastChild == targetEl) {
+                parentEl.appendChild(newEl);
+            } else {
+                parentEl.insertBefore(newEl, targetEl.nextSibling);
+            }
+        }
+
+        let dom = document.getElementById('main');
+        // 动态引入script文件
+        if (navigator.onLine) {
+            let node = document.createElement('script');
+            node.src = 'https://pv.sohu.com/cityjson?ie=utf-8';
+            insertAfter(node, dom);
+        }
+    </script>
+    <script src="./main.js" type="module"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</body>
+
+</html>
