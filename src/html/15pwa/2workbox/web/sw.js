@@ -6,6 +6,32 @@ if (workbox) {
   console.log(`Boo! Workbox didn't load 😬`);
 }
 
+//		缓存策略
+//
+//1,Stale-While-Revalidate		//有缓存用缓存,然后再网络更新缓存更新
+//2,Cache First					//有缓存用缓存,不再进行网络更新
+//3,Network First				//有网络走网络,没网络走缓存
+//4,Network Only				//只走网络,不走缓存
+//5,Cache Only					//只走缓存,不走网络
+//6,HTML:  如果你想让页面离线可以访问，使用NetworkFirst，如果不需要离线访问，使用NetworkOnly，其他策略均不建议对HTML使用。
+//7,CSS和JS:		如果使用了CDN,建议使用Stale-While-Revalidate策略.  如果不跨域, 则直接使用Cache First策略。
+//8,图片:	图片建议使用Cache First.
+//9,牢记!  跨域资源绝对不能使用Cache only和Cache first。
+
+//最好写在紧贴着importScripts workbox-sw.js的下面，如果写在文件最后，则不生效。
+//只有当不指定cacheName时, 才使用这个名字
+workbox.core.setCacheNameDetails({
+  prefix: "my-app",			//cachename前缀
+  suffix: "v1",				//cachename后缀
+  precache: "custom-precache-name",
+  runtime: "custom-runtime-name"
+});
+
+//workbox.precaching([
+//  // 注册成功后要立即缓存的资源列表
+//])
+//或者workbox.precaching.precacheAndRoute([]);
+
 workbox.routing.registerRoute(
   new RegExp('.*\.js'),     //可以跨目录
   workbox.strategies.networkFirst()
@@ -13,7 +39,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /.*\.css/,                //不可以跨目录
-  workbox.strategies.staleWhileRevalidate({
+  workbox.strategies.staleWhileRevalidate({		//先直接用缓存内容,然后再网络更新及缓存更新
     cacheName: 'css-cache',
   })
 );
@@ -21,7 +47,7 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
 //  /.*\.(?:png|jpg|jpeg|svg|gif)/,             //不可以跨目录，只能在当下目录
   new RegExp('.*\.(?:png|jpg|jpeg|svg|gif)'),   //可以跨目录
-  workbox.strategies.cacheFirst({
+  workbox.strategies.cacheFirst({				//如果有缓存就用缓存,不再进行网络更新
     cacheName: 'image-cache',
     plugins: [
       new workbox.expiration.Plugin({
@@ -34,6 +60,12 @@ workbox.routing.registerRoute(
   })
 );
 
+//workbox.routing.registerRoute(
+//    new RegExp('https://your\.img\.cdn\.com/'),
+//    workbox.strategies.cacheFirst({
+//    cacheName: 'example:img'
+//    })
+//);
 
 
 //// service worker 逻辑
