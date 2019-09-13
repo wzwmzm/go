@@ -37,6 +37,7 @@
 				return null;
 			}
 			var stream = this.localMediaStream;
+			//stream = new Blob(stream, {type: 'image/jpeg'});
 			return (window.URL && window.URL.createObjectURL) ? window.URL.createObjectURL(stream) : stream;
 		}
 

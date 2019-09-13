@@ -1,3 +1,6 @@
+同时运行两个服务器:   sudo docker-compose up
+
+
 # 这是基于websocket的在线聊天室demo
 
 其中Tomcat-Websocket项目是基于tomcat服务器的java版服务端实现，
