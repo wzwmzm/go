@@ -1,6 +1,18 @@
 ﻿(function(window) {
 	window.URL = window.URL || window.webkitURL || window.msURL || window.oURL;
-
+    
+    //定义了：
+    //1，window.Media
+    //2，window.Camera
+    //3，window.MicroPhone《－数据取得是用的字节拷贝
+    //4，window.Video
+    //5，window.audio
+    //6，window.dataURLtoBlob
+    //7，window.readBlobAsDataURL
+    //8，window.DataURLtoString
+    //9，window.myCanvas
+    
+    
 	window.Media = function(option) {
 
 		var type = 0; // 0.无，1.音频，2.视频，3.音视频

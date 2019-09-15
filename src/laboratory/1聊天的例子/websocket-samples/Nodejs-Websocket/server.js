@@ -24,7 +24,6 @@
 
 	//连接建立
 	wss.on('connection', function(ws) {
-		console.log("%v 加入了聊天室.",ws);
 		var wsid = ws._ultron.id,
 			name = "游客" + new Date().getTime().toString();
 

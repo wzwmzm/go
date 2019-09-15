@@ -2,6 +2,13 @@ var MODE_TEXT = 0,
 	MODE_VIDEO = 1,
 	MODE_AUDIO = 2,
 	NO_SOURCE = new Image(),
+    //这个文件只是定义了三个类：
+    //1，textClient类－－>WSClient 类-->socket.send(message)
+    //2, videoClient类
+    //3, Console类
+    //但没有行执行
+    //WSClient 类单独定义在 WSClient.js 文件中
+    //
 	textClient = new WSClient({
 		host: "ws://" + window.location.hostname + ":3002/websocket/chat",
 		type: MODE_TEXT,
