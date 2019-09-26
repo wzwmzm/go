@@ -10,6 +10,8 @@ var app = http.createServer(function(req, res) {
   fileServer.serve(req, res);
 }).listen(8081);
 
+console.log("http://127.0.0.1:8081");
+
 var io = socketIO.listen(app);
 io.sockets.on('connection', function(socket) {
 
