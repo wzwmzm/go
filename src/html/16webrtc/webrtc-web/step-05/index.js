@@ -9,6 +9,7 @@ var fileServer = new(nodeStatic.Server)();
 var app = http.createServer(function(req, res) {
   fileServer.serve(req, res);
 }).listen(8080);
+console.log("http://localhost:8080");
 
 var io = socketIO.listen(app);
 io.sockets.on('connection', function(socket) {
@@ -18,6 +19,8 @@ io.sockets.on('connection', function(socket) {
     var array = ['Message from server:'];
     array.push.apply(array, arguments);
     socket.emit('log', array);
+    
+    console.log(arguments);//<---------服务器端的提示
   }
 
   socket.on('message', function(message) {

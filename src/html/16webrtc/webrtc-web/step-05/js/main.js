@@ -8,6 +8,8 @@ var pc;
 var remoteStream;
 var turnReady;
 
+//stun是打洞服务器,  'stun:stun.l.google.com:19302'
+//turn是中继服务器,  'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
 var pcConfig = {
   'iceServers': [{
     'urls': 'stun:stun.l.google.com:19302'

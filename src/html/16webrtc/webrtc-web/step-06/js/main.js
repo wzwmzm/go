@@ -3,6 +3,10 @@
 /****************************************************************************
 * Initial setup
 ****************************************************************************/
+//此例中没有实现打洞服务器STUN和中继服务器TURN
+//stun是打洞服务器,  'stun:stun.l.google.com:19302'
+//turn是中继服务器,  'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
+//此例运行似有错误, 可以部分参考 step-05/ 的内容<----------
 
 // var configuration = {
 //   'iceServers': [{
@@ -251,14 +255,8 @@ function onDataChannelCreated(channel) {
     snapAndSendBtn.disabled = true;
   }
 
-  channel.onmessage = (adapter.browserDetails.browser === 'firefox') ?
-  receiveDataFirefoxFactory() : receiveDataChromeFactory();
-}
-
-function receiveDataChromeFactory() {
-  var buf, count;
-
-  return function onmessage(event) {
+  channel.onmessage = function(event) {
+    var buf, count;
     if (typeof event.data === 'string') {
       buf = window.buf = new Uint8ClampedArray(parseInt(event.data));
       count = 0;
@@ -273,50 +271,14 @@ function receiveDataChromeFactory() {
     console.log('count: ' + count);
 
     if (count === buf.byteLength) {
-// we're done: all data chunks have been received
-console.log('Done. Rendering photo.');
-renderPhoto(buf);
-}
-};
-}
-
-function receiveDataFirefoxFactory() {
-  var count, total, parts;
-
-  return function onmessage(event) {
-    if (typeof event.data === 'string') {
-      total = parseInt(event.data);
-      parts = [];
-      count = 0;
-      console.log('Expecting a total of ' + total + ' bytes');
-      return;
+        // we're done: all data chunks have been received
+        console.log('Done. Rendering photo.');
+        renderPhoto(buf);
     }
-
-    parts.push(event.data);
-    count += event.data.size;
-    console.log('Got ' + event.data.size + ' byte(s), ' + (total - count) +
-                ' to go.');
-
-    if (count === total) {
-      console.log('Assembling payload');
-      var buf = new Uint8ClampedArray(total);
-      var compose = function(i, pos) {
-        var reader = new FileReader();
-        reader.onload = function() {
-          buf.set(new Uint8ClampedArray(this.result), pos);
-          if (i + 1 === parts.length) {
-            console.log('Done. Rendering photo.');
-            renderPhoto(buf);
-          } else {
-            compose(i + 1, pos + this.result.byteLength);
-          }
-        };
-        reader.readAsArrayBuffer(parts[i]);
-      };
-      compose(0, 0);
-    }
-  };
+  }
 }
+
+
 
 
 /****************************************************************************
@@ -330,38 +292,38 @@ function snapPhoto() {
 
 function sendPhoto() {
 // Split data channel message in chunks of this byte length.
-var CHUNK_LEN = 64000;
-console.log('width and height ', photoContextW, photoContextH);
-var img = photoContext.getImageData(0, 0, photoContextW, photoContextH),
-len = img.data.byteLength,
-n = len / CHUNK_LEN | 0;
+	var CHUNK_LEN = 64000;
+	console.log('width and height ', photoContextW, photoContextH);
+	var img = photoContext.getImageData(0, 0, photoContextW, photoContextH),
+	len = img.data.byteLength,
+	n = len / CHUNK_LEN | 0;
 
-console.log('Sending a total of ' + len + ' byte(s)');
+	console.log('Sending a total of ' + len + ' byte(s)');
 
-if (!dataChannel) {
-  logError('Connection has not been initiated. ' +
-    'Get two peers in the same room first');
-  return;
-} else if (dataChannel.readyState === 'closed') {
-  logError('Connection was lost. Peer closed the connection.');
-  return;
-}
+	if (!dataChannel) {
+	  logError('Connection has not been initiated. ' +
+		'Get two peers in the same room first');
+	  return;
+	} else if (dataChannel.readyState === 'closed') {
+	  logError('Connection was lost. Peer closed the connection.');
+	  return;
+	}
 
-dataChannel.send(len);
+	dataChannel.send(len);
 
-// split the photo and send in chunks of about 64KB
-for (var i = 0; i < n; i++) {
-  var start = i * CHUNK_LEN,
-  end = (i + 1) * CHUNK_LEN;
-  console.log(start + ' - ' + (end - 1));
-  dataChannel.send(img.data.subarray(start, end));
-}
+	// split the photo and send in chunks of about 64KB
+	for (var i = 0; i < n; i++) {
+	  var start = i * CHUNK_LEN,
+	  end = (i + 1) * CHUNK_LEN;
+	  console.log(start + ' - ' + (end - 1));
+	  dataChannel.send(img.data.subarray(start, end));
+	}
 
-// send the reminder, if any
-if (len % CHUNK_LEN) {
-  console.log('last ' + len % CHUNK_LEN + ' byte(s)');
-  dataChannel.send(img.data.subarray(n * CHUNK_LEN));
-}
+	// send the reminder, if any
+	if (len % CHUNK_LEN) {
+	  console.log('last ' + len % CHUNK_LEN + ' byte(s)');
+	  dataChannel.send(img.data.subarray(n * CHUNK_LEN));
+	}
 }
 
 function snapAndSend() {
