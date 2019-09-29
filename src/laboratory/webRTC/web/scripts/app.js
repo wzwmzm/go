@@ -3,6 +3,21 @@
 /******global Float32Array Uint8Array  Ws :true*********/
 /*eslint no-console: "off"*/
 
+
+
+//let socket = new WebSocket('ws://127.0.0.1:8080');
+//socket.binaryType = 'arraybuffer';
+//
+//socket.addEventListener('message', function (event) {
+//    let arrayBuffer = event.data;
+//    ···
+//});
+
+
+
+
+
+
 let n_fresh = 0;
 let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 console.log(`audioCtx状态0: ${audioCtx.state}`); //!!!此处的audioCtx是未启动的,必须在客户端由客户动作启动!!!
