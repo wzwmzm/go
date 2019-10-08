@@ -1,3 +1,6 @@
+armhf与arm64区别
+
+
 S912   64位 八核 ARM Cortex™A53CPU，最高频率可达2.0GHz，GPU为ARM Mali-T820MP3 GPU 750MHz，支持HDR10bit 4K@60fps 视频硬件解码，加入点对点显示， H.265支持高达10-bit硬解码和AVS+等格式回放，支持HDMI2.0a，支持CVBS，集成高性能、低功耗的特点。
 
 RK3368是瑞芯微2015年推出的OTT BOX芯片，采用八核64位ARM Coretex-A53内核架构，
@@ -11,4 +14,4 @@ RK3328  CPU:采用64位A53架构四核处理器，主频1.5GHz。GPU：搭载Mal
 S905W 4*CPU64位
 
 
-DOCKER 至少需要内核版本在3.10.0或者更新的版本
+DOCKER  至少需要内核版本在3.10.0或者更新的版本
