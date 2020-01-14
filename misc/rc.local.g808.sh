@@ -31,14 +31,14 @@ caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyf
 #sudo chmod 100 /dev/app_process 
 
 
-#科学上网
-sudo /usr/local/bin/sslocal -c /etc/shadowsocks/config.json -d start
+#科学上网 ( vps is broken )
+#sudo /usr/local/bin/sslocal -c /etc/shadowsocks/config.json -d start
 
 
 
 
 #尝试解决随机断网问题
-/bin/ping -i 15 192.168.2.1 &
+/bin/ping -i 15 192.168.1.1 &
 
 
 #关闭交换内存
