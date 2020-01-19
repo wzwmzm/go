@@ -49,7 +49,7 @@ self.addEventListener('activate', function (event) {
         caches.keys().then(function (cacheNames) {
             return Promise.all(
                 cacheNames.map(function (NAME) {
-                    if (NAME != CACHENAME) {
+                    if (NAME != CACHENAME) {	//版本检测
                         // 删除 v1 版本缓存的文件
                         return caches.delete(NAME);
                     }
@@ -58,21 +58,27 @@ self.addEventListener('activate', function (event) {
         })
     );
 });
+
+//大体思路如下：
+//无论在线/离线，App shell的部分（即同源）总是可以离线获取的，所以直接return res即可
+//在线时，对于天气的情况，直接调用远程接口（不使用本地缓存）
+//离线时，直接或者已经缓存好的天气情况即可
+
 //service worker是通过监听fetch事件来拦截所有的请求
 self.addEventListener('fetch', e => {
 	// e是所有的请求，每调用一次请求，都会被fetch监听到
     e.respondWith(
 		//在caches中寻找response，如果有就返回response，如果没有，就继续fetch（即不在本地查找，调用接口去查找）
         caches.match(e.request).then(function (res) {
-            if (res) {	//1,网页请求有缓存
+            if (res) {	//A,网页请求有缓存
                 if (e.request.url.indexOf(self.location.host) !== -1) {
-                    	//1.1 有缓存,且同源--->直接把cache中结果返回
+                    	//A.1 有缓存,且同源--->直接把cache中结果返回
                     return res;
-                } else {//1.2 有缓存,不同源
-                    	//1.2.1 有缓存,不同源,不在线--->直接返回缓存结果
+                } else {//A.2 有缓存,不同源
+                    	//A.2.1 有缓存,不同源,不在线--->直接返回缓存结果
                     if (!navigator.onLine) {
                         return res;
-                    } else {	//1.2.2 有缓存,不同源,在线--->从网络获取,并更新缓存
+                    } else {	//A.2.2 有缓存,不同源,在线--->从网络获取,并更新缓存
                         return fetch(e.request).then((response) => {
                             let responeClone = response.clone();
                             let responeClone_2 = response.clone();
@@ -88,11 +94,11 @@ self.addEventListener('fetch', e => {
                     }
                 }
             }
-			//2,无缓存,  获取IP及所在城市--->这个值不缓存,所以单列
+			//B,无缓存,  获取IP及所在城市--->这个值不缓存,所以单列
             if (e.request.url.indexOf('https://pv.sohu.com/cityjson?ie=utf-8') !== -1) {
                 return fetch(e.request);
             }
-			//3,无缓存,  从网络获取,并更新缓存
+			//C,无缓存,  从网络获取,并更新缓存
             return fetch(e.request).then((response) => {
                 let responeClone = response.clone();
                 let responeClone_2 = response.clone();
@@ -108,6 +114,14 @@ self.addEventListener('fetch', e => {
                 
             })
         })
+		//总结:
+		// <---1.可以通过匹配缓存中的资源返回 // 在caches中寻找response，如果有就返回response，如果没有，就继续fetch（即不在本地查找，调用接口去查找）
+		//caches.match(e.request)
+		////<--- 2.也可以从远端拉取, 上面已经有所体现
+		//fetch(e.request.url)
+		/// <---3.也可以自己造
+		//new Response('自己造')
+		//// 也可以通过吧fetch拿到的响应通过caches.put方法放进chches
     )
 })
 

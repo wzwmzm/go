@@ -9,7 +9,7 @@ const Skeleton = {
                 temp += '<p class="item"></p>'
             }
             return temp;
-        })();
+        })();//rows
 
         let model = (function() {//
             let temp = '';
@@ -35,10 +35,10 @@ const Skeleton = {
                     break;
             }
             return document.createRange().createContextualFragment(temp);//将HTML字符转换为DOM节点(还没加入到DOM树)
-        })();
+        })();//model
 
         return model;
-    }
-}
+    }//Render
+}//Skeleton
 
 export default Skeleton

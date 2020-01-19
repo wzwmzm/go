@@ -94,9 +94,9 @@ func main() {
 	// write something, press submit, see the result.
 	//app.Run(iris.TLS("192.168.2.2:443", "mycert.cer", "mykey.key")) ////<---------------
 	//mycert.cer === fullchain.cer
-	//app.Run(iris.Addr(":8100"), iris.WithCharset("UTF-8")) 
+	app.Run(iris.Addr(":8100"), iris.WithCharset("UTF-8")) 
     //app.Run(iris.TLS(":8100", "mycert.cer", "mykey.key"))
-    app.Run(iris.TLS(":443", "mycert.cer", "mykey.key"))
+//    app.Run(iris.TLS(":443", "mycert.cer", "mykey.key"))
     //<------------------------------------------------
 }
 

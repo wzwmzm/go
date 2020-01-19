@@ -16,6 +16,11 @@ localhost {
 test.ga111.ga:443 {
         root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
 	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+#       log requests.log {
+#               rotate_size 50  # Rotate after 50 MB
+#               rotate_age  90  # Keep rotated files for 90 days
+#               rotate_keep 20  # Keep at most 20 log files
+#       }
 }
 
 # 不能使用, 因为SSL证书无法对应. 现在证书对能对应 *.ga111.ga, 无法对应 ga111.ga
@@ -24,14 +29,10 @@ test.ga111.ga:443 {
 #        tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
 #}
 
-
-
-
-# 3号机的caddy本身就是一个web服务器:44444 <-----这个端口号由运行caddy程序时的参数 -port 44444指定
-1.ga111.ga:443 {
-#ga111.ga:8000 {
-	root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
+# 9号机的fileserver    g808   192.168.1.9:8888   https://9.ga111.ga  本机可以http://localhost:8888
+9.ga111.ga:443 {
 	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+	proxy / localhost:8888
 #	log requests.log {
 #		rotate_size 50  # Rotate after 50 MB
 #		rotate_age  90  # Keep rotated files for 90 days

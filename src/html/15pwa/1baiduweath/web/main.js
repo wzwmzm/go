@@ -1,4 +1,5 @@
 import skeleton from './skeleton.js'
+//PWA可以实现1添加至桌面、2离线缓存、3消息推送和提醒、4后台同步数据等功能. 本程序只实现了前两个功能
 
 window.addEventListener('load', function() {
     DOM.addCity();
@@ -342,5 +343,5 @@ const SW = {
                 console.log('Service Worker failed');
             })
         }
-    }
-}
+    }//register
+}//SW

@@ -43,6 +43,7 @@
     <div class="container" id="container"></div>
 
     <script id="main">
+		//函数定义
         function insertAfter(newEl, targetEl) {
             var parentEl = targetEl.parentNode;
 
@@ -58,7 +59,8 @@
         if (navigator.onLine) {
             let node = document.createElement('script');
             node.src = 'https://pv.sohu.com/cityjson?ie=utf-8';
-            insertAfter(node, dom);
+//返回:var returnCitySN = {"cip": "183.193.126.110", "cid": "310000", "cname": "上海市"};
+            insertAfter(node, dom);//引用上面定义的函数
         }
     </script>
     <script src="./main.js" type="module"></script>
