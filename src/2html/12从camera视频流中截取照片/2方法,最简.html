@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+
+    <p>Using Opera Next or Chrome Canary, use this page to take your picture!</p>
+
+
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap" class="sexyButton">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script>
+        // Put event listeners into place
+        window.addEventListener("DOMContentLoaded", function() {
+            // Grab elements, create settings, etc.
+            var canvas = document.getElementById("canvas"),
+                context = canvas.getContext("2d"),
+                video = document.getElementById("video");
+
+            navigator.mediaDevices.getUserMedia({
+                    "video": true
+                })
+                .then(
+                    function(stream) {
+                        video.srcObject = stream; //<---1,取CAMERA视频流回放
+                        video.play();
+                    })
+                .catch(
+                    function(e) {
+                        console.log('Reeeejected!', e);
+                    });
+
+            // Trigger photo take
+            document.getElementById("snap").addEventListener("click", function() {
+                context.drawImage(video, 0, 0, 640, 480); //<---2,截取照片并显示
+
+                console.log("VideoTracks", video.srcObject.getVideoTracks()[0]);
+
+            });
+        }, false);
+
+    </script>
+
+</body>
+
+</html>

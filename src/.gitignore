@@ -1,0 +1,13 @@
+pkg/
+bin/
+linux/
+log/
+tmp/
+*.arm
+*.exe
+*.x86
+*.db
+.bak
+*.mp4
+*.log
+

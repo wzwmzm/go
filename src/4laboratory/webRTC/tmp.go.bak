@@ -1,0 +1,77 @@
+tmp.go
+
+	Conn := make(map[websocket.Connection]bool)
+	var myChatRoom = "room1"
+	var mutex = new(sync.Mutex)
+
+	ws.OnConnection(func(c websocket.Connection) {
+		c.Join(myChatRoom)
+		mutex.Lock()
+		Conn[c] = true
+		mutex.Unlock()
+		c.On("chat", func(message string) {
+			if message == "leave" {
+				c.Leave(myChatRoom)
+				c.To(myChatRoom).Emit("chat", "Client with ID: "+c.ID()+" left from the room and cannot send or receive message to/from this room.")
+				c.Emit("chat", "You have left from the room: "+myChatRoom+" you cannot send or receive any messages from others inside that room.")
+				return
+			}
+		})
+		c.OnDisconnect(func() {
+			mutex.Lock()
+			delete(Conn, c)
+			mutex.Unlock()
+			fmt.Printf("\nConnection with ID: %s has been disconnected!\n", c.ID())
+		})
+	})
+
+	var delay = 1 * time.Second
+	go func() {
+		i := 0
+		for {
+			mutex.Lock()
+			broadcast(Conn, fmt.Sprintf("aaaa %d\n", i))
+			mutex.Unlock()
+			time.Sleep(delay)
+			i++
+		}
+	}()
+
+func broadcast(Conn map[websocket.Connection]bool, message string) {
+	for k := range Conn {
+		k.To("room1").Emit("chat", message)
+	}
+}
+
+
+
+<<<<<<< HEAD
+
+可以浏览以下示例，以便更好理解
+
+- [概览](routing/overview/main.go)
+- [基本使用](routing/basic/main.go)
+- [控制器](mvc)
+- [自定义 HTTP 错误](routing/http-errors/main.go)
+- [动态路径](routing/dynamic-path/main.go)
+    * [根级通配符路径](routing/dynamic-path/root-wildcard/main.go)
+- [编写你自己的参数类型](routing/macros/main.go) **NEW**
+- [反向路由](routing/reverse/main.go)
+- [自定义路由(高层级)](routing/custom-high-level-router/main.go) **NEW**
+- [自定义包装](routing/custom-wrapper/main.go)
+- 自定义上下文
+    * [方法重写](routing/custom-context/method-overriding/main.go)
+    * [新实现方式](routing/custom-context/new-implementation/main.go)
+- [路由状态](routing/route-state/main.go)
+- [中间件定义](routing/writing-a-middleware)
+    * [路由前](routing/writing-a-middleware/per-route/main.go)
+    * [全局](routing/writing-a-middleware/globally/main.go)
+
+### hero (输出的一种高效包装模式)
+
+- [基础](hero/basic/main.go)
+- [概览](hero/overview)
+- [Sessions](hero/sessions) **NEW**
+- [另一种依赖注入的例子和通常的较好实践](hero/smart-contract/main.go) **NEW**
+=======
+>>>>>>> 6bf964738eb7f9e74f8eefc18d3d941eaac10b07

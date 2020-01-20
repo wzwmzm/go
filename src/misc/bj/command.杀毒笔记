@@ -1,0 +1,145 @@
+ps -flecH
+pstree -placts
+sudo cat /var/log/kern.log|grep ktools
+sudo cat /var/log/kern.log|awk '/1424[1-5]/&&/fork/{print}'
+
+总结:
+1,一次性删除手机上关于kingroot的文件或目录
+2,每次开机后一次性删除 /dev/rt.sh 文件
+3,/dev/startup* 文件不再增加
+
+
+1, /proc/net/arp c     sudo  cat kern.log |grep "ifconfig"
+可疑:
+init,1 %\001
+  └─zygote,161 /bin/app_process -Xzygote /system/bin --zygote --start-system-server
+      └─her:pushservice,1731                                              
+          └─{her:pushservice},1834 <---------这就是可疑进程
+10002     5566   160  0 20:32 ?        00:00:00 com.lewa.launcher:pushservice
+10002     5567  5566  0 20:58 ?        00:00:00 /data/data/com.lewa.launcher/files/gdaemon_20151105 0 com.lewa.launcher/com.igexin.sdk.PushService 24686 300 0
+g808 pstree -aspct   (全)
+      ├─her:pushservice,1632                                              
+      │   ├─{Binder_1},1642
+      │   ├─{Binder_2},1643
+      │   ├─{Compiler},1638
+      │   ├─{FinalizerDaemon},1640
+      │   ├─{FinalizerWatchd},1641
+      │   ├─{GC},1636
+      │   ├─{ReferenceQueueD},1639
+      │   ├─{Signal Catcher},1637
+      │   ├─{TaskService-poo},3833
+      │   ├─{Thread-53},1651
+      │   ├─{launcher-loader},1646
+      │   ├─{taskService-pro},1664
+      │   └─{unread},1649
+adb shell pstree -p    (全)
+                      |-her:pushservice(1632)-+-{Binder_1}(1642)
+                      |                       |-{Binder_2}(1643)
+                      |                       |-{Compiler}(1638)
+                      |                       |-{FinalizerDaemon}(1640)
+                      |                       |-{FinalizerWatchd}(1641)
+                      |                       |-{GC}(1636)
+                      |                       |-{ReferenceQueueD}(1639)
+                      |                       |-{Signal Catcher}(1637)
+                      |                       |-{TaskService-poo}(3833)
+                      |                       |-{Thread-53}(1651)
+                      |                       |-{launcher-loader}(1646)
+                      |                       |-{taskService-pro}(1664)
+                      |                       `-{unread}(1649)
+(就是下面这段)
+Feb  7 16:57:00 g808 kernel: [17353.762293] (0)[1834:Thread-60][1731:1834:Thread-60] fork [11614:11614:Thread-60] flag=0x11
+Feb  7 16:57:00 g808 kernel: [17353.774106] (0)[11614:ip][exec] /system/xbin/ip(3)
+Feb  7 16:57:00 g808 kernel: [17353.782481] (0)[11614:ip]type=1400 audit(1549529820.400:3688): avc:  denied  { write } for  pid=11614 comm="ip" scontext=u:r:platform_app:s0 tcontext=u:r:platform_app:s0 tclass=netlink_route_socket
+Feb  7 16:57:00 g808 kernel: [17353.785531] (0)[11614:ip][11614:ip] exit
+Feb  7 16:57:00 g808 kernel: [17353.785957] (0)[1834:Thread-60][1834:Thread-60] sig 9 to [11614:ip]
+Feb  7 16:57:00 g808 kernel: [17353.792170] (0)[1834:Thread-60][1731:1834:Thread-60] fork [11615:11615:Thread-60] flag=0x11
+Feb  7 16:57:00 g808 kernel: [17353.792366] (0)[11614:ip][11614:ip] sig 17 to [1834:Thread-60]
+Feb  7 16:57:00 g808 kernel: [17353.802011] (0)[11615:ip][exec] /system/xbin/ip(3)
+Feb  7 16:57:00 g808 kernel: [17353.813162] (0)[11615:ip][11615:ip] exit
+Feb  7 16:57:00 g808 kernel: [17353.813404] (0)[11615:ip][11615:ip] sig 17 to [1834:Thread-60]
+Feb  7 16:57:00 g808 kernel: [17353.821169] (0)[1834:Thread-60][1731:1834:Thread-60] fork [11616:11616:Thread-60] flag=0x11
+Feb  7 16:57:00 g808 kernel: [17353.830873] (0)[11616:ifconfig][exec] /system/bin/ifconfig(3)
+Feb  7 16:57:00 g808 kernel: [17353.833965] (0)[11616:ifconfig][11616:ifconfig] exit
+Feb  7 16:57:00 g808 kernel: [17353.835363] (0)[1834:Thread-60][1834:Thread-60] sig 9 to [11616:ifconfig]
+Feb  7 16:57:00 g808 kernel: [17353.841450] (0)[1834:Thread-60][1731:1834:Thread-60] fork [11617:11617:Thread-60] flag=0x11
+Feb  7 16:57:00 g808 kernel: [17353.844152] (0)[11617:Thread-60][exec] /sbin/cat(3)
+Feb  7 16:57:00 g808 kernel: [17353.844208] (0)[11617:Thread-60][exec] /vendor/bin/cat(3)
+Feb  7 16:57:00 g808 kernel: [17353.844973] (0)[11616:ifconfig][11616:ifconfig] sig 17 to [1834:Thread-60]
+Feb  7 16:57:00 g808 kernel: [17353.845237] (0)[11617:Thread-60][exec] /system/sbin/cat(3)
+Feb  7 16:57:00 g808 kernel: [17353.851586] (0)[11617:cat][exec] /system/bin/cat(3)
+Feb  7 16:57:00 g808 kernel: [17353.857742] (0)[1834:Thread-60][1834:Thread-60] sig 9 to [11617:cat]
+Feb  7 16:57:00 g808 kernel: [17353.860946] (0)[11617:cat][11617:cat] exit
+Feb  7 16:57:00 g808 kernel: [17353.861268] (0)[11617:cat][11617:cat] sig 17 to [1834:Thread-60]
+
+cat 2kern.log|awk '/ifconfig/{print}'
+
+cat 2kern.log|awk '/16:5[6]:|16:57:0[0,1]/ {print}'|wc -l
+56,57----1241 lines
+
+---------------------------------------------------------------------------------------------------------
+2, dev/app_process 进程
+cat kern.log|awk '/21:2[5-9]:|21:30:/ && !/Power|healthd|mmc|kworker|swapper|watchdog|wlan|mtk|bat_|debug|cloud/{print}'
+
+sudo cat kern.log |grep "dev/app"
+
+Feb  8 14:50:03 g808 kernel: [14447.326355] (0)[2452:KgodPeriodicHan][1997:2452:KgodPeriodicHan] fork [9602:9602:KgodPeriodicHan] flag=0x11
+Feb  8 14:50:26 g808 kernel: [14470.612271] (0)[9602:app_process][9602:9602:app_process] fork [9988:9988:app_process] flag=0x11
+Feb  8 14:50:27 g808 kernel: [14470.647765] (0)[9988:sh][9988:9988:sh] fork [9991:9991:sh] flag=0x11
+Feb  8 14:50:27 g808 kernel: [14470.650833] (0)[9991:scanner_wrapper][9991:9991:scanner_wrapper] fork [9992:9992:scanner_wrapper] flag=0x11
+Feb  8 14:50:27 g808 kernel: [14470.651989] (0)[9992:scanner_wrapper][9992:9992:scanner_wrapper] fork [9993:9993:scanner_wrapper] flag=0x11
+Feb  8 14:50:27 g808 kernel: [14470.655836] (0)[9993:app_process][exec] /dev/app_process(3)
+
+init,1 %\001
+  └─ps,1997  ( /system/bin/app_process    kgod)                                             
+      └─{KgodPeriodicHan},2452   ( /system/bin/app_process    kgod)
+
+
+
+/dev/.kgod/b.dex <------疑似病毒,金山
+sudo rm -rf /dev/.kgod/   <---------------杀毒
+/dev <-----------------------这个目录下的奇怪文件和目录全部删除
+
+root     21329   389  0 14:41 ?        00:00:00 sh -c export CLASSPATH=/dev/kds_utils.jar && /system/bin/app_process /system/bin a.d --dns-resolve mazu.3g.qq.com
+<-----------------------病毒!!!!!!  关键字: kds
+
+13:40 
+sudo rm -rf /dev/com.lewa.updater.daemon/
+sudo rm -rf /dev/.kgod/
+ls /dev/startup*|xargs sudo rm
+14:41
+ps -ef|grep kgod  ----> sudo kill -9 
+14:52
+sudo rm /dev/rt.sh
+sudo rm /dev/kulck
+sudo rm /dev/__properties__
+sudo rm /dev/.coldboot_done
+15:15
+root     21329   389  0 14:41 ?        00:00:00 sh -c export CLASSPATH=/dev/kds_utils.jar && /system/bin/app_process /system/bin a.d --dns-resolv$
+<-----------------------病毒!!!!!!  关键字: kds
+sudo kill -9 389    <---389,是kworker,  CPU线程执行者, 应该不用删吧  
+
+afm_a/data/com.kingroot.kinguser/applib/kd(3)
+/data/data/com.kingroot.kinguser/applib/kd(3)
+
+
+-------------上面是杀dev/app_process线程,  下面是杀arp线程--------------------------------------------------------------------------------------
+
+init,1 %\001
+  └─zygote,161 /bin/app_process -Xzygote /system/bin --zygote --start-system-server
+      └─her:pushservice,1843                                              
+          └─{Thread-59},1984
+
+sudo kill -9 1843   <---------(1843杀了以后还会出来, 但1984杀了就不一定再出来了)
+
+要是还不行就杀这两个程序!!!
+10002     5566   160  0 20:32 ?        00:00:00 com.lewa.launcher:pushservice
+10002     5567  5566  0 20:58 ?        00:00:00 /data/data/com.lewa.launcher/files/gdaemon_20151105 0 com.lewa.launcher/com.igexin.sdk.PushServic$
+
+
+
+------------下面是杀/dev/startupk* 进程的----------------------------------------------------------------------------------------
+
+7Feb  9 00:29:45 g808 kernel: [49179.365615] (0)[29388:afm_server][exec] /data/data/com.kingroot.kinguser/applib/kd(3)
+Feb  9 20:00:18 g808 kernel: [54615.815791] (0)[30131:mmp][exec] /data/data/com.kingroot.kinguser/applib/kd(3)
+
+kill afm_server  mmp  没用

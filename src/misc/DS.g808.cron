@@ -1,0 +1,47 @@
+
+# ~/go/misc/ddns/DS.cron
+
+#    service cron status         //查看服务状态 
+#    sudo service crond start    //启动服务
+#    crontab DS.cron             //装载定时任务
+#分  时  日  月  周几   
+
+
+#杀死可疑进程 /dev/app_process
+#*/5 * * * * /home/wzw/project/go/misc/g808-kill-app-process.sh >> /home/wzw/project/go/log/kill_app_process.log
+*/5 * * * * sudo rm /dev/rt.sh
+*/5 * * * * sudo rm /dev/startup* 
+
+
+
+#     DDNS  动态域名IP更新  (IPV6地址不再更新)
+#*/5 * * * * /home/wzw/project/go/misc/ddns/cloudxns.g808.sh  /home/wzw/project/go/misc/ddns/cloudxns.g808.conf >> /home/wzw/project/go/log/my-ddns.log
+
+#1 1 1 * * echo > /home/wzw/project/go/log/my-ddns.log
+
+
+
+
+
+
+
+##     SSL证书: 自动更新程序 ,自动延期证书.
+##     证书如果自动延期失败,也可以手动更新
+## 1, 手动申请SSL（全程自动，无需要人为干预）    "/home/wzw/.acme.sh"/acme.sh --issue  --dns dns_cx -d gofans.ga -d *.gofans.ga
+## 2, 下面是自动更新，也是全程自动，无需人为干预
+#33 0 5-8/1 * * "/home/wzw/.acme.sh"/acme.sh --cron --home "/home/wzw/.acme.sh";echo "$(date) --- done!" >> /home/wzw/project/go/log/my-ssl.log
+#40 0 5-8/1 * * "/home/wzw/.acme.sh"/acme.sh --list >> /home/wzw/project/go/log/my-ssl.log
+#1 1 10 */12 *  echo > /home/wzw/project/go/log/my-ssl.log
+
+
+# SSL证书手动更新方法:         https://github.com/Neilpang/acme.sh/wiki/dns-manual-mode  https://github.com/Neilpang/acme.sh/
+#"/home/wzw/.acme.sh"/acme.sh --issue  --dns dns_cx -d gofans.ga -d *.gofans.ga >> /var/log/my-ssl.log
+#./acme.sh --list //查看证书有效期
+
+
+# 域名自动延期(免费域名无法免费续期)下次延期时间:2020年4月1日
+#36 14 */4 * * /home/wzw/project/go/misc/freenom-renewer/autorun.sh;echo "$(date) --- done!" >> /home/wzw/project/go/log/my-domain.log
+# /usr/bin/curl -X POST https://api.freenom.com/v2/domain/renew.xml -d  "domainname=ga111.ga&period=3Y&email=wzwmzm41@gmail.com&password=wzwmzm329232" >> /home/wzw/project/go/log/my-domain.log
+#始终报错:找不到帐号
+# /home/wzw/project/go/misc/freenom-renew.sh >> /home/wzw/project/go/log/my-domain.log
+

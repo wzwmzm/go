@@ -1,0 +1,5 @@
+ffw的使用可能需要安装: sudo apt-get install fftw3 fftw3-dev pkg-config
+
+主程序:  main/mygosl.go
+运行:  go run main/mygosl.go
+测试:  go test

@@ -1,0 +1,81 @@
+<!-- the message's input -->
+<input id="input" type="text" />
+
+<!-- when clicked then an iris websocket event will be sent to the server,
+at this example we registered the 'chat' -->
+<button onclick="send()">Send</button>
+
+<!--- 发送二进制数 --->
+<button onclick="send2()">发送二进制数</button>
+
+
+<!-- the messages will be shown here -->
+<pre id="output"></pre>
+<!-- import the iris client-side library for browser-->
+<!-- iris-ws.js文件是服务器自动生成的,而非目录下真实存在这个文件-->
+<script src="/iris-ws.js"></script>
+
+<script>
+    var scheme = document.location.protocol == "https:" ? "wss" : "ws";
+    var port = document.location.port ? (":" + document.location.port) : "";
+    // see app.Get("/echo", ws.Handler()) on main.go
+    var wsURL = scheme + "://" + document.location.hostname + port + "/echo";
+    //这个websockets应用是指定到服务器的 ws://IP:port/echo 的
+
+    var input = document.getElementById("input");
+    var output = document.getElementById("output");
+
+    // Ws comes from the auto-served '/iris-ws.js'
+    var socket = new Ws(wsURL) //一个 socket 是通过 协议 IP port 路由 四个部分组成的
+    socket.OnConnect(function() {
+        output.innerHTML += "Status: Connected\n";
+    });
+
+    socket.OnDisconnect(function() {
+        output.innerHTML += "Status: Disconnected\n";
+    });
+
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//c.ID() string		// 连接建立时的ID,也是这个连接的缺省房间号
+	//c.Server() *Server// Server returns the websocket server instance
+	//c.To(string) Emitter	//给指定房间发消息
+	//JOIN可以加入一个STRING指定的房间,如果不存在则建立它.
+	//一个房间可以有多个连接, 一个连接可以加入多个房间
+	//c.Join(string)
+	//c.EMIT() 将消息发给连接时缺省建立的房间及后来JOIN的房间
+
+	//一个消息的组成: 协议 + 主机 + 端口 + 路由 + 房间号 + 事件号 + 消息主体
+	//"chat""wzw"是事件编号
+    socket.On("chat", function(msg) {
+        addMessage(msg);
+    });
+    socket.On("wzw", function(msg) {
+        addMessage("wzw: "+msg);
+    });
+
+    // 客户端发信处理
+    function send() {
+        addMessage("Me: " + input.value); // write ourselves
+        socket.Emit("chat", input.value); // send chat event data to the websocket server        
+        input.value = ""; // clear the input
+    }
+
+    // 发送二进制数
+    var f64a;
+
+    function send2() {
+        f64a = new ArrayBuffer(8);
+        f64a[0] = 10;
+        f64a[1] = 20;
+        f64a[2] = f64a[0] + f64a[1];
+        f64a = new Array(111, 222, 333);
+        var str = "1234567890"
+        socket.Emit("wzw", f64a)    
+        addMessage("Me: 发送二进制数...")
+    }
+
+    function addMessage(msg) {
+        output.innerHTML += msg + "\n";
+    }
+
+</script>

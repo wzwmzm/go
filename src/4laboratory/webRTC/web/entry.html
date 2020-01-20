@@ -1,0 +1,58 @@
+<!doctype html>
+<!--HTML5格式-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <style>
+        .title1 {
+            font-size: 32px;
+            text-align: center;
+        }
+        
+        * {box-sizing: border-box;}
+        .wrapper {
+            border: 2px solid #f76707;
+            border-radius: 5px;
+            background-color: #fff4e6;
+        }
+        .wrapper > div {
+            border: 2px solid #ffa94d;
+            border-radius: 5px;
+            background-color: #ffd8a8;
+            padding: 1em;
+            color: #d9480f;
+        }
+        .wrapper {
+           display: grid;
+           grid-template-columns: repeat(3, 1fr);
+        }
+    </style>
+    <title>标题即是标签</title>
+</head>
+
+<body>
+    <div class="title1">
+        <p></p>
+        <a href="newroom.html">开房间</a>
+        <hr />
+        <hr />
+        <p>进房间</p>
+    </div>
+    <div class="wrapper" id="rooms">
+        
+    </div>
+
+
+    <script type="text/javascript">
+        jsonstr_rooms = JSON.parse({{.rooms}});
+        ctrl_rooms = document.getElementById("rooms");
+        for (x in jsonstr_rooms) {
+            roomid = jsonstr_rooms[x]
+            ctrl_rooms.innerHTML += `<div onclick="getElementById('` + roomid +  `').submit()">` +  x + ` : ` + roomid + `<form  id="` + roomid + `" action="/room/` + roomid + `" method="get"></form></div>`;
+}
+    </script>
+</body>
+
+</html>

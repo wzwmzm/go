@@ -1,0 +1,110 @@
+#1, 在官网选择下载: https://caddyserver.com/download
+#2, 选择脚本方式安装: One-step installer script (bash):
+#        curl https://getcaddy.com | bash -s personal
+#3, 脚本执行完成后，执行 which caddy，可以看到 caddy 已被
+#        安装到了 /usr/local/bin/caddy；
+#        caddy -version 查看版本号
+#4, sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/caddy
+#5, 运行 : caddy -port 44444 -conf  /home/wzw/project/go/src/html/8iris/7proxy-caddy/Caddyfile
+
+# 本机测试服务器 http://localhost:44444, 这里的端口44444只能在命令行指定 
+localhost {
+	root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
+}
+
+# 本机测试服务器 https://test.ga111.ga .    不能用https://localhost, 因为SSL证书无法对应  
+test.ga111.ga:443 {
+        root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
+	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+#       log requests.log {
+#               rotate_size 50  # Rotate after 50 MB
+#               rotate_age  90  # Keep rotated files for 90 days
+#               rotate_keep 20  # Keep at most 20 log files
+#       }
+}
+
+# 不能使用, 因为SSL证书无法对应. 现在证书对能对应 *.ga111.ga, 无法对应 ga111.ga
+#ga111.ga:443 {
+#        root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
+#        tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+#}
+
+# 9号机的fileserver    g808   192.168.1.9:8888   https://9.ga111.ga  本机可以http://localhost:8888
+9.ga111.ga:443 {
+	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+	proxy / localhost:8888
+#	log requests.log {
+#		rotate_size 50  # Rotate after 50 MB
+#		rotate_age  90  # Keep rotated files for 90 days
+#		rotate_keep 20  # Keep at most 20 log files
+#	}
+}
+
+# 2号机的fileserver:8888
+#'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver.arm'
+2.ga111.ga:443 {
+	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+	proxy / 192.168.2.2:8888
+}
+
+# 重定向到2号机的徐高阳目录:
+6.ga111.ga:443 {
+        tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+        proxy / https://2.ga111.ga/root/home/wzw/project/go/src/html/8iris/8xgyhtml/
+}
+
+# 2号机的xgyhtml.arm:8101
+# /home/wzw/project/go/src/html/8iris/8xgyhtml/xgyhtml.arm
+7.ga111.ga:443 {
+        tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+        proxy / 192.168.2.2:8101/
+}
+
+
+# 2号机的实验室:8100
+# '/home/wzw/project/go/src/laboratory:8100'
+5.ga111.ga:443 {
+        tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+        proxy / 192.168.2.2:8100 {
+               websocket
+               transparent
+       }
+}
+
+#2号机的SS翻墙：7070  <-------------不能这样设置SS代理，但是http://可以也是必须这样设置。
+#http://ss.ga111.ga:7070 {
+#        proxy / 192.168.2.2:7070
+#}
+
+#3号机的fileserver:8888
+#'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver-arm'
+3.ga111.ga:443 {
+	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+	proxy / 192.168.2.3:8888
+}
+
+
+# 3号机的徐高阳:8080
+#33.ga111.ga:443 {
+#        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
+#        proxy / 192.168.2.3:8080
+#}
+
+
+# 重定向到百度
+4.ga111.ga:443 {
+	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
+	proxy / https://www.baidu.com
+}
+
+# 2号机的实验室:8080(暂停)
+#5.ga111.ga:443 {
+#        tls     "/home/wzw/.acme.sh/ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/ga111.ga/ga111.ga.key"
+#        proxy / https://192.168.2.2:8080 {
+#		websocket
+#		transparent
+#		except static
+#	}
+
+
+

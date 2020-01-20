@@ -1,0 +1,17 @@
+armhf与arm64区别
+
+
+S912   64位 八核 ARM Cortex™A53CPU，最高频率可达2.0GHz，GPU为ARM Mali-T820MP3 GPU 750MHz，支持HDR10bit 4K@60fps 视频硬件解码，加入点对点显示， H.265支持高达10-bit硬解码和AVS+等格式回放，支持HDMI2.0a，支持CVBS，集成高性能、低功耗的特点。
+
+RK3368是瑞芯微2015年推出的OTT BOX芯片，采用八核64位ARM Coretex-A53内核架构，
+
+RK3399是一款基于Dual ARM Cortex-A72 + Quad ARM Cortex-A53架构的六核处理器芯片。。图形处理器采用ARM Mali-T860MP4 GPU。Mali-T860是ARM最新一代图像处理器，图形处理性能一般，其上还有更加高端的Mali-T880。RK3399硬件性能上最大的提升在于双核A72与四核A53的交火，综合性能相比上一代有着100%的大幅提升，性能非常强大。
+
+全志H6芯片采用ARM 四核A53架构 CPU，搭配MaliT720 GPU，支持OpenGL3.1，支持DDR4、EMMC5.0，芯片性能比上一代提高77%；解码支持4K@60fps，最高分辨率可达6K（5780×2890）；支持 HDR10、HLG，并集成Allwinner Smartcolor3.0智能画质引擎；另外，H6还提供了多种高速接口，包括USB3.0，PCIe2.0，千兆网口等，传输更快，信号更强。此外，H6系列芯片支持全通路10bit HDR10、HLG标准：解码、处理与输出全通路10bit，实现色域范围提升100%。
+
+RK3328  CPU:采用64位A53架构四核处理器，主频1.5GHz。GPU：搭载Mali-450MP2图形处理器。
+
+S905W 4*CPU64位
+
+
+DOCKER  至少需要内核版本在3.10.0或者更新的版本

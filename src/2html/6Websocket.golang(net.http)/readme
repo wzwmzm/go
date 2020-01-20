@@ -1,0 +1,6 @@
+最简单的基于net/http的websocket实现
+
+0, 运行: go run websocket.go
+1, websocket 端口开在 4001 上
+2. 但 http://localhost:4001/index1.html 并不能访问此页, 因为并没有生成此页的路由
+3, 直接打开 index1.html 就能连上 websocket 进行前后通讯
