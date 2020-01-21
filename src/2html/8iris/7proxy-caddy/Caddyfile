@@ -9,12 +9,12 @@
 
 # 本机测试服务器 http://localhost:44444, 这里的端口44444只能在命令行指定 
 localhost {
-	root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
+	root /home/wzw/project/go/src/2html/8iris/7proxy-caddy/www
 }
 
 # 本机测试服务器 https://test.ga111.ga .    不能用https://localhost, 因为SSL证书无法对应  
-test.ga111.ga:443 {
-        root /home/wzw/project/go/src/html/8iris/7proxy-caddy/www
+caddy.ga111.ga:443 {
+        root /home/wzw/project/go/src/2html/8iris/7proxy-caddy/www
 	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
 #       log requests.log {
 #               rotate_size 50  # Rotate after 50 MB
@@ -30,7 +30,7 @@ test.ga111.ga:443 {
 #}
 
 # 9号机的fileserver    g808   192.168.1.9:8888   https://9.ga111.ga  本机可以http://localhost:8888
-9.ga111.ga:443 {
+file.ga111.ga:443 {
 	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
 	proxy / localhost:8888
 #	log requests.log {
@@ -42,9 +42,9 @@ test.ga111.ga:443 {
 
 # 2号机的fileserver:8888
 #'/home/wzw/project/go/src/html/9fileserver(net.http)/fileserver.arm'
-2.ga111.ga:443 {
+pwa.ga111.ga:443 {
 	tls     "/home/wzw/.acme.sh/*.ga111.ga/fullchain.cer"  "/home/wzw/.acme.sh/*.ga111.ga/*.ga111.ga.key"
-	proxy / 192.168.2.2:8888
+	proxy / localhost:8100
 }
 
 # 重定向到2号机的徐高阳目录:
